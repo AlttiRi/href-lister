@@ -1,9 +1,11 @@
 <template>
   <div class="row row-cols-lg-3 g-3 align-items-end">
     <div class="input col-12">
-      <label style="display: contents;">
-        <textarea spellcheck="false" v-model="inputText" ref="textareaEl"></textarea>
-      </label>
+      <label for="urls-textarea" class="fuck-off-lighthouse"></label>
+      <textarea id="urls-textarea" spellcheck="false"
+                v-model="inputText"
+                ref="textareaEl"
+      ></textarea>
     </div>
     <div class="input col-12">
       <span  class="row">
@@ -123,5 +125,13 @@ textarea {
 }
 textarea:focus {
   outline: none;
+}
+
+.fuck-off-lighthouse {
+  position: absolute;
+  top: -1000px;
+  left: -1000px;
+  height: 0;
+  width: 0;
 }
 </style>

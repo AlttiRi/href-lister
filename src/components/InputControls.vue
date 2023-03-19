@@ -1,7 +1,9 @@
 <template>
   <div class="row row-cols-lg-3 g-3 align-items-end">
     <div class="input col-12">
-      <textarea spellcheck="false" v-model="inputText" ref="textareaEl"></textarea>
+      <label style="display: contents;">
+        <textarea spellcheck="false" v-model="inputText" ref="textareaEl"></textarea>
+      </label>
     </div>
     <div class="input col-12">
       <span  class="row">

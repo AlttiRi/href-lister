@@ -2,7 +2,7 @@
   <div>
     <table class="table table-borderless">
       <tbody>
-      <tr v-for="url in urls">
+      <tr v-for="url in urls" :key="url">
         <td>
           <span class="info-dot" @contextmenu="onInfoDotContextMenu"></span>
           <a class="url link-primary" :href="url" target="_blank" rel="noreferrer noopener"

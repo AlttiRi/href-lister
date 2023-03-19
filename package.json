@@ -1,0 +1,19 @@
+{
+  "name": "href-lister",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build",
+    "serve": "vite preview",
+    "build-serve": "vite build && vite preview"
+  },
+  "dependencies": {
+    "@alttiri/util-js": "1.7.0",
+    "vue": "3.2.47"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "4.0.0",
+    "vite": "4.1.4"
+  }
+}

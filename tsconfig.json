@@ -21,7 +21,6 @@
     "noImplicitAny":    true,
     "noImplicitThis":   true,
 
-//    "noImplicitAny": false,
-    "allowJs": true
+    "allowJs": false
   }
 }

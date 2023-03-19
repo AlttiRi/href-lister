@@ -3,13 +3,14 @@ import vuePlugin from "@vitejs/plugin-vue";
 
 
 export default defineConfig({
-  server: {
-    open: "./"
-  },
   plugins: [
     vuePlugin(),
     splitVendorChunkPlugin(),
   ],
+  base: "./",
+  server: {
+    open: "./"
+  },
   build: {
     sourcemap: true,
     rollupOptions: {

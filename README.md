@@ -6,10 +6,10 @@ Just [a webpage](https://alttiri.github.io/href-lister) to list text URLs as cli
 
 ---
 
-Link parsing is very simple:
+Link parsing is very primitive:
 
  - An URL must starts with `https://`, or `http://`.
- - URLs must be separeted by space character(s).
+ - URLs must be separated by space character(s).
 
 A space character(s) with followed `#`, or `//` is used as a start of a line comment:
 

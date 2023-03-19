@@ -83,6 +83,9 @@ async function onAppendClipboardText(event: MouseEvent) {
   const {currentTarget} = event;
   const text = await navigator.clipboard.readText();
   console.log("[clipboard] readText:", text);
+  if (inputText.value && !inputText.value.endsWith("\n")) {
+    inputText.value += "\n";
+  }
   inputText.value += text;
   void blink(currentTarget as HTMLElement);
 }

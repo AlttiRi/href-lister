@@ -1,23 +1,22 @@
-export function throttle(runnable: Function, time = 50): Function {
+export function throttle<A extends any[]>(runnable: (...args: A) => any, time = 50): (...args: A) => void {
     let waiting = false;
     let queued  = false;
     let context: any;
-    let args:    any;
+    let args: A;
 
-    return function(this: any) {
+    return function(this: any, ..._arguments: A) {
         if (!waiting) {
             waiting = true;
             setTimeout(function() {
                 if (queued) {
                     runnable.apply(context, args);
-                    context = args = undefined;
                 }
                 waiting = queued = false;
             }, time);
-            runnable.apply(this, arguments);
+            runnable.apply(this, _arguments);
         } else {
             context = this;
-            args = arguments;
+            args = _arguments;
             queued = true;
         }
     }

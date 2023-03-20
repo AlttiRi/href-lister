@@ -1,22 +1,62 @@
-import {computed, ref, Ref} from "vue";
+import {computed, ref, Ref, ComputedRef} from "vue";
 
 export const inputText: Ref<string> = ref("");
 
-export const urls: Ref<string[]> = computed(() => {
-    const lines = inputText.value.split("\n").map(line => line.trim()).filter(line => line);
-    const urls: string[] = [];
+export type UrlEntry = {
+    url: string,
+    comment?: string
+}
+
+export const urlEntryList: ComputedRef<UrlEntry[]> = computed(() => {
+    return parseUrlEntries(inputText.value);
+});
+
+export const urls: ComputedRef<string[]> = computed(() => {
+    return urlEntryList.value.map(ue => ue.url);
+});
+
+
+// todo add tests
+export function parseUrlEntries(text: string) {
+    const lines = text.split("\n").map(line => line.trim()).filter(line => line);
+    const urls: UrlEntry[] = [];
     for (const line of lines) {
-        const main = line.split(/\s+(#|\/\/)/)[0]; // trim comments
-        const words = main.trim().split(/\s+/);
+        const [main, ...comments] = line.split(/\s+(#|\/\/)/);
+        const [firstWord, ...words] = main.trim().split(/\s+/);
+
+        if (firstWord.startsWith("http")) {
+            const url = matchUrl(firstWord);
+            if (url && words.every(word => !matchUrl(word))) {
+                urls.push({
+                    url,
+                    comment: [...words, ...comments].join(" ")
+                });
+                continue;
+            }
+            if (url) {
+                urls.push({url});
+            }
+        } else {
+            words.unshift(firstWord);
+        }
+
         for (const word of words) {
-            const match = word.match(/(['"]?)(?<url>https?:\/\/\S+)(\1)/);
-            if (match?.groups) {
-                urls.push(match.groups.url);
+            const url = matchUrl(word);
+            if (url) {
+                urls.push({url});
             }
         }
     }
     return urls;
-});
+}
+
+function matchUrl(word: string) {
+    const match = word.match(/(['"]?)(?<url>https?:\/\/[^\s"]+)(\1)/);
+    console.log(match);
+    if (match?.groups) {
+        return match.groups.url;
+    }
+}
 
 export function getCodeArrays(items: string[], size = 100) {
     const jsonArray = (a: string[]) => `${a.length ? "[\"" + a.join(`", "`) + "\"]" : "[]"}`;

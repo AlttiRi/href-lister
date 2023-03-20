@@ -2,12 +2,18 @@
   <div>
     <table class="table table-borderless">
       <tbody>
-      <tr v-for="url in urls" :key="url">
+      <tr v-for="ue in urlEntryList" :key="ue.url">
         <td>
-          <span class="info-dot" @contextmenu="onInfoDotContextMenu"></span>
-          <a class="url link-primary" :href="url" target="_blank" rel="noreferrer noopener"
+          <span class="info-dot"
+                :class="{['has-comment']: ue.comment}"
+                :title="ue.comment"
+                @contextmenu="onInfoDotContextMenu"
+          ></span>
+          <a class="url link-primary" target="_blank" rel="noreferrer noopener"
+             :href="ue.url"
+             :title="ue.comment"
              @click="onClick"
-          >{{url}}</a>
+          >{{ue.url}}</a>
         </td>
       </tr>
       </tbody>
@@ -16,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import {urls} from "./core";
+import {urlEntryList} from "./core";
 
 function onClick(event: MouseEvent) {
   const linkEl = event.currentTarget as HTMLAnchorElement;
@@ -50,5 +56,9 @@ a:visited {
   vertical-align: middle;
   display: inline-block;
   border-radius: 8px;
+  border: 1px solid white;
+}
+.has-comment {
+  border: 1px solid gray;
 }
 </style>

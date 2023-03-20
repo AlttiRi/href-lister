@@ -54,8 +54,14 @@ const timePassedClass = computed(() => {
   if (diff < 60) {
     return "minute-1";
   }
+  if (diff < 60 * 2) {
+    return "minute-2";
+  }
   if (diff < 60 * 5) {
     return "minute-5";
+  }
+  if (diff < 60 * 10) {
+    return "minute-10";
   }
   if (diff < 60 * 30) {
     return "minute-30";
@@ -162,10 +168,16 @@ a:visited {
 }
 
 .minute-1 {
+  background-color: #46c142;
+}
+.minute-2 {
   background-color: #62c142;
 }
 .minute-5 {
-  background-color: #88c142;
+  background-color: #92c142;
+}
+.minute-10 {
+  background-color: #49bd64;
 }
 .minute-30 {
   background-color: #42c17d;

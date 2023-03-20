@@ -1,5 +1,7 @@
 <template>
-  <td :class="{clicked}">
+  <td :class="{clicked}"
+      @pointerenter="onPointerEnter"
+  >
     <span class="info-dot"
           :class="{
             ['has-comment']: ue.comment,
@@ -8,7 +10,6 @@
           }"
           :title="visitedText"
           @contextmenu.prevent="onInfoDotContextMenu"
-          @pointerenter="onPointerEnter"
           @pointerdown="onPointerDown"
     ></span>
     <a class="url link-primary" target="_blank" rel="noreferrer noopener"
@@ -24,6 +25,7 @@ import {set, get, del, createStore} from "idb-keyval";
 import {UrlEntry} from "./core";
 import {ref, onMounted, computed, triggerRef} from "vue";
 import {formatDate} from "@alttiri/util-js";
+import {throttle} from "./util";
 
 const props = defineProps<{ue: UrlEntry}>();
 const url = props.ue.url;
@@ -116,8 +118,8 @@ function onClick() {
 function onInfoDotContextMenu() {
   clicked.value = !clicked.value;
 }
-
-function onPointerEnter() { // todo throttle
+const onPointerEnter = throttle(_onPointerEnter, 1000);
+function _onPointerEnter() {
   triggerRef(visitedMs);
 }
 function onPointerDown(event: PointerEvent) {

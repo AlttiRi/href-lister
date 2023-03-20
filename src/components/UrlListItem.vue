@@ -36,7 +36,7 @@ onMounted(async () => {
 const visitedText = computed(updateVisitedTitle);
 function updateVisitedTitle() {
   if (visitedMs.value < 0) {
-    return "never visited";
+    return "never clicked";
   }
   return formatVisitedMs(visitedMs.value);
 }

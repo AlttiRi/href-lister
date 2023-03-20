@@ -1,8 +1,11 @@
 <template>
   <td :class="{clicked}">
     <span class="info-dot"
-          :class="{['has-comment']: ue.comment}"
-          :title="visited"
+          :class="{
+            ['has-comment']: ue.comment,
+            visited: visitedMs > 0
+          }"
+          :title="visitedText"
           @contextmenu.prevent="onInfoDotContextMenu"
           @pointerenter="onPointerEnter"
           @pointerdown="onPointerDown"
@@ -30,7 +33,7 @@ onMounted(async () => {
   visitedMs.value = (await getVisited()) || -2;
   console.log(visitedMs.value);
 });
-const visited = computed(updateVisitedTitle);
+const visitedText = computed(updateVisitedTitle);
 function updateVisitedTitle() {
   if (visitedMs.value < 0) {
     return "never visited";
@@ -122,5 +125,8 @@ a:visited {
 }
 .has-comment {
   border: 1px solid gray;
+}
+.visited {
+  background-color: #dee2e6;
 }
 </style>

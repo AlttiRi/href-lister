@@ -3,7 +3,8 @@
     <span class="info-dot"
           :class="{
             ['has-comment']: ue.comment,
-            visited: visitedMs > 0
+            visited: visitedMs > 0,
+            [timePassedClass]: true,
           }"
           :title="visitedText"
           @contextmenu.prevent="onInfoDotContextMenu"
@@ -41,6 +42,32 @@ function updateVisitedTitle() {
   return formatVisitedMs(visitedMs.value);
 }
 
+
+const timePassedClass = computed(() => {
+  const now = Date.now();
+  const diff = Math.trunc((now - visitedMs.value) / 1000);
+  if (diff < 60) {
+    return "minute-1";
+  }
+  if (diff < 60 * 5) {
+    return "minute-5";
+  }
+  if (diff < 60 * 30) {
+    return "minute-30";
+  }
+  if (diff < 60 * 60) {
+    return "hour-1";
+  }
+  if (diff < 60 * 60 * 2) {
+    return "hour-2";
+  }
+  if (diff < 60 * 60 * 24) {
+    return "day-1";
+  }
+  return "day-n";
+});
+
+
 async function updateVisited() {
   const v = Date.now();
   await set(url, v, store);
@@ -60,21 +87,21 @@ function formatVisitedMs(value: number) {
 
 function timeAgo(ms: number) {
   const now = Date.now();
-  const diff = Math.trunc((now - ms) / 1000);
-  if (diff < 60) {
-    return `${diff} second${diff > 1 ? "s" : ""} ago`;
+  const secs = Math.trunc((now - ms) / 1000);
+  if (secs < 60) {
+    return `${secs} second${secs > 1 ? "s" : ""} ago`;
   }
 
-  if (diff < 60 * 60) {
-    const m = Math.trunc(diff / 60);
+  if (secs < 60 * 60) {
+    const m = Math.trunc(secs / 60);
     return `${m} minute${m > 1 ? "s" : ""} ago`;
   }
-  if (diff < 60 * 60 * 24) {
-    const m = Math.trunc(diff / 60);
-    const h = Math.trunc(diff / 60 / 60);
+  if (secs < 60 * 60 * 24) {
+    const m = Math.trunc(secs / 60 % 60).toString().padStart(2, "0");
+    const h = Math.trunc(secs / 60 / 60);
     return `${h}:${m} ago`;
   }
-  return Math.trunc(diff / 60 / 60 / 24) + " days ago";
+  return Math.trunc(secs / 60 / 60 / 24) + " days ago";
 }
 
 const clicked = ref(false)
@@ -95,7 +122,6 @@ function onPointerDown(event: PointerEvent) {
   if (event.button === MIDDLE_BUTTON) {
     event.preventDefault();
     removeVisited();
-    console.log("xxx");
   }
 }
 
@@ -129,4 +155,28 @@ a:visited {
 .visited {
   background-color: #dee2e6;
 }
+
+.minute-1 {
+  background-color: #62c142;
+}
+.minute-5 {
+  background-color: #88c142;
+}
+.minute-30 {
+  background-color: #42c17d;
+}
+.hour-1 {
+  background-color: #42c1b2;
+}
+.hour-2 {
+  background-color: #42b2c1;
+}
+.day-1 {
+  background-color: #4275c1;
+}
+.day-n {
+  background-color: #4642c1;
+}
+
+
 </style>

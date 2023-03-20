@@ -44,6 +44,9 @@ function updateVisitedTitle() {
 
 
 const timePassedClass = computed(() => {
+  if (visitedMs.value < 0) {
+    return "never-clicked";
+  }
   const now = Date.now();
   const diff = Math.trunc((now - visitedMs.value) / 1000);
   if (diff < 60) {

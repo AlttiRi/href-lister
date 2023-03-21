@@ -9,8 +9,8 @@
 </template>
 
 <script setup lang="ts">
-import {urlEntryList} from "./core";
 import UrlListItem from "./UrlListItem.vue";
+import {urlEntryList} from "./core";
 </script>
 
 <style scoped>

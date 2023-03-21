@@ -1,14 +1,19 @@
-import {computed, ref, Ref, ComputedRef} from "vue";
+import {computed, ref, Ref, ComputedRef, reactive, UnwrapNestedRefs} from "vue";
 
 export const inputText: Ref<string> = ref("");
 
 export type UrlEntry = {
     url: string,
-    comment?: string
+    comment?: string,
 }
 
-export const urlEntryList: ComputedRef<UrlEntry[]> = computed(() => {
-    return parseUrlEntries(inputText.value);
+export const popupEntry: Ref<UrlEntry | null> = ref(null);
+
+export const urlEntryList: ComputedRef<UnwrapNestedRefs<UrlEntry[]>> = computed(() => {
+    const urlEntries = parseUrlEntries(inputText.value);
+    const reactiveUrlEntries = reactive(urlEntries);
+    console.log(urlEntries, reactiveUrlEntries);
+    return reactiveUrlEntries;
 });
 
 export const urls: ComputedRef<string[]> = computed(() => {

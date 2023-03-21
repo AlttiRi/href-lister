@@ -22,15 +22,15 @@
       </span>
     </td>
     <td class="col-3 comment nowrap-text-ceil" @dblclick="onDblClick">
-      <span class="comment-content nowrap-text-ceil-content no-dbl-click-select">{{ue.comment}}</span>
+      <span class="comment-content nowrap-text-ceil-content no-dbl-click-select" >{{ue.comment || "&nbsp;"}}</span>
     </td>
   </tr>
 </template>
 
 <script setup lang="ts">
 import {set, get, del, createStore} from "idb-keyval";
-import {UrlEntry} from "./core";
-import {ref, onMounted, computed, triggerRef} from "vue";
+import {popupEntry, UrlEntry} from "./core";
+import {ref, onMounted, computed, toRaw, triggerRef} from "vue";
 import {formatDate} from "@alttiri/util-js";
 import {throttle} from "./util";
 
@@ -51,9 +51,12 @@ function updateVisitedTitle() {
   return formatVisitedMs(visitedMs.value);
 }
 
-
 function onDblClick() {
-  console.log("onDblClick");
+  if (toRaw(popupEntry.value) === toRaw(props.ue)) {
+    popupEntry.value = null;
+  } else {
+    popupEntry.value = props.ue;
+  }
 }
 
 const timePassedClass = computed(() => {

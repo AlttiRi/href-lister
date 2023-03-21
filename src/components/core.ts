@@ -5,6 +5,7 @@ export const inputText: Ref<string> = ref("");
 export type UrlEntry = {
     url: string,
     comment?: string,
+    commentFromStore?: string,
 }
 
 export const popupEntry: Ref<UrlEntry | null> = ref(null);

@@ -9,7 +9,8 @@
           </div>
           <div class="modal-body">
             <textarea rows="5"
-                      v-model="popupEntry.comment"
+                      :value="popupEntry.commentFromStore || popupEntry.comment"
+                      @input="onInput"
             ></textarea>
           </div>
 <!--          <div class="modal-footer">-->
@@ -24,10 +25,23 @@
 
 <script setup lang="ts">
 import {popupEntry} from "./core";
+import {saveComment} from "./state-store";
 
 
 function onCloseClick() {
   popupEntry.value = null;
+}
+
+
+function onInput(event: InputEvent) {
+  if (!popupEntry.value) {
+    return;
+  }
+  const newValue = (event.currentTarget as HTMLInputElement).value;
+  popupEntry.value.commentFromStore = newValue;
+  // console.log(popupEntry.value.comment);
+  // console.log(popupEntry.value.commentFromStore);
+  saveComment(popupEntry.value.url, newValue);
 }
 
 

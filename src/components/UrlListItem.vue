@@ -22,27 +22,47 @@
       </span>
     </td>
     <td class="col-3 comment nowrap-text-ceil" @dblclick="onDblClick">
-      <span class="comment-content nowrap-text-ceil-content no-dbl-click-select" >{{ue.comment || "&nbsp;"}}</span>
+      <span class="comment-content nowrap-text-ceil-content no-dbl-click-select" >{{ue.commentFromStore || ue.comment || "&nbsp;"}}</span>
     </td>
   </tr>
 </template>
 
 <script setup lang="ts">
-import {set, get, del, createStore} from "idb-keyval";
 import {popupEntry, UrlEntry} from "./core";
-import {ref, onMounted, computed, toRaw, triggerRef} from "vue";
+import {ref, onMounted, computed, toRaw, triggerRef, onUpdated} from "vue";
 import {formatDate} from "@alttiri/util-js";
 import {throttle} from "./util";
+import {getVisit, loadComment, removeVisit, setVisit} from "./state-store";
 
 const props = defineProps<{ue: UrlEntry}>();
 const url = props.ue.url;
 
-const store = createStore("HrefLister", "Visits");
 const visitedMs = ref(-1);
-onMounted(async () => {
-  visitedMs.value = (await getVisited()) || -2;
-  console.log(visitedMs.value);
-});
+onMounted(loadState);
+onUpdated(loadState);
+
+async function loadState() {
+  const visitedMsPromise = getVisit(url);
+  const commentPromise = loadComment(url);
+
+  visitedMs.value = (await visitedMsPromise) || -2;
+
+  const savedComment = await commentPromise;
+  if (savedComment) {
+    props.ue.commentFromStore = savedComment;
+  }
+}
+
+function removeVisitStore() {
+  void removeVisit(url);
+  visitedMs.value = -2;
+}
+function updateVisitStore() {
+  const msNow = Date.now();
+  void setVisit(url, msNow);
+  visitedMs.value = msNow;
+}
+
 const visitedText = computed(updateVisitedTitle);
 function updateVisitedTitle() {
   if (visitedMs.value < 0) {
@@ -93,18 +113,6 @@ const timePassedClass = computed(() => {
 });
 
 
-async function updateVisited() {
-  const v = Date.now();
-  await set(url, v, store);
-  visitedMs.value = v;
-}
-function getVisited() {
-  return get(url, store);
-}
-async function removeVisited() {
-  await del(url, store);
-  visitedMs.value = -2;
-}
 
 function formatVisitedMs(value: number) {
   return timeAgo(value) + " — " + formatDate(value, "YYYY.MM.DD HH:mm:SS", false);
@@ -132,7 +140,7 @@ function timeAgo(ms: number) {
 const clicked = ref(false)
 function onClick() {
   clicked.value = true;
-  updateVisited();
+  updateVisitStore();
 }
 
 function onInfoDotContextMenu() {
@@ -146,7 +154,7 @@ function onPointerDown(event: PointerEvent) {
   const MIDDLE_BUTTON = 1;
   if (event.button === MIDDLE_BUTTON) {
     event.preventDefault();
-    removeVisited();
+    removeVisitStore();
   }
 }
 

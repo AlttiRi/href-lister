@@ -2,6 +2,13 @@ import {computed, ref, Ref, ComputedRef, reactive, UnwrapNestedRefs} from "vue";
 
 export const inputText: Ref<string> = ref("");
 
+if (location.href === "http://localhost:5173/") {
+    inputText.value =
+        "http://localhost:5173/ asdf\n" +
+        "http://localhost:5173/#qwe #qwerty1qwerty2qwerty3qwerty4qwerty5qwerty6\n" +
+        "http://localhost:5173/#qqq"
+}
+
 export type UrlEntry = {
     url: string,
     comment?: string,

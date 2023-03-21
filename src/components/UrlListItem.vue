@@ -21,7 +21,12 @@
         >{{ue.url}}</a>
       </span>
     </td>
-    <td class="col-3 comment nowrap-text-ceil" @dblclick="onDblClick">
+    <td class="col-3 comment nowrap-text-ceil"
+        @dblclick="onDblClick"
+        :class="{
+          [commentCssClass]: commentCssClass
+        }"
+    >
       <span class="comment-content nowrap-text-ceil-content no-dbl-click-select" >{{ue.commentFromStore || ue.comment || "&nbsp;"}}</span>
     </td>
   </tr>
@@ -70,6 +75,15 @@ function updateVisitedTitle() {
   }
   return formatVisitedMs(visitedMs.value);
 }
+
+const commentCssClass = computed(() => {
+  if (props.ue.commentFromStore && !props.ue.comment) {
+    return "comment-from-store"
+  }
+  if (props.ue.commentFromStore && props.ue.commentFromStore !== props.ue.comment) {
+    return "comment-from-store-over";
+  }
+});
 
 function onDblClick() {
   if (toRaw(popupEntry.value) === toRaw(props.ue)) {
@@ -234,4 +248,13 @@ tr:hover {
   user-select: none;
 }
 
+.comment {
+  border-right: 2px solid transparent;
+}
+.comment-from-store {
+  border-right: 2px solid rgb(230, 244, 255);
+}
+.comment-from-store-over {
+  border-right: 2px solid #6f42c1;
+}
 </style>

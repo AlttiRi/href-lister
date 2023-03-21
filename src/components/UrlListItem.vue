@@ -21,8 +21,8 @@
         >{{ue.url}}</a>
       </span>
     </td>
-    <td class="col-3 comment nowrap-text-ceil">
-      <span class="comment-content nowrap-text-ceil-content">{{ue.comment}}</span>
+    <td class="col-3 comment nowrap-text-ceil" @dblclick="onDblClick">
+      <span class="comment-content nowrap-text-ceil-content no-dbl-click-select">{{ue.comment}}</span>
     </td>
   </tr>
 </template>
@@ -51,6 +51,10 @@ function updateVisitedTitle() {
   return formatVisitedMs(visitedMs.value);
 }
 
+
+function onDblClick() {
+  console.log("onDblClick");
+}
 
 const timePassedClass = computed(() => {
   if (visitedMs.value < 0) {
@@ -149,7 +153,7 @@ function onPointerDown(event: PointerEvent) {
 <style scoped>
 
 .nowrap-text-ceil {
-  display: inline-grid;
+  display: inline-flex;
 }
 .nowrap-text-ceil-content {
   overflow: hidden;
@@ -213,6 +217,10 @@ a:visited {
 
 tr:hover {
   box-shadow: 0 0 1px gray;
+}
+
+.no-dbl-click-select:active {
+  user-select: none;
 }
 
 </style>

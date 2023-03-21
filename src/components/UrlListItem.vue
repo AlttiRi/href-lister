@@ -1,23 +1,30 @@
 <template>
-  <td :class="{clicked}"
+  <tr :class="{clicked}"
       @pointerenter="onPointerEnter"
   >
-    <span class="info-dot"
-          :class="{
-            ['has-comment']: ue.comment,
-            visited: visitedMs > 0,
-            [timePassedClass]: true,
-          }"
-          :title="visitedText"
-          @contextmenu.prevent="onInfoDotContextMenu"
-          @pointerdown="onPointerDown"
-    ></span>
-    <a class="url link-primary" target="_blank" rel="noreferrer noopener"
-       :href="ue.url"
-       :title="ue.comment"
-       @click="onClick"
-    >{{ue.url}}</a>
-  </td>
+    <td class="col-9 nowrap-text-ceil">
+      <span class="nowrap-text-ceil-content">
+        <span class="info-dot"
+              :class="{
+                ['has-comment']: ue.comment,
+                visited: visitedMs > 0,
+                [timePassedClass]: true,
+              }"
+              :title="visitedText"
+              @contextmenu.prevent="onInfoDotContextMenu"
+              @pointerdown="onPointerDown"
+        ></span>
+        <a class="url link-primary" target="_blank" rel="noreferrer noopener"
+           :href="ue.url"
+           :title="ue.comment"
+           @click="onClick"
+        >{{ue.url}}</a>
+      </span>
+    </td>
+    <td class="col-3 comment nowrap-text-ceil">
+      <span class="comment-content nowrap-text-ceil-content">{{ue.comment}}</span>
+    </td>
+  </tr>
 </template>
 
 <script setup lang="ts">
@@ -140,10 +147,19 @@ function onPointerDown(event: PointerEvent) {
 </script>
 
 <style scoped>
+
+.nowrap-text-ceil {
+  display: inline-grid;
+}
+.nowrap-text-ceil-content {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 a {
   margin-left: 4px;
   text-decoration: none;
-  vertical-align: middle;
 }
 a:visited {
   color: #6f42c1 !important;
@@ -155,7 +171,7 @@ a:visited {
   height: 16px;
   width: 16px;
   background-color: #0000000f;
-  vertical-align: middle;
+  margin-bottom: -3px;
   display: inline-block;
   border-radius: 8px;
   border: 1px solid white;

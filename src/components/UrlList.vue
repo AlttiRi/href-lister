@@ -2,9 +2,7 @@
   <div>
     <table class="table table-borderless">
       <tbody>
-      <tr v-for="ue in urlEntryList" :key="ue.url">
-        <UrlListItem :ue="ue"/>
-      </tr>
+        <UrlListItem v-for="ue in urlEntryList" :key="ue.url" :ue="ue"/>
       </tbody>
     </table>
   </div>

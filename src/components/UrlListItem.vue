@@ -2,7 +2,11 @@
   <tr :class="{clicked}"
       @pointerenter="onPointerEnter"
   >
-    <td class="col-9 nowrap-text-ceil">
+    <td class="col-9 nowrap-text-ceil url"
+        :class="{
+          'last-clicked': isLastClicked,
+        }"
+    >
       <span class="nowrap-text-ceil-content">
         <span class="info-dot"
               :class="{
@@ -33,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import {popupEntry, UrlEntry} from "./core";
+import {lastClickedEntry, popupEntry, UrlEntry} from "./core";
 import {ref, onMounted, computed, toRaw, triggerRef, onUpdated} from "vue";
 import {formatDate} from "@alttiri/util-js";
 import {throttle} from "./util";
@@ -155,7 +159,11 @@ const clicked = ref(false)
 function onClick() {
   clicked.value = true;
   updateVisitStore();
+  lastClickedEntry.value = toRaw(props.ue);
 }
+const isLastClicked = computed(() => {
+  return toRaw(lastClickedEntry.value) === toRaw(props.ue);
+});
 
 function onInfoDotContextMenu() {
   clicked.value = !clicked.value;
@@ -222,10 +230,10 @@ a:visited {
   background-color: #92c142;
 }
 .minute-10 {
-  background-color: #49bd64;
+  background-color: #96bd49;
 }
 .minute-30 {
-  background-color: #42c17d;
+  background-color: #a5c142;
 }
 .hour-1 {
   background-color: #42c1b2;
@@ -256,5 +264,12 @@ tr:hover {
 }
 .comment-from-store-over {
   border-right: 2px solid #6f42c1;
+}
+
+.url {
+  border-left: 2px solid transparent;
+}
+.url.last-clicked {
+  border-left: 2px solid #b3bfff;
 }
 </style>

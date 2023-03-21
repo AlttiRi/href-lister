@@ -16,6 +16,7 @@ export type UrlEntry = {
 }
 
 export const popupEntry: Ref<UrlEntry | null> = ref(null);
+export const lastClickedEntry: Ref<UrlEntry | null> = ref(null);
 
 export const urlEntryList: ComputedRef<UnwrapNestedRefs<UrlEntry[]>> = computed(() => {
     const urlEntries = parseUrlEntries(inputText.value);

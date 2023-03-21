@@ -11,6 +11,7 @@
             <textarea rows="5"
                       :value="popupEntry.commentFromStore || popupEntry.comment"
                       @input="onInput"
+                      ref="textareaElem"
             ></textarea>
           </div>
 <!--          <div class="modal-footer">-->
@@ -26,12 +27,17 @@
 <script setup lang="ts">
 import {popupEntry} from "./core";
 import {saveComment} from "./state-store";
+import {onMounted, onUpdated, Ref, ref} from "vue";
 
 
 function onCloseClick() {
   popupEntry.value = null;
 }
 
+const textareaElem: Ref<HTMLInputElement | null> = ref(null);
+const focusTextarea = () => textareaElem.value?.focus();
+onMounted(focusTextarea);
+onUpdated(focusTextarea);
 
 function onInput(event: InputEvent) {
   if (!popupEntry.value) {

@@ -211,5 +211,8 @@ a:visited {
   background-color: #4642c1;
 }
 
+tr:hover {
+  box-shadow: 0 0 1px gray;
+}
 
 </style>

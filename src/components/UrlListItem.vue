@@ -93,7 +93,7 @@ async function removeVisited() {
 }
 
 function formatVisitedMs(value: number) {
-  return formatDate(value, "YYYY.MM.DD HH:mm:SS", false) + " — " + timeAgo(value);
+  return timeAgo(value) + " — " + formatDate(value, "YYYY.MM.DD HH:mm:SS", false);
 }
 
 function timeAgo(ms: number) {

@@ -12,7 +12,10 @@
                       v-model="popupEntry.comment"
             ></textarea>
           </div>
-<!--          <div class="modal-footer"></div>-->
+<!--          <div class="modal-footer">-->
+<!--            <button type="button" class="btn btn-secondary">Close</button>-->
+<!--            <button type="button" class="btn btn-primary">Save changes</button>-->
+<!--          </div>-->
         </div>
       </div>
     </div>
@@ -20,26 +23,14 @@
 </template>
 
 <script setup lang="ts">
-import {popupEntry, urlEntryList} from "./core";
+import {popupEntry} from "./core";
 
 
 function onCloseClick() {
   popupEntry.value = null;
 }
 
-function onChange(event: InputEvent) {
-  console.log(event);
-  console.log(urlEntryList.value);
-  const x = urlEntryList.value.find(e => e.url === popupEntry.value?.url);
-  console.log(x);
-  if (popupEntry.value) {
-    popupEntry.value.comment += "!";
-  }
-}
 
-// if (popupEntry.value?.comment) {
-//   popupEntry.value.comment = "xxxx"
-// }
 
 </script>
 

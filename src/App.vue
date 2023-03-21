@@ -9,7 +9,7 @@ import Main from "./components/Main.vue";
 
 <style scoped>
 .readme {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   right: 0;
   padding: 2px 8px;

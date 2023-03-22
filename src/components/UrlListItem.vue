@@ -98,36 +98,25 @@ function onDblClick() {
 }
 
 const timePassedClass = computed(() => {
-  if (visitedMs.value < 0) {
-    return "never-clicked";
-  }
+  if (visitedMs.value < 0) { return "never-clicked"; }
   const now = Date.now();
   const diff = Math.trunc((now - visitedMs.value) / 1000);
-  if (diff < 60) {
-    return "minute-1";
-  }
-  if (diff < 60 * 2) {
-    return "minute-2";
-  }
-  if (diff < 60 * 5) {
-    return "minute-5";
-  }
-  if (diff < 60 * 10) {
-    return "minute-10";
-  }
-  if (diff < 60 * 30) {
-    return "minute-30";
-  }
-  if (diff < 60 * 60) {
-    return "hour-1";
-  }
-  if (diff < 60 * 60 * 2) {
-    return "hour-2";
-  }
-  if (diff < 60 * 60 * 24) {
-    return "day-1";
-  }
-  return "day-n";
+  if (diff < 60)       { return "minute-1";  }
+  if (diff < 60 *  2)  { return "minute-2";  }
+  if (diff < 60 *  5)  { return "minute-5";  }
+  if (diff < 60 * 10)  { return "minute-10"; }
+  if (diff < 60 * 30)  { return "minute-30"; }
+  if (diff < 60 * 45)  { return "minute-45"; }
+  if (diff < 60 * 60)   { return "hour-1";  }
+  if (diff < 3600 * 2)  { return "hour-2";  }
+  if (diff < 3600 * 8)  { return "hour-8";  }
+  if (diff < 3600 * 14) { return "hour-14"; }
+  if (diff < 3600 * 24) { return "day-1";   }
+  if (diff < 86400 * 7) { return "day-7";   }
+  if (diff < 86400 * 30)  { return "month-1"; }
+  if (diff < 2592000 * 3) { return "month-3"; }
+  if (diff < 2592000 * 6) { return "month-6"; }
+  return "long-ago";
 });
 
 
@@ -219,34 +208,23 @@ a:visited {
 .visited {
   background-color: #dee2e6;
 }
-
-.minute-1 {
-  background-color: #46c142;
-}
-.minute-2 {
-  background-color: #62c142;
-}
-.minute-5 {
-  background-color: #92c142;
-}
-.minute-10 {
-  background-color: #96bd49;
-}
-.minute-30 {
-  background-color: #a5c142;
-}
-.hour-1 {
-  background-color: #42c1b2;
-}
-.hour-2 {
-  background-color: #42b2c1;
-}
-.day-1 {
-  background-color: #4275c1;
-}
-.day-n {
-  background-color: #4642c1;
-}
+.never-clicked { background-color: white; }
+.minute-1  { background-color: #46c142; }
+.minute-2  { background-color: #4ac157; }
+.minute-5  { background-color: #4dc16b; }
+.minute-10 { background-color: #4dc17d; }
+.minute-30 { background-color: #4cc18f; }
+.minute-45 { background-color: #48c1a0; }
+.hour-1  { background-color: #42c1b2; }
+.hour-2  { background-color: #4ba4b6; }
+.hour-8  { background-color: #4b88b9; }
+.hour-14 { background-color: #487abb; }
+.day-1   { background-color: #446cbc; }
+.day-7   { background-color: #5b5cb6; }
+.month-1 { background-color: #6a49b1; }
+.month-3 { background-color: #703fae; }
+.month-6 { background-color: #7633ab; }
+.long-ago { background-color: gray; }
 
 tr:hover {
   box-shadow: 0 0 1px gray;

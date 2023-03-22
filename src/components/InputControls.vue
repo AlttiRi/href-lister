@@ -102,12 +102,10 @@ async function onReplaceClipboardText(event: MouseEvent) {
 }
 
 
-
 </script>
 
+
 <style scoped>
-
-
 .btn-group > .input-group-text {
   width: 100px;
   justify-content: center;

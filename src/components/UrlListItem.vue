@@ -1,12 +1,11 @@
 <template>
-  <tr :class="{clicked}"
-      @pointerenter="onPointerEnter"
+  <tr @pointerenter="onPointerEnter"
+      :class="{
+        clicked,
+        'last-clicked': isLastClicked,
+      }"
   >
-    <td class="col-9 nowrap-text-ceil url"
-        :class="{
-          'last-clicked': isLastClicked,
-        }"
-    >
+    <td class="col-9 nowrap-text-ceil url">
       <span class="nowrap-text-ceil-content">
         <span class="info-dot"
               :class="{
@@ -224,7 +223,10 @@ a:visited {
   color: #6f42c1 !important;
 }
 .clicked {
-  background-color: #0000000f;
+  background-color: #0000000a;
+}
+.clicked.last-clicked {
+  background-color: #0000000e;
 }
 .info-dot {
   height: 16px;
@@ -281,7 +283,7 @@ tr:hover {
 .url {
   border-left: 2px solid transparent;
 }
-.url.last-clicked {
+.last-clicked > td.url {
   border-left: 2px solid #b3bfff;
 }
 </style>

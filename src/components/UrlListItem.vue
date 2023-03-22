@@ -107,8 +107,9 @@ function getTimePassedClass(ms: number) {
   if (diff < 60 * 10)  { return "minute-10"; }
   if (diff < 60 * 30)  { return "minute-30"; }
   if (diff < 60 * 45)  { return "minute-45"; }
-  if (diff < 60 * 60)   { return "hour-1";  }
+  if (diff < 60 * 60)  { return "minute-60"; }
   if (diff < 3600 * 2)  { return "hour-2";  }
+  if (diff < 3600 * 4)  { return "hour-4";  }
   if (diff < 3600 * 8)  { return "hour-8";  }
   if (diff < 3600 * 14) { return "hour-14"; }
   if (diff < 3600 * 24) { return "day-1";   }
@@ -246,13 +247,14 @@ a:visited {
 
 /*.never-clicked { background-color: #0000000f; }*/
 .minute-1  { background-color: #46c142; }
-.minute-2  { background-color: #7dcd3e; }
-.minute-5  { background-color: #99d43c; }
-.minute-10 { background-color: #b4da3a; }
-.minute-30 { background-color: #d0e038; }
-.minute-45 { background-color: #ece737; }
-.hour-1  { background-color: #42c1b2; }
-.hour-2  { background-color: #4ba4b6; }
+.minute-2  { background-color: #6bc841; }
+.minute-5  { background-color: #88cf3f; }
+.minute-10 { background-color: #a3d53e; }
+.minute-30 { background-color: #bcdb3c; }
+.minute-45 { background-color: #d4e139; }
+.minute-60 { background-color: #ece737; }
+.hour-2  { background-color: #42c1b2; }
+.hour-4  { background-color: #4ba4b6; }
 .hour-8  { background-color: #4b88b9; }
 .hour-14 { background-color: #487abb; }
 .day-1   { background-color: #446cbc; }

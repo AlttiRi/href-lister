@@ -202,19 +202,20 @@ a:visited {
   border-radius: 8px;
   border: 1px solid white;
 }
-.has-comment {
-  border: 1px solid gray;
-}
+/*.has-comment {*/
+/*  border: 1px solid gray;*/
+/*}*/
 .visited {
   background-color: #dee2e6;
 }
-.never-clicked { background-color: white; }
+
+/*.never-clicked { background-color: #0000000f; }*/
 .minute-1  { background-color: #46c142; }
-.minute-2  { background-color: #4ac157; }
-.minute-5  { background-color: #4dc16b; }
-.minute-10 { background-color: #4dc17d; }
-.minute-30 { background-color: #4cc18f; }
-.minute-45 { background-color: #48c1a0; }
+.minute-2  { background-color: #7dcd3e; }
+.minute-5  { background-color: #99d43c; }
+.minute-10 { background-color: #b4da3a; }
+.minute-30 { background-color: #d0e038; }
+.minute-45 { background-color: #ece737; }
 .hour-1  { background-color: #42c1b2; }
 .hour-2  { background-color: #4ba4b6; }
 .hour-8  { background-color: #4b88b9; }

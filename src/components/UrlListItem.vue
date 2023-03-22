@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import {lastClickedEntry, popupEntry, UrlEntry} from "./core";
-import {ref, onMounted, computed, toRaw, triggerRef, onUpdated} from "vue";
+import {ref, onMounted, computed, toRaw, triggerRef, onUpdated, onUnmounted, watch} from "vue";
 import {formatDate} from "@alttiri/util-js";
 import {throttle} from "./util";
 import {getVisit, loadComment, removeVisit, setVisit} from "./state-store";
@@ -97,10 +97,11 @@ function onDblClick() {
   }
 }
 
-const timePassedClass = computed(() => {
-  if (visitedMs.value < 0) { return "never-clicked"; }
+const timePassedClass = computed(() => getTimePassedClass(visitedMs.value));
+function getTimePassedClass(ms: number) {
+  if (ms < 0) { return "never-clicked"; }
   const now = Date.now();
-  const diff = Math.trunc((now - visitedMs.value) / 1000);
+  const diff = Math.trunc((now - ms) / 1000);
   if (diff < 60)       { return "minute-1";  }
   if (diff < 60 *  2)  { return "minute-2";  }
   if (diff < 60 *  5)  { return "minute-5";  }
@@ -117,8 +118,40 @@ const timePassedClass = computed(() => {
   if (diff < 2592000 * 3) { return "month-3"; }
   if (diff < 2592000 * 6) { return "month-6"; }
   return "long-ago";
-});
+}
 
+
+watch(visitedMs,(value) => { // does not trigger on `triggerRef` in comparison with `watchEffect`
+  if (value > 0) {
+    setTimer();
+  }
+});
+onUnmounted(clearTimer);
+
+let timerId: number;
+const MINUTE = 1000 * 60;
+function setTimer() {
+  clearTimer();
+  const diff = Date.now() - visitedMs.value;
+  let time: number;
+  if (diff < MINUTE * 10) {
+    time = MINUTE;
+  } else if (diff < MINUTE * 60) {
+    time = MINUTE * 10;
+  } else if (diff < MINUTE * 60 * 24) {
+    time = MINUTE * 60;
+  } else {
+    return;
+  }
+  console.log("setTimeout", time);
+  timerId = setTimeout(() => {
+    triggerRef(visitedMs);
+    setTimer();
+  }, time);
+}
+function clearTimer() {
+  clearTimeout(timerId);
+}
 
 
 function formatVisitedMs(value: number) {

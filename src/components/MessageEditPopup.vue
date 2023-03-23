@@ -12,6 +12,7 @@
                       :value="popupEntry.commentFromStore || popupEntry.comment"
                       @input="onInput"
                       ref="textareaElem"
+                      @keydown="onEnterKeyDown"
             ></textarea>
           </div>
 <!--          <div class="modal-footer">-->
@@ -32,6 +33,13 @@ import {onMounted, onUpdated, Ref, ref} from "vue";
 
 function onCloseClick(event: MouseEvent) {
   if (event.currentTarget === event.target) {
+    popupEntry.value = null;
+  }
+}
+
+function onEnterKeyDown(event: KeyboardEvent) {
+  if (event.key === "Enter" && !event.shiftKey) {
+    event.preventDefault();
     popupEntry.value = null;
   }
 }

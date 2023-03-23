@@ -1,6 +1,6 @@
 <template>
   <Teleport to="body">
-    <div class="message-edit-popup modal" v-if="popupEntry">
+    <div class="message-edit-popup modal" v-if="popupEntry" @click="onCloseClick">
       <div class="popup-content">
         <div class="modal-content">
           <div class="modal-header">
@@ -30,8 +30,10 @@ import {saveComment} from "./state-store";
 import {onMounted, onUpdated, Ref, ref} from "vue";
 
 
-function onCloseClick() {
-  popupEntry.value = null;
+function onCloseClick(event: MouseEvent) {
+  if (event.currentTarget === event.target) {
+    popupEntry.value = null;
+  }
 }
 
 const textareaElem: Ref<HTMLInputElement | null> = ref(null);
@@ -64,13 +66,19 @@ function onInput(event: InputEvent) {
   display: flex;
   justify-content: center;
   align-items: center;
-  pointer-events: none;
+  backdrop-filter: blur(1px);
+  background-color: rgba(255, 255, 255, 0.3);
+  /*pointer-events: none;*/
 }
 .popup-content {
-  pointer-events: auto;
+  /*pointer-events: auto;*/
   min-width: 420px;
   max-width: min(520px, 80%);
 }
+.modal-content {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
 textarea {
   width: 100%;
   height: 100%;

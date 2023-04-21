@@ -20,7 +20,8 @@
         <a class="url link-primary" target="_blank" rel="noreferrer noopener"
            :href="ue.url"
            :title="ue.comment"
-           @click="onClick"
+           @click="markUrlAsClicked"
+           @pointerup="markUrlAsClickedOnMMBClick"
         >{{ue.url}}</a>
       </span>
     </td>
@@ -177,8 +178,19 @@ function timeAgo(ms: number) {
   return Math.trunc(secs / 60 / 60 / 24) + " days ago";
 }
 
-const clicked = ref(false)
-function onClick() {
+const clicked = ref(false);
+function markUrlAsClickedOnMMBClick(event: PointerEvent) { // on "pointerup"
+    const MIDDLE_BUTTON = 1;
+    if (event.button !== MIDDLE_BUTTON) {
+        return;
+    }
+    const activeElement = (document.getRootNode() as Document).activeElement;
+    if (activeElement !== event.currentTarget) {
+        return;
+    }
+    markUrlAsClicked();
+}
+function markUrlAsClicked() {
   clicked.value = true;
   updateVisitStore();
   lastClickedEntry.value = toRaw(props.ue);

@@ -74,8 +74,8 @@ function onInput(event: InputEvent) {
   display: flex;
   justify-content: center;
   align-items: center;
-  backdrop-filter: blur(1px);
-  background-color: rgba(255, 255, 255, 0.3);
+  /*backdrop-filter: blur(1px);*/
+  background-color: rgba(255, 255, 255, 0.5);
   /*pointer-events: none;*/
 }
 .popup-content {

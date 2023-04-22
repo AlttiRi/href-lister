@@ -1,6 +1,6 @@
 <template>
-<!--  <hr>-->
-<!--  <Filters/>-->
+  <hr>
+  <Filters/>
   <hr>
   <InputControls/>
   <hr>

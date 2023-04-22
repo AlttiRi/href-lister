@@ -1,4 +1,5 @@
 import {computed, ref, Ref, ComputedRef, reactive, UnwrapNestedRefs} from "vue";
+import {urlFilter} from "./core-filters";
 
 export const inputText: Ref<string> = ref("");
 
@@ -24,9 +25,15 @@ export const urlEntryList: ComputedRef<UnwrapNestedRefs<UrlEntry[]>> = computed(
     console.log(urlEntries, reactiveUrlEntries);
     return reactiveUrlEntries;
 });
+export const urlEntryListFiltered: ComputedRef<UrlEntry[]> = computed(() => {
+    return urlEntryList.value.filter(ue => urlFilter.value(ue.url));
+});
 
 export const urls: ComputedRef<string[]> = computed(() => {
     return urlEntryList.value.map(ue => ue.url);
+});
+export const urlsFiltered: ComputedRef<string[]> = computed(() => {
+    return urlEntryListFiltered.value.map(ue => ue.url);
 });
 
 

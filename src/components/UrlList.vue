@@ -2,7 +2,7 @@
   <div>
     <table class="table table-borderless">
       <tbody>
-        <UrlListItem v-for="ue in urlEntryList" :key="ue.url" :ue="ue"/>
+        <UrlListItem v-for="ue in urlEntryListFiltered" :key="ue.url" :ue="ue"/>
       </tbody>
     </table>
   </div>
@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import UrlListItem from "./UrlListItem.vue";
-import {urlEntryList} from "./core";
+import {urlEntryListFiltered} from "./core";
 </script>
 
 <style scoped>

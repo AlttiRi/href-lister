@@ -41,7 +41,7 @@
 <script setup lang="ts">
 import {Ref, ref} from "vue";
 import {sleep} from "@alttiri/util-js";
-import {getCodeArrays, inputText, urls} from "./core";
+import {getCodeArrays, inputText, urlsFiltered} from "./core";
 
 
 const blinkButtonMap = new WeakMap();
@@ -66,19 +66,19 @@ function onClearTextInput(event: MouseEvent) {
 
 
 function onCopyUrlsAsList(event: MouseEvent) {
-  void navigator.clipboard.writeText(urls.value.join(" "));
+  void navigator.clipboard.writeText(urlsFiltered.value.join(" "));
   void blink(event.currentTarget as HTMLElement);
 }
 function onCopyUrlsAsColumn(event: MouseEvent) {
   event.preventDefault();
-  void navigator.clipboard.writeText(urls.value.join("\n"));
+  void navigator.clipboard.writeText(urlsFiltered.value.join("\n"));
   void blink(event.currentTarget as HTMLElement);
 }
 function onCopyUrlsAsCodeArrays(event: PointerEvent) {
   const MIDDLE_BUTTON = 1;
   if (event.button === MIDDLE_BUTTON) {
     event.preventDefault();
-    void navigator.clipboard.writeText(getCodeArrays(urls.value));
+    void navigator.clipboard.writeText(getCodeArrays(urlsFiltered.value));
     void blink(event.currentTarget as HTMLElement);
   }
 }

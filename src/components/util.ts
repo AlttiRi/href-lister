@@ -44,3 +44,23 @@ export function getCodeArrays(items: string[], size = 100) {
     }
     return parts.join("\n");
 }
+
+export function timeAgo(ms: number) {
+    const now = Date.now();
+    const secs = Math.trunc((now - ms) / 1000);
+    if (secs < 60) {
+        return `${secs} second${secs > 1 ? "s" : ""} ago`;
+    }
+
+    if (secs < 60 * 60) {
+        const m = Math.trunc(secs / 60);
+        return `${m} minute${m > 1 ? "s" : ""} ago`;
+    }
+    if (secs < 60 * 60 * 24) {
+        const m = Math.trunc(secs / 60 % 60).toString().padStart(2, "0");
+        const h = Math.trunc(secs / 60 / 60);
+        return `${h}:${m} ago`;
+    }
+    return Math.trunc(secs / 60 / 60 / 24) + " days ago";
+}
+

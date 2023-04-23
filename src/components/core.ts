@@ -10,6 +10,9 @@ if (location.href === "http://localhost:5173/") {
         "http://localhost:5173/#qqq"
 }
 
+export const INITIAL_VISIT_TIME = -1;
+export const NEVER_VISITED_TIME = -2;
+
 export type UrlEntry = {
     url: string,
     comment?: string,

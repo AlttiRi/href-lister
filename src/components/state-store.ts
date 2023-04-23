@@ -2,7 +2,7 @@ import {createStore, del, get, set} from "idb-keyval";
 
 const commentsStore = createStore("HrefListerComments", "Comments");
 export function saveComment(url: string, comment: string) {
-    void set(url, comment, commentsStore);
+    return set(url, comment, commentsStore);
 }
 export function loadComment(url: string) {
     return get(url, commentsStore);

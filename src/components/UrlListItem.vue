@@ -1,5 +1,5 @@
 <template>
-  <tr @pointerenter="onPointerEnter"
+  <tr @pointerenter="triggerVisitedMs"
       :class="{
         clicked,
         'last-clicked': isLastClicked,
@@ -14,8 +14,8 @@
                 [timePassedClass]: true,
               }"
               :title="visitedText"
-              @contextmenu.prevent="onInfoDotContextMenu"
-              @pointerdown="onPointerDown"
+              @contextmenu.prevent="unmarkUrlAsClicked"
+              @pointerdown="removeRowFromVisitStoreOnMMB"
         ></span>
         <a class="url link-primary" target="_blank" rel="noreferrer noopener"
            :href="ue.url"
@@ -26,7 +26,7 @@
       </span>
     </td>
     <td class="col-3 comment nowrap-text-ceil"
-        @dblclick="onDblClick"
+        @dblclick="toggleMessageEditPopup"
         :class="{
           [commentCssClass]: commentCssClass
         }"
@@ -37,47 +37,50 @@
 </template>
 
 <script setup lang="ts">
-import {lastClickedEntry, popupEntry, UrlEntry} from "./core";
-import {ref, onMounted, computed, toRaw, triggerRef, onUpdated, onUnmounted, watch} from "vue";
+import {ref, onMounted, computed, toRaw, onUpdated, Ref} from "vue";
 import {formatDate} from "@alttiri/util-js";
-import {throttle} from "./util";
+import {INITIAL_VISIT_TIME, lastClickedEntry, NEVER_VISITED_TIME, popupEntry, UrlEntry} from "./core";
+import {throttle, timeAgo} from "./util";
 import {getVisit, loadComment, removeVisit, setVisit} from "./state-store";
+import {RefTriggerTimer} from "./relative-time-trigger";
 
 const props = defineProps<{ue: UrlEntry}>();
 const url = props.ue.url;
 
-const visitedMs = ref(-1);
-onMounted(loadState);
-onUpdated(loadState);
 
-async function loadState() {
+const visitedMs: Ref<number> = ref(INITIAL_VISIT_TIME);
+onMounted(loadUrlEntryState);
+
+onUpdated(loadUrlEntryState);
+onUpdated(() => { console.log("onUpdated"); });
+
+async function loadUrlEntryState() {
   const visitedMsPromise = getVisit(url);
   const commentPromise = loadComment(url);
 
-  visitedMs.value = (await visitedMsPromise) || -2;
-
+  visitedMs.value = (await visitedMsPromise) || NEVER_VISITED_TIME;
   const savedComment = await commentPromise;
   if (savedComment) {
     props.ue.commentFromStore = savedComment;
   }
 }
 
-function removeVisitStore() {
+function removeRowFromVisitStore() {
   void removeVisit(url);
-  visitedMs.value = -2;
+  visitedMs.value = NEVER_VISITED_TIME;
 }
-function updateVisitStore() {
+function updateTimeInVisitStore() {
   const msNow = Date.now();
   void setVisit(url, msNow);
   visitedMs.value = msNow;
 }
 
-const visitedText = computed(updateVisitedTitle);
-function updateVisitedTitle() {
-  if (visitedMs.value < 0) {
-    return "never clicked";
-  }
-  return formatVisitedMs(visitedMs.value);
+function removeRowFromVisitStoreOnMMB(event: PointerEvent) { // <.info-dot> @pointerdown
+    const MIDDLE_BUTTON = 1;
+    if (event.button === MIDDLE_BUTTON) {
+        event.preventDefault();
+        removeRowFromVisitStore();
+    }
 }
 
 const commentCssClass = computed(() => {
@@ -89,7 +92,8 @@ const commentCssClass = computed(() => {
   }
 });
 
-function onDblClick() {
+
+function toggleMessageEditPopup() { // <td> @dblclick
   if (toRaw(popupEntry.value) === toRaw(props.ue)) {
     popupEntry.value = null;
   } else {
@@ -97,89 +101,14 @@ function onDblClick() {
   }
 }
 
-const timePassedClass = computed(() => getTimePassedClass(visitedMs.value));
-function getTimePassedClass(ms: number) {
-  if (ms < 0) { return "never-clicked"; }
-  const now = Date.now();
-  const diff = Math.trunc((now - ms) / 1000);
-  if (diff < 60)       { return "minute-1";  }
-  if (diff < 60 *  2)  { return "minute-2";  }
-  if (diff < 60 *  5)  { return "minute-5";  }
-  if (diff < 60 * 10)  { return "minute-10"; }
-  if (diff < 60 * 30)  { return "minute-30"; }
-  if (diff < 60 * 45)  { return "minute-45"; }
-  if (diff < 60 * 60)  { return "minute-60"; }
-  if (diff < 3600 * 2)  { return "hour-2";  }
-  if (diff < 3600 * 4)  { return "hour-4";  }
-  if (diff < 3600 * 8)  { return "hour-8";  }
-  if (diff < 3600 * 14) { return "hour-14"; }
-  if (diff < 3600 * 24) { return "day-1";   }
-  if (diff < 86400 * 7) { return "day-7";   }
-  if (diff < 86400 * 30)  { return "month-1"; }
-  if (diff < 2592000 * 3) { return "month-3"; }
-  if (diff < 2592000 * 6) { return "month-6"; }
-  return "long-ago";
-}
-
-
-watch(visitedMs,(value) => { // does not trigger on `triggerRef` in comparison with `watchEffect`
-  if (value > 0) {
-    setTimer();
-  }
-});
-onUnmounted(clearTimer);
-
-let timerId: number;
-const MINUTE = 1000 * 60;
-function setTimer() {
-  clearTimer();
-  const diff = Date.now() - visitedMs.value;
-  let time: number;
-  if (diff < MINUTE * 10) {
-    time = MINUTE;
-  } else if (diff < MINUTE * 60) {
-    time = MINUTE * 10;
-  } else if (diff < MINUTE * 60 * 24) {
-    time = MINUTE * 60;
-  } else {
-    return;
-  }
-  console.log("setTimeout", time);
-  timerId = setTimeout(() => {
-    triggerRef(visitedMs);
-    setTimer();
-  }, time);
-}
-function clearTimer() {
-  clearTimeout(timerId);
-}
-
-
-function formatVisitedMs(value: number) {
-  return timeAgo(value) + " — " + formatDate(value, "YYYY.MM.DD HH:mm:SS", false);
-}
-
-function timeAgo(ms: number) {
-  const now = Date.now();
-  const secs = Math.trunc((now - ms) / 1000);
-  if (secs < 60) {
-    return `${secs} second${secs > 1 ? "s" : ""} ago`;
-  }
-
-  if (secs < 60 * 60) {
-    const m = Math.trunc(secs / 60);
-    return `${m} minute${m > 1 ? "s" : ""} ago`;
-  }
-  if (secs < 60 * 60 * 24) {
-    const m = Math.trunc(secs / 60 % 60).toString().padStart(2, "0");
-    const h = Math.trunc(secs / 60 / 60);
-    return `${h}:${m} ago`;
-  }
-  return Math.trunc(secs / 60 / 60 / 24) + " days ago";
-}
 
 const clicked = ref(false);
-function markUrlAsClickedOnMMBClick(event: PointerEvent) { // on "pointerup"
+function markUrlAsClicked() { // <a.url> @click
+    clicked.value = true;
+    updateTimeInVisitStore();
+    lastClickedEntry.value = toRaw(props.ue);
+}
+function markUrlAsClickedOnMMBClick(event: PointerEvent) { // <a.url> @pointerup
     const MIDDLE_BUTTON = 1;
     if (event.button !== MIDDLE_BUTTON) {
         return;
@@ -190,31 +119,56 @@ function markUrlAsClickedOnMMBClick(event: PointerEvent) { // on "pointerup"
     }
     markUrlAsClicked();
 }
-function markUrlAsClicked() {
-  clicked.value = true;
-  updateVisitStore();
-  lastClickedEntry.value = toRaw(props.ue);
+function unmarkUrlAsClicked() { // <.info-dot> @contextmenu.prevent
+    clicked.value = !clicked.value;
 }
 const isLastClicked = computed(() => {
   return toRaw(lastClickedEntry.value) === toRaw(props.ue);
 });
 
-function onInfoDotContextMenu() {
-  clicked.value = !clicked.value;
-}
-const onPointerEnter = throttle(_onPointerEnter, 1000);
-function _onPointerEnter() {
-  triggerRef(visitedMs);
-}
-function onPointerDown(event: PointerEvent) {
-  const MIDDLE_BUTTON = 1;
-  if (event.button === MIDDLE_BUTTON) {
-    event.preventDefault();
-    removeVisitStore();
-  }
-}
 
 
+
+// Recalculates `timePassedClass`, `visitedText` based on `visitedMs`
+const refTrigger = new RefTriggerTimer(visitedMs);
+function recalculateComponentState() {
+    refTrigger.forceTrigger();
+}
+const triggerVisitedMs = throttle(recalculateComponentState, 2000); // <tr> @pointerenter
+
+const visitedText = computed(() => {
+    if (visitedMs.value < 0) {
+        return "never clicked";
+    }
+    return formatVisitedMs(visitedMs.value);
+});
+function formatVisitedMs(value: number) {
+    return timeAgo(value) + " — " + formatDate(value, "YYYY.MM.DD HH:mm:SS", false);
+}
+
+const timePassedClass = computed(() => getTimePassedClass(visitedMs.value));
+function getTimePassedClass(ms: number) {
+    if (ms < 0) { return "never-clicked"; }
+    const now = Date.now();
+    const diff = Math.trunc((now - ms) / 1000);
+    if (diff < 60)       { return "minute-1";  }
+    if (diff < 60 *  2)  { return "minute-2";  }
+    if (diff < 60 *  5)  { return "minute-5";  }
+    if (diff < 60 * 10)  { return "minute-10"; }
+    if (diff < 60 * 30)  { return "minute-30"; }
+    if (diff < 60 * 45)  { return "minute-45"; }
+    if (diff < 60 * 60)  { return "minute-60"; }
+    if (diff < 3600 * 2)  { return "hour-2";  }
+    if (diff < 3600 * 4)  { return "hour-4";  }
+    if (diff < 3600 * 8)  { return "hour-8";  }
+    if (diff < 3600 * 14) { return "hour-14"; }
+    if (diff < 3600 * 24) { return "day-1";   }
+    if (diff < 86400 * 7) { return "day-7";   }
+    if (diff < 86400 * 30)  { return "month-1"; }
+    if (diff < 2592000 * 3) { return "month-3"; }
+    if (diff < 2592000 * 6) { return "month-6"; }
+    return "long-ago";
+}
 </script>
 
 <style scoped>

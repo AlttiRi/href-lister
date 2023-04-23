@@ -4,19 +4,24 @@ export function throttle<A extends any[]>(runnable: (...args: A) => any, time = 
     let context: any;
     let args: A;
 
-    return function(this: any, ..._arguments: A) {
+    function cb() {
+        if (queued) {
+            setTimeout(cb, time);
+            runnable.apply(context, args);
+        } else {
+            waiting = false;
+        }
+        queued = false;
+    }
+
+    return function(this: any, ...current_args: A) {
         if (!waiting) {
             waiting = true;
-            setTimeout(function() {
-                if (queued) {
-                    runnable.apply(context, args);
-                }
-                waiting = queued = false;
-            }, time);
-            runnable.apply(this, _arguments);
+            setTimeout(cb, time);
+            runnable.apply(this, current_args);
         } else {
             context = this;
-            args = _arguments;
+            args = current_args;
             queued = true;
         }
     }

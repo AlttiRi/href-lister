@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import UrlListItem from "./UrlListItem.vue";
-import {urlEntryListFiltered} from "./core";
+import {urlEntryListFiltered} from "../core/core";
 </script>
 
 <style scoped>

@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import {input_only, input_ignore} from "./core-filters";
+import {input_only, input_ignore} from "../core/filters";
 </script>
 
 <style scoped>

@@ -41,8 +41,8 @@
 <script setup lang="ts">
 import {Ref, ref} from "vue";
 import {sleep} from "@alttiri/util-js";
-import {inputText, urlsFiltered} from "./core";
-import {getCodeArrays} from "./util";
+import {inputText, urlsFiltered} from "../core/core";
+import {getCodeArrays} from "../core/util";
 
 
 const blinkButtonMap = new WeakMap();

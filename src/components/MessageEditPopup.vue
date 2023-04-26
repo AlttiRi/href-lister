@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
 import {onMounted, Ref, ref} from "vue";
-import {popupEntry} from "./core";
+import {popupEntry} from "../core/core";
 
 
 function onCloseClick(event: MouseEvent) {

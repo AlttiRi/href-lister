@@ -39,10 +39,10 @@
 <script setup lang="ts">
 import {computed, toRaw, ComputedRef} from "vue";
 import {formatDate} from "@alttiri/util-js";
-import {clickedUrls, lastClickedEntry, NEVER_VISITED_TIME, popupEntry} from "./core";
-import {throttle, timeAgo} from "./util";
-import {UrlInfo} from "./state-store";
-import {RefTriggerTimer} from "./relative-time-trigger";
+import {clickedUrls, lastClickedEntry, NEVER_VISITED_TIME, popupEntry} from "../core/core";
+import {throttle, timeAgo} from "../core/util";
+import {RefTriggerTimer} from "../core/relative-time-trigger";
+import {UrlInfo} from "../core/url-info-entry";
 
 const props = defineProps<{ue: UrlInfo}>();
 

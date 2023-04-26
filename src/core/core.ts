@@ -1,7 +1,7 @@
 import {computed, ref, Ref, ComputedRef, watchEffect} from "vue";
-import {urlFilter} from "./core-filters";
-import {UrlInfo} from "./state-store";
-import {InputUrlEntry, parseUrlEntries} from "./core-url-parser";
+import {urlFilter} from "./filters";
+import {InputUrlEntry, parseUrlEntries} from "./url-parser";
+import {UrlInfo} from "./url-info-entry";
 
 
 export const NEVER_VISITED_TIME = -1;

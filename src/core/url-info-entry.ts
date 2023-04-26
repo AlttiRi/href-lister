@@ -1,5 +1,5 @@
 import {createStore, del, get, set, entries} from "idb-keyval";
-import {InputUrlEntry} from "./core-url-parser";
+import {InputUrlEntry} from "./url-parser";
 import {toRaw} from "vue";
 
 

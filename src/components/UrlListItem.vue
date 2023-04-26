@@ -50,75 +50,75 @@ const props = defineProps<{ue: UrlInfo}>();
 const visitedMs: ComputedRef<number> = computed(() => props.ue.visited || NEVER_VISITED_TIME);
 
 function removeUrlVisit() {
-    void props.ue.delVisited();
+  void props.ue.delVisited();
 }
 
 function visitUrl() {
-    const msNow = Date.now();
-    void props.ue.setVisited(msNow);
+  const msNow = Date.now();
+  void props.ue.setVisited(msNow);
 }
 
 function removeVisitOnMMB(event: PointerEvent) { // <.info-dot> @pointerdown
-    const MIDDLE_BUTTON = 1;
-    if (event.button === MIDDLE_BUTTON) {
-        event.preventDefault();
-        removeUrlVisit();
-    }
+  const MIDDLE_BUTTON = 1;
+  if (event.button === MIDDLE_BUTTON) {
+    event.preventDefault();
+    removeUrlVisit();
+  }
 }
 
 const commentCssClass = computed(() => {
-    if (props.ue.comment !== undefined) {
-        if (!props.ue.inputComment) {
-            return "comment-from-store";
-        }
-        if (props.ue.comment !== props.ue.inputComment) {
-            return "comment-from-store-over";
-        }
+  if (props.ue.comment !== undefined) {
+    if (!props.ue.inputComment) {
+      return "comment-from-store";
     }
-    return "";
+    if (props.ue.comment !== props.ue.inputComment) {
+      return "comment-from-store-over";
+    }
+  }
+  return "";
 });
 
 const comment = computed(() => {
-    if (props.ue.comment !== undefined) {
-        return props.ue.comment.trim();
-    }
-    return props.ue.inputComment;
+  if (props.ue.comment !== undefined) {
+    return props.ue.comment.trim();
+  }
+  return props.ue.inputComment;
 });
 
 
 function toggleMessageEditPopup() { // <td> @dblclick
-    if (toRaw(popupEntry.value) === toRaw(props.ue)) {
-        popupEntry.value = null;
-    } else {
-        popupEntry.value = props.ue;
-    }
+  if (toRaw(popupEntry.value) === toRaw(props.ue)) {
+    popupEntry.value = null;
+  } else {
+    popupEntry.value = props.ue;
+  }
 }
 
 
 const isClicked = computed(() => {
-    return clickedUrls.value.has(props.ue.url);
+  return clickedUrls.value.has(props.ue.url);
 });
 function markUrlAsClicked() { // <a.url> @click
-    clickedUrls.value.add(props.ue.url);
-    visitUrl();
-    lastClickedEntry.value = toRaw(props.ue);
+  clickedUrls.value.add(props.ue.url);
+  visitUrl();
+  lastClickedEntry.value = toRaw(props.ue);
 }
 function markUrlAsClickedOnMMBClick(event: PointerEvent) { // <a.url> @pointerup
-    const MIDDLE_BUTTON = 1;
-    if (event.button !== MIDDLE_BUTTON) {
-        return;
-    }
-    const activeElement = (document.getRootNode() as Document).activeElement;
-    if (activeElement !== event.currentTarget) {
-        return;
-    }
-    markUrlAsClicked();
+  const MIDDLE_BUTTON = 1;
+  if (event.button !== MIDDLE_BUTTON) {
+    return;
+  }
+  const activeElement = (document.getRootNode() as Document).activeElement;
+  if (activeElement !== event.currentTarget) {
+    return;
+  }
+  markUrlAsClicked();
 }
 function unmarkUrlAsClicked() { // <.info-dot> @contextmenu.prevent
-    clickedUrls.value.delete(props.ue.url);
+  clickedUrls.value.delete(props.ue.url);
 }
 const isLastClicked = computed(() => {
-    return toRaw(lastClickedEntry.value) === toRaw(props.ue);
+  return toRaw(lastClickedEntry.value) === toRaw(props.ue);
 });
 
 
@@ -126,42 +126,42 @@ const isLastClicked = computed(() => {
 // Recalculates `timePassedClass`, `visitedText` based on `visitedMs`
 const refTrigger = new RefTriggerTimer(visitedMs);
 function recalculateComponentState() {
-    refTrigger.forceTrigger();
+  refTrigger.forceTrigger();
 }
 const triggerVisitedMs = throttle(recalculateComponentState, 2000); // <tr> @pointerenter
 
 const visitedText = computed(() => {
-    if (visitedMs.value < 0) {
-        return "never clicked";
-    }
-    return formatVisitedMs(visitedMs.value);
+  if (visitedMs.value < 0) {
+    return "never clicked";
+  }
+  return formatVisitedMs(visitedMs.value);
 });
 function formatVisitedMs(value: number) {
-    return timeAgo(value) + " — " + formatDate(value, "YYYY.MM.DD HH:mm:SS", false);
+  return timeAgo(value) + " — " + formatDate(value, "YYYY.MM.DD HH:mm:SS", false);
 }
 
 const timePassedClass = computed(() => getTimePassedClass(visitedMs.value));
 function getTimePassedClass(ms: number) {
-    if (ms < 0) { return "never-clicked"; }
-    const now = Date.now();
-    const diff = Math.trunc((now - ms) / 1000);
-    if (diff < 60)       { return "minute-1";  }
-    if (diff < 60 *  2)  { return "minute-2";  }
-    if (diff < 60 *  5)  { return "minute-5";  }
-    if (diff < 60 * 10)  { return "minute-10"; }
-    if (diff < 60 * 30)  { return "minute-30"; }
-    if (diff < 60 * 45)  { return "minute-45"; }
-    if (diff < 60 * 60)  { return "minute-60"; }
-    if (diff < 3600 * 2)  { return "hour-2";  }
-    if (diff < 3600 * 4)  { return "hour-4";  }
-    if (diff < 3600 * 8)  { return "hour-8";  }
-    if (diff < 3600 * 14) { return "hour-14"; }
-    if (diff < 3600 * 24) { return "day-1";   }
-    if (diff < 86400 * 7) { return "day-7";   }
-    if (diff < 86400 * 30)  { return "month-1"; }
-    if (diff < 2592000 * 3) { return "month-3"; }
-    if (diff < 2592000 * 6) { return "month-6"; }
-    return "long-ago";
+  if (ms < 0) { return "never-clicked"; }
+  const now = Date.now();
+  const diff = Math.trunc((now - ms) / 1000);
+  if (diff < 60)       { return "minute-1";  }
+  if (diff < 60 *  2)  { return "minute-2";  }
+  if (diff < 60 *  5)  { return "minute-5";  }
+  if (diff < 60 * 10)  { return "minute-10"; }
+  if (diff < 60 * 30)  { return "minute-30"; }
+  if (diff < 60 * 45)  { return "minute-45"; }
+  if (diff < 60 * 60)  { return "minute-60"; }
+  if (diff < 3600 * 2)  { return "hour-2";  }
+  if (diff < 3600 * 4)  { return "hour-4";  }
+  if (diff < 3600 * 8)  { return "hour-8";  }
+  if (diff < 3600 * 14) { return "hour-14"; }
+  if (diff < 3600 * 24) { return "day-1";   }
+  if (diff < 86400 * 7) { return "day-7";   }
+  if (diff < 86400 * 30)  { return "month-1"; }
+  if (diff < 2592000 * 3) { return "month-3"; }
+  if (diff < 2592000 * 6) { return "month-6"; }
+  return "long-ago";
 }
 </script>
 

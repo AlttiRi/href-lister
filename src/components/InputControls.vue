@@ -102,7 +102,6 @@ async function onReplaceClipboardText(event: MouseEvent) {
   void blink(currentTarget as HTMLElement);
 }
 
-
 </script>
 
 

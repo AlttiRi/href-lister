@@ -31,8 +31,8 @@ import {popupEntry} from "../core/core";
 import {UrlInfo} from "../core/url-info-entry";
 
 const comment = computed(() => {
-    const urlEntry = popupEntry.value as UrlInfo;
-    return urlEntry.comment === undefined ? urlEntry.inputComment : urlEntry.comment;
+  const urlEntry = popupEntry.value as UrlInfo;
+  return urlEntry.comment === undefined ? urlEntry.inputComment : urlEntry.comment;
 });
 
 function closePopup(event: MouseEvent) {
@@ -50,7 +50,7 @@ function closePopupOnEnter(event: KeyboardEvent) {
 
 const textareaElem: Ref<HTMLInputElement | null> = ref(null);
 const focusTextarea = () => {
-    textareaElem.value?.focus();
+  textareaElem.value?.focus();
 };
 onMounted(focusTextarea);
 
@@ -60,7 +60,7 @@ function onInputSaveComment(event: InputEvent) {
 }
 
 function removeComment() {
-    popupEntry.value?.delComment();
+  popupEntry.value?.delComment();
 }
 
 </script>

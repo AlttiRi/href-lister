@@ -31,7 +31,7 @@
           [commentCssClass]: commentCssClass
         }"
     >
-      <span class="comment-content nowrap-text-ceil-content no-dbl-click-select" >{{ue.comment || ue.inputComment || "&nbsp;"}}</span>
+      <span class="comment-content nowrap-text-ceil-content no-dbl-click-select">{{comment || "&nbsp;"}}</span>
     </td>
   </tr>
 </template>
@@ -50,11 +50,12 @@ const props = defineProps<{ue: UrlInfo}>();
 const visitedMs: ComputedRef<number> = computed(() => props.ue.visited || NEVER_VISITED_TIME);
 
 function removeUrlVisit() {
-  void props.ue.delVisited();
+    void props.ue.delVisited();
 }
+
 function visitUrl() {
-  const msNow = Date.now();
-  void props.ue.setVisited(msNow);
+    const msNow = Date.now();
+    void props.ue.setVisited(msNow);
 }
 
 function removeVisitOnMMB(event: PointerEvent) { // <.info-dot> @pointerdown
@@ -66,21 +67,31 @@ function removeVisitOnMMB(event: PointerEvent) { // <.info-dot> @pointerdown
 }
 
 const commentCssClass = computed(() => {
-  if (props.ue.comment && !props.ue.inputComment) {
-    return "comment-from-store"
-  }
-  if (props.ue.comment && props.ue.comment !== props.ue.inputComment) {
-    return "comment-from-store-over";
-  }
+    if (props.ue.comment !== undefined) {
+        if (!props.ue.inputComment) {
+            return "comment-from-store";
+        }
+        if (props.ue.comment !== props.ue.inputComment) {
+            return "comment-from-store-over";
+        }
+    }
+    return "";
+});
+
+const comment = computed(() => {
+    if (props.ue.comment !== undefined) {
+        return props.ue.comment.trim();
+    }
+    return props.ue.inputComment;
 });
 
 
 function toggleMessageEditPopup() { // <td> @dblclick
-  if (toRaw(popupEntry.value) === toRaw(props.ue)) {
-    popupEntry.value = null;
-  } else {
-    popupEntry.value = props.ue;
-  }
+    if (toRaw(popupEntry.value) === toRaw(props.ue)) {
+        popupEntry.value = null;
+    } else {
+        popupEntry.value = props.ue;
+    }
 }
 
 
@@ -107,7 +118,7 @@ function unmarkUrlAsClicked() { // <.info-dot> @contextmenu.prevent
     clickedUrls.value.delete(props.ue.url);
 }
 const isLastClicked = computed(() => {
-  return toRaw(lastClickedEntry.value) === toRaw(props.ue);
+    return toRaw(lastClickedEntry.value) === toRaw(props.ue);
 });
 
 

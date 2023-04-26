@@ -9,14 +9,14 @@
           </div>
           <div class="modal-body">
             <textarea rows="5"
-                      :value="popupEntry.comment || popupEntry.inputComment"
+                      :value="comment"
                       @input="onInputSaveComment"
                       ref="textareaElem"
                       @keydown="closePopupOnEnter"
             ></textarea>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" @click="removeComment">Remove</button>
+            <button type="button" class="btn btn-secondary" @click="removeComment">Reset</button>
 <!--            <button type="button" class="btn btn-primary">Select</button>-->
           </div>
         </div>
@@ -26,9 +26,14 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, Ref, ref} from "vue";
+import {computed, onMounted, Ref, ref} from "vue";
 import {popupEntry} from "../core/core";
+import {UrlInfo} from "../core/url-info-entry";
 
+const comment = computed(() => {
+    const urlEntry = popupEntry.value as UrlInfo;
+    return urlEntry.comment === undefined ? urlEntry.inputComment : urlEntry.comment;
+});
 
 function closePopup(event: MouseEvent) {
   if (event.currentTarget === event.target) {

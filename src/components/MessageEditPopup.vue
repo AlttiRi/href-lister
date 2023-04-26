@@ -1,24 +1,24 @@
 <template>
   <Teleport to="body">
-    <div class="message-edit-popup modal" v-if="popupEntry" @click="onCloseClick">
+    <div class="message-edit-popup modal" v-if="popupEntry" @pointerdown="closePopup">
       <div class="popup-content">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">{{popupEntry.url}}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="onCloseClick"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="closePopup"></button>
           </div>
           <div class="modal-body">
             <textarea rows="5"
                       :value="popupEntry.comment || popupEntry.inputComment"
-                      @input="onInput"
+                      @input="onInputSaveComment"
                       ref="textareaElem"
-                      @keydown="onEnterKeyDown"
+                      @keydown="closePopupOnEnter"
             ></textarea>
           </div>
-<!--          <div class="modal-footer">-->
-<!--            <button type="button" class="btn btn-secondary">Close</button>-->
-<!--            <button type="button" class="btn btn-primary">Save changes</button>-->
-<!--          </div>-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" @click="removeComment">Remove</button>
+<!--            <button type="button" class="btn btn-primary">Select</button>-->
+          </div>
         </div>
       </div>
     </div>
@@ -30,13 +30,13 @@ import {onMounted, Ref, ref} from "vue";
 import {popupEntry} from "../core/core";
 
 
-function onCloseClick(event: MouseEvent) {
+function closePopup(event: MouseEvent) {
   if (event.currentTarget === event.target) {
     popupEntry.value = null;
   }
 }
 
-function onEnterKeyDown(event: KeyboardEvent) {
+function closePopupOnEnter(event: KeyboardEvent) {
   if (event.key === "Enter" && !event.shiftKey) {
     event.preventDefault();
     popupEntry.value = null;
@@ -49,9 +49,13 @@ const focusTextarea = () => {
 };
 onMounted(focusTextarea);
 
-function onInput(event: InputEvent) {
+function onInputSaveComment(event: InputEvent) {
   const newValue = (event.currentTarget as HTMLInputElement).value;
   void popupEntry.value?.setComment(newValue);
+}
+
+function removeComment() {
+    popupEntry.value?.delComment();
 }
 
 </script>

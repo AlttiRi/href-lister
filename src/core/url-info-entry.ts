@@ -15,11 +15,15 @@ export class UrlInfo {
     private readonly state: UrlInfoState;
     readonly url: string;
     readonly inputComment?: string;
+    readonly initialVisited?: number;
     constructor(url: string, state: UrlInfoState, inputComment?: string) {
         this.url = url;
         this.state = state;
         if (inputComment) {
             this.inputComment = inputComment;
+        }
+        if (state.visited) {
+            this.initialVisited = state.visited;
         }
     }
     static async getInstance({url, inputComment}: InputUrlEntry): Promise<UrlInfo> {

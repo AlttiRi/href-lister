@@ -131,10 +131,16 @@ function recalculateComponentState() {
 const triggerVisitedMs = throttle(recalculateComponentState, 2000); // <tr> @pointerenter
 
 const visitedText = computed(() => {
+  let text = "";
   if (visitedMs.value < 0) {
-    return "never clicked";
+    text = "never clicked";
+  } else {
+    text = formatVisitedMs(visitedMs.value);
   }
-  return formatVisitedMs(visitedMs.value);
+  if (props.ue.initialVisited && props.ue.initialVisited !== visitedMs.value) {
+    return `${text}\n${formatVisitedMs(props.ue.initialVisited)}`;
+  }
+  return text;
 });
 function formatVisitedMs(value: number) {
   return timeAgo(value) + " — " + formatDate(value, "YYYY.MM.DD HH:mm:SS", false);

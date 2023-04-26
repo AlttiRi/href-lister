@@ -57,7 +57,7 @@ export class UrlInfo {
         await this.update();
     }
     private update() {
-        if (!Object.keys(this.state)) {
+        if (!Object.keys(this.state).length) {
             return del(this.url, urlInfoStore);
         }
         return set(this.url, toRaw(this.state), urlInfoStore);

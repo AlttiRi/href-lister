@@ -9,7 +9,7 @@
           </div>
           <div class="modal-body">
             <textarea rows="5"
-                      :value="popupEntry.commentFromStore || popupEntry.comment"
+                      :value="popupEntry.comment || popupEntry.inputComment"
                       @input="onInput"
                       ref="textareaElem"
                       @keydown="onEnterKeyDown"
@@ -26,9 +26,8 @@
 </template>
 
 <script setup lang="ts">
+import {onMounted, Ref, ref} from "vue";
 import {popupEntry} from "./core";
-import {saveComment} from "./state-store";
-import {onMounted, onUpdated, Ref, ref} from "vue";
 
 
 function onCloseClick(event: MouseEvent) {
@@ -45,22 +44,15 @@ function onEnterKeyDown(event: KeyboardEvent) {
 }
 
 const textareaElem: Ref<HTMLInputElement | null> = ref(null);
-const focusTextarea = () => textareaElem.value?.focus();
+const focusTextarea = () => {
+    textareaElem.value?.focus();
+};
 onMounted(focusTextarea);
-onUpdated(focusTextarea);
 
 function onInput(event: InputEvent) {
-  if (!popupEntry.value) {
-    return;
-  }
   const newValue = (event.currentTarget as HTMLInputElement).value;
-  popupEntry.value.commentFromStore = newValue;
-  // console.log(popupEntry.value.comment);
-  // console.log(popupEntry.value.commentFromStore);
-  saveComment(popupEntry.value.url, newValue);
+  void popupEntry.value?.setComment(newValue);
 }
-
-
 
 </script>
 

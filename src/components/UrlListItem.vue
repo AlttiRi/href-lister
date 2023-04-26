@@ -1,7 +1,7 @@
 <template>
   <tr @pointerenter="triggerVisitedMs"
       :class="{
-        clicked,
+        'clicked': isClicked,
         'last-clicked': isLastClicked,
       }"
   >
@@ -9,17 +9,17 @@
       <span class="nowrap-text-ceil-content">
         <span class="info-dot"
               :class="{
-                ['has-comment']: ue.comment,
+                ['has-comment']: ue.inputComment,
                 visited: visitedMs > 0,
                 [timePassedClass]: true,
               }"
               :title="visitedText"
               @contextmenu.prevent="unmarkUrlAsClicked"
-              @pointerdown="removeRowFromVisitStoreOnMMB"
+              @pointerdown="removeVisitOnMMB"
         ></span>
         <a class="url link-primary" target="_blank" rel="noreferrer noopener"
            :href="ue.url"
-           :title="ue.comment"
+           :title="ue.inputComment"
            @click="markUrlAsClicked"
            @pointerup="markUrlAsClickedOnMMBClick"
         >{{ue.url}}</a>
@@ -31,63 +31,45 @@
           [commentCssClass]: commentCssClass
         }"
     >
-      <span class="comment-content nowrap-text-ceil-content no-dbl-click-select" >{{ue.commentFromStore || ue.comment || "&nbsp;"}}</span>
+      <span class="comment-content nowrap-text-ceil-content no-dbl-click-select" >{{ue.comment || ue.inputComment || "&nbsp;"}}</span>
     </td>
   </tr>
 </template>
 
 <script setup lang="ts">
-import {ref, onMounted, computed, toRaw, onUpdated, Ref} from "vue";
+import {computed, toRaw, ComputedRef} from "vue";
 import {formatDate} from "@alttiri/util-js";
-import {INITIAL_VISIT_TIME, lastClickedEntry, NEVER_VISITED_TIME, popupEntry, UrlEntry} from "./core";
+import {clickedUrls, lastClickedEntry, NEVER_VISITED_TIME, popupEntry} from "./core";
 import {throttle, timeAgo} from "./util";
-import {getVisit, loadComment, removeVisit, setVisit} from "./state-store";
+import {UrlInfo} from "./state-store";
 import {RefTriggerTimer} from "./relative-time-trigger";
 
-const props = defineProps<{ue: UrlEntry}>();
-const url = props.ue.url;
+const props = defineProps<{ue: UrlInfo}>();
 
 
-const visitedMs: Ref<number> = ref(INITIAL_VISIT_TIME);
-onMounted(loadUrlEntryState);
+const visitedMs: ComputedRef<number> = computed(() => props.ue.visited || NEVER_VISITED_TIME);
 
-onUpdated(loadUrlEntryState);
-onUpdated(() => { console.log("onUpdated"); });
-
-async function loadUrlEntryState() {
-  const visitedMsPromise = getVisit(url);
-  const commentPromise = loadComment(url);
-
-  visitedMs.value = (await visitedMsPromise) || NEVER_VISITED_TIME;
-  const savedComment = await commentPromise;
-  if (savedComment) {
-    props.ue.commentFromStore = savedComment;
-  }
+function removeUrlVisit() {
+  void props.ue.delVisited();
 }
-
-function removeRowFromVisitStore() {
-  void removeVisit(url);
-  visitedMs.value = NEVER_VISITED_TIME;
-}
-function updateTimeInVisitStore() {
+function visitUrl() {
   const msNow = Date.now();
-  void setVisit(url, msNow);
-  visitedMs.value = msNow;
+  void props.ue.setVisited(msNow);
 }
 
-function removeRowFromVisitStoreOnMMB(event: PointerEvent) { // <.info-dot> @pointerdown
+function removeVisitOnMMB(event: PointerEvent) { // <.info-dot> @pointerdown
     const MIDDLE_BUTTON = 1;
     if (event.button === MIDDLE_BUTTON) {
         event.preventDefault();
-        removeRowFromVisitStore();
+        removeUrlVisit();
     }
 }
 
 const commentCssClass = computed(() => {
-  if (props.ue.commentFromStore && !props.ue.comment) {
+  if (props.ue.comment && !props.ue.inputComment) {
     return "comment-from-store"
   }
-  if (props.ue.commentFromStore && props.ue.commentFromStore !== props.ue.comment) {
+  if (props.ue.comment && props.ue.comment !== props.ue.inputComment) {
     return "comment-from-store-over";
   }
 });
@@ -102,10 +84,12 @@ function toggleMessageEditPopup() { // <td> @dblclick
 }
 
 
-const clicked = ref(false);
+const isClicked = computed(() => {
+    return clickedUrls.value.has(props.ue.url);
+});
 function markUrlAsClicked() { // <a.url> @click
-    clicked.value = true;
-    updateTimeInVisitStore();
+    clickedUrls.value.add(props.ue.url);
+    visitUrl();
     lastClickedEntry.value = toRaw(props.ue);
 }
 function markUrlAsClickedOnMMBClick(event: PointerEvent) { // <a.url> @pointerup
@@ -120,12 +104,11 @@ function markUrlAsClickedOnMMBClick(event: PointerEvent) { // <a.url> @pointerup
     markUrlAsClicked();
 }
 function unmarkUrlAsClicked() { // <.info-dot> @contextmenu.prevent
-    clicked.value = !clicked.value;
+    clickedUrls.value.delete(props.ue.url);
 }
 const isLastClicked = computed(() => {
   return toRaw(lastClickedEntry.value) === toRaw(props.ue);
 });
-
 
 
 

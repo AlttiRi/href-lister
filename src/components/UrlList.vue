@@ -2,7 +2,7 @@
   <div>
     <table class="table table-borderless">
       <tbody>
-        <UrlListItem v-for="ue in urlEntryListFiltered" :key="ue.url" :ue="ue"/>
+        <UrlListItem v-for="ue in urlEntryListFiltered" :ue="ue"/>
       </tbody>
     </table>
   </div>

@@ -104,14 +104,3 @@ Object.assign(globalThis, {
     UrlInfo,
 });
 
-/*
-// to manually run in a console
-for (const [url, value] of await idb.entries(idb.commentsStore)) {
-    const urlInfo = await UrlInfo.getInstance({url});
-    await urlInfo.setComment(value);
-}
-for (const [url, value] of await idb.entries(idb.visitsStore)) {
-    const urlInfo = await UrlInfo.getInstance({url});
-    await urlInfo.setVisited(value);
-}
-*/

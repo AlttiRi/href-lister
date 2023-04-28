@@ -36,5 +36,6 @@ if (location.href === "http://localhost:5173/") {
           "http://localhost:5173/ asdf\n"
         + "http://localhost:5173/#qqq\n"
         + "http://localhost:5173/#qqq\n"
+        + "http://localhost:5173/#www\n"
      // + "http://localhost:5173/#qwe #qwerty1qwerty2qwerty3qwerty4qwerty5qwerty6\n"
 }

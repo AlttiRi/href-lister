@@ -7,10 +7,10 @@
                         <h5 class="modal-title">{{tagsPopupEntry.url}}</h5>
                     </div>
                     <div class="modal-body">
-                        <div class="selected-tags tags">
+                        <div class="tags selected-tags-group">
                             <Tag class="tag" v-for="tag of tagsPopupEntry.tags" :tag="tag"/>
                         </div>
-                        <div class="all-tags tags">
+                        <div class="tags all-tags-group">
                             <Tag class="tag" v-for="tag of allTags" :tag="tag"/>
                         </div>
                     </div>
@@ -46,13 +46,16 @@ function closePopup(event: MouseEvent) {
   align-items: center;
   background-color: rgba(255, 255, 255, 0.5);
 }
-
 .popup-content {
   min-width: 420px;
   max-width: min(520px, 80%);
 }
-
 .modal-content {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.selected-tags-group {
+  min-height: 33px;
+  margin-bottom: 2px;
 }
 </style>

@@ -7,8 +7,9 @@ import {UrlInfo} from "./url-info-entry";
 export const NEVER_VISITED_TIME = -1;
 
 export const inputText: Ref<string> = ref("");
-export const popupEntry:       Ref<UrlInfo | null> = ref(null);
-export const lastClickedEntry: Ref<UrlInfo | null> = ref(null);
+export const messagePopupEntry: Ref<UrlInfo | null> = ref(null);
+export const tagsPopupEntry:    Ref<UrlInfo | null> = ref(null);
+export const lastClickedEntry:  Ref<UrlInfo | null> = ref(null);
 export const clickedUrls = ref(new Set<string>());
 
 export const urlEntryList: Ref<UrlInfo[]> = ref([]);

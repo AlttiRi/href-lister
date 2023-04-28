@@ -4,8 +4,9 @@
         'clicked': isClicked,
         'last-clicked': isLastClicked,
       }"
+      class="list-item-row"
   >
-    <td class="col-9 nowrap-text-ceil url">
+    <td class="col-9 nowrap-text-ceil url url-cell">
       <span class="nowrap-text-ceil-content">
         <span class="info-dot"
               :class="{
@@ -24,6 +25,7 @@
            @pointerup="markUrlAsClickedOnMMBClick"
         >{{ue.url}}</a>
       </span>
+      <UrlListItemTags class="tags" :ue="ue"/>
     </td>
     <td class="col-3 comment nowrap-text-ceil"
         @dblclick="toggleMessageEditPopup"
@@ -39,10 +41,11 @@
 <script setup lang="ts">
 import {computed, toRaw, ComputedRef} from "vue";
 import {formatDate} from "@alttiri/util-js";
-import {clickedUrls, lastClickedEntry, NEVER_VISITED_TIME, popupEntry} from "../core/core";
+import {clickedUrls, lastClickedEntry, NEVER_VISITED_TIME, messagePopupEntry} from "../core/core";
 import {throttle, timeAgo} from "../core/util";
 import {RefTriggerTimer} from "../core/relative-time-trigger";
 import {UrlInfo} from "../core/url-info-entry";
+import UrlListItemTags from "./UrlListItemTags.vue";
 
 const props = defineProps<{ue: UrlInfo}>();
 
@@ -87,10 +90,10 @@ const comment = computed(() => {
 
 
 function toggleMessageEditPopup() { // <td> @dblclick
-  if (toRaw(popupEntry.value) === toRaw(props.ue)) {
-    popupEntry.value = null;
+  if (toRaw(messagePopupEntry.value) === toRaw(props.ue)) {
+    messagePopupEntry.value = null;
   } else {
-    popupEntry.value = props.ue;
+    messagePopupEntry.value = props.ue;
   }
 }
 
@@ -172,6 +175,12 @@ function getTimePassedClass(ms: number) {
 </script>
 
 <style scoped>
+.url-cell {
+  position: relative;
+}
+td {
+  align-items: center;
+}
 
 .nowrap-text-ceil {
   display: inline-flex;

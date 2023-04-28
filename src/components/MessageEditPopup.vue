@@ -1,10 +1,10 @@
 <template>
   <Teleport to="body">
-    <div class="message-edit-popup modal" v-if="popupEntry" @pointerdown="closePopup">
+    <div class="modal message-edit-popup" v-if="messagePopupEntry" @pointerdown="closePopup">
       <div class="popup-content">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">{{popupEntry.url}}</h5>
+            <h5 class="modal-title">{{messagePopupEntry.url}}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="closePopup"></button>
           </div>
           <div class="modal-body">
@@ -27,24 +27,24 @@
 
 <script setup lang="ts">
 import {computed, onMounted, Ref, ref} from "vue";
-import {popupEntry} from "../core/core";
+import {messagePopupEntry} from "../core/core";
 import {UrlInfo} from "../core/url-info-entry";
 
 const comment = computed(() => {
-  const urlEntry = popupEntry.value as UrlInfo;
+  const urlEntry = messagePopupEntry.value as UrlInfo;
   return urlEntry.comment === undefined ? urlEntry.inputComment : urlEntry.comment;
 });
 
 function closePopup(event: MouseEvent) {
   if (event.currentTarget === event.target) {
-    popupEntry.value = null;
+    messagePopupEntry.value = null;
   }
 }
 
 function closePopupOnEnter(event: KeyboardEvent) {
   if (event.key === "Enter" && !event.shiftKey) {
     event.preventDefault();
-    popupEntry.value = null;
+    messagePopupEntry.value = null;
   }
 }
 
@@ -56,17 +56,17 @@ onMounted(focusTextarea);
 
 function onInputSaveComment(event: InputEvent) {
   const newValue = (event.currentTarget as HTMLInputElement).value;
-  void popupEntry.value?.setComment(newValue);
+  void messagePopupEntry.value?.setComment(newValue);
 }
 
 function removeComment() {
-  popupEntry.value?.delComment();
+  messagePopupEntry.value?.delComment();
 }
 
 </script>
 
 <style scoped>
-.message-edit-popup {
+.modal {
   min-width: 100vw;
   min-height: 100vh;
   position: fixed;
@@ -75,12 +75,9 @@ function removeComment() {
   display: flex;
   justify-content: center;
   align-items: center;
-  /*backdrop-filter: blur(1px);*/
   background-color: rgba(255, 255, 255, 0.5);
-  /*pointer-events: none;*/
 }
 .popup-content {
-  /*pointer-events: auto;*/
   min-width: 420px;
   max-width: min(520px, 80%);
 }

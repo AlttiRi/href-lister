@@ -8,6 +8,7 @@ const urlInfoStore = createStore("HrefListerUrlInfo", "UrlInfo");
 export type UrlInfoState = {
     comment?: string,
     visited?: number,
+    tags?: string[],
 }
 
 export class UrlInfo {
@@ -40,6 +41,7 @@ export class UrlInfo {
     }
     get comment() { return this.state.comment; }
     get visited() { return this.state.visited; }
+    get tags()    { return this.state.tags;    }
     async setComment(comment: string) {
         this.state.comment = comment;
         await this.update();
@@ -54,6 +56,30 @@ export class UrlInfo {
     }
     async delVisited() {
         delete this.state.visited;
+        await this.update();
+    }
+    async addTag(tag: string) {
+        if (!this.state.tags) {
+            this.state.tags = [];
+        }
+        if (this.state.tags.includes(tag)) {
+            return;
+        }
+        this.state.tags.push(tag);
+        await this.update();
+    }
+    async delTag(tag: string) {
+        if (!this.state.tags) {
+            return;
+        }
+        const index = this.state.tags.indexOf(tag);
+        if (index == -1) {
+            return;
+        }
+        this.state.tags.splice(index, 1);
+        if (this.state.tags.length === 0) {
+            delete this.state.tags;
+        }
         await this.update();
     }
     private update() {

@@ -1,7 +1,7 @@
 <template>
 <div class="tags-wrapper" @click="toggleTagsEditPopup">
     <div class="tags">
-        <Tag class="tag" v-for="tag of ue.tags" :tag="tag"/>
+        <EntryTags :entry="ue"/>
     </div>
     <div v-if="!ue.tags?.length" class="tag add-tag"><span class="plus">+</span></div>
 </div>
@@ -11,7 +11,7 @@
 import {toRaw} from "vue";
 import {UrlInfo} from "../core/url-info-entry";
 import {tagsPopupEntry} from "../core/core";
-import Tag from "./Tag.vue";
+import EntryTags from "./tags/EntryTags.vue";
 
 
 const props = defineProps<{ue: UrlInfo}>();

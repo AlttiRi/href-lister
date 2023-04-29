@@ -8,10 +8,10 @@
                     </div>
                     <div class="modal-body">
                         <div class="tags selected-tags-group">
-                            <Tag class="tag" v-for="tag of tagsPopupEntry.tags" :tag="tag"/>
+                            <SelectedTags :entry="tagsPopupEntry"/>
                         </div>
                         <div class="tags all-tags-group">
-                            <Tag class="tag" v-for="tag of allTags" :tag="tag"/>
+                            <InputTags :entry="tagsPopupEntry" :tags="allTags"/>
                         </div>
                     </div>
                 </div>
@@ -23,7 +23,8 @@
 <script setup lang="ts">
 import {tagsPopupEntry} from "../core/core";
 import {allTags} from "../core/tags";
-import Tag from "./Tag.vue";
+import InputTags from "./tags/InputTags.vue";
+import SelectedTags from "./tags/SelectedTags.vue";
 
 
 function closePopup(event: MouseEvent) {

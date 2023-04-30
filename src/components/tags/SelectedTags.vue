@@ -31,6 +31,13 @@ function resizeInput() {
     const textWidth = context.measureText(tagInput.value.value).width;
     tagInput.value.style.width = textWidth + 6 + "px";
 }
+function focusInput() {
+    if (!tagInput.value) {
+        return;
+    }
+    tagInput.value.selectionStart = tagInput.value.selectionEnd;
+    tagInput.value.focus();
+}
 function selectInput() {
     tagInput.value?.select();
 }
@@ -43,9 +50,10 @@ function selectInput() {
         <div class="tag-master" @click="removeTag">
             <div class="tag" v-for="tag of entry.tags" :data-tag="tag">{{tag}}</div>
         </div>
-        <label
+        <span
                 class="label"
                 @dblclick="selectInput"
+                @click="focusInput"
         >
             <span class="input-wrapper">
                 <input type="text"
@@ -53,7 +61,7 @@ function selectInput() {
                        @input="resizeInput"
                 >
             </span>
-        </label>
+        </span>
     </div>
 </template>
 

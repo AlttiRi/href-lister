@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {UrlInfo} from "../../core/url-info-entry";
-import {onMounted} from "vue";
+import {onMounted, Ref, ref} from "vue";
 
 const props = defineProps<{
     entry: UrlInfo,
@@ -16,16 +16,23 @@ function removeTag(event: MouseEvent) {
     props.entry?.delTag(tag);
 }
 
+const tagInput: Ref<HTMLInputElement | null> = ref(null);
+const canvas = document.createElement("canvas");
+const context = canvas.getContext("2d")!;
 onMounted(() => {
-    const input = document.getElementById("my-input") as HTMLInputElement;
-    const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d")!;
-    context.font = window.getComputedStyle(input).font;
-    input.addEventListener("input", () => {
-        const textWidth = context.measureText(input.value).width;
-        input.style.width = textWidth + 6 + "px";
-    });
+    if (tagInput.value) {
+        context.font = window.getComputedStyle(tagInput.value).font;
+    }
 });
+function resizeInput() {
+    if (!tagInput.value) {
+        return;
+    }
+    const textWidth = context.measureText(tagInput.value.value).width;
+    tagInput.value.style.width = textWidth + 6 + "px";
+}
+
+
 </script>
 
 <template>
@@ -35,7 +42,10 @@ onMounted(() => {
         </div>
         <label>
             <span class="input-wrapper">
-                <input type="text" id="my-input">
+                <input type="text"
+                       ref="tagInput"
+                       @input="resizeInput"
+                >
             </span>
         </label>
     </div>

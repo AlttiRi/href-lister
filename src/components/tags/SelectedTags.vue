@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {UrlInfo} from "../../core/url-info-entry";
+import {onMounted} from "vue";
 
 const props = defineProps<{
     entry: UrlInfo,
@@ -15,14 +16,66 @@ function removeTag(event: MouseEvent) {
     props.entry?.delTag(tag);
 }
 
+onMounted(() => {
+    const input = document.getElementById("my-input") as HTMLInputElement;
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d")!;
+    context.font = window.getComputedStyle(input).font;
+    input.addEventListener("input", () => {
+        const textWidth = context.measureText(input.value).width;
+        input.style.width = textWidth + 6 + "px";
+    });
+});
 </script>
 
 <template>
-    <div class="tag-master" @click="removeTag">
-        <div class="tag" v-for="tag of entry.tags" :data-tag="tag">{{tag}}</div>
+    <div class="selected-tags">
+        <div class="tag-master" @click="removeTag">
+            <div class="tag" v-for="tag of entry.tags" :data-tag="tag">{{tag}}</div>
+        </div>
+        <label>
+            <span class="input-wrapper">
+                <input type="text" id="my-input">
+            </span>
+        </label>
     </div>
 </template>
 
 <style scoped>
+.selected-tags {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+input {
+    border: none;
+    outline: none;
+    width: 16px;
+    min-height: 31px;
+    padding-bottom: 2px;
+}
+input:before {
+    position: absolute;
+    content: "+";
+}
+.input-wrapper {
+    min-width: 38px;
+    display: flex;
+    justify-content: center;
+}
+label {
+    display: flex;
+    width: auto;
+    flex-grow: 2;
+    margin-left: 3px;
+    margin-bottom: 2px;
+
+    border-image: linear-gradient(to right, transparent 0, #4b88b9 6px, transparent) 1;
+    border-width: 1px;
+    border-style: solid;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+}
 
 </style>

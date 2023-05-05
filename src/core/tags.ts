@@ -18,3 +18,8 @@ export function removeTag(tag: string) {
         allTags.value.splice(index, 1);
     }
 }
+
+export type TagProp = {
+    tag: string,
+    selected: boolean,
+};

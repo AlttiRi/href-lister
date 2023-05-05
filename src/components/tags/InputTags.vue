@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import {UrlInfo} from "../../core/url-info-entry";
+import InputTagsItem from "./InputTagsItem.vue";
+import {TagProp} from "../../core/tags";
 
 const props = defineProps<{
     entry: UrlInfo,
-    tags: string[],
+    tagProps: TagProp[],
 }>();
 
 function toggleTag(event: MouseEvent) {
@@ -27,12 +29,10 @@ function isSelected(tag: string) {
 
 <template>
     <div class="tag-master" @click="toggleTag">
-        <div class="tag" :class="{selected: isSelected(tag)}" v-for="tag of tags" :data-tag="tag">{{tag}}</div>
+        <InputTagsItem v-for="tagProp of tagProps" :tag="tagProp.tag" :selected="isSelected(tagProp.tag)"/>
     </div>
 </template>
 
 <style scoped>
-.selected {
-    opacity: 0.6;
-}
+
 </style>

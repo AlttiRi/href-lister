@@ -4,8 +4,10 @@ import {onMounted, Ref, ref} from "vue";
 
 const props = defineProps<{
     entry: UrlInfo,
+    modelValue: string
 }>();
 
+const emit = defineEmits(["update:modelValue", "tabPressed"]);
 
 function removeTag(event: MouseEvent) {
     const tagElem = event.target as HTMLDivElement;
@@ -43,6 +45,17 @@ function selectInput() {
 }
 
 
+function emitModelValueUpdate(event: InputEvent) {
+    emit("update:modelValue", (event.target as HTMLInputElement).value);
+}
+
+function onTab(event: KeyboardEvent) {console.log(event);
+    if (event.code === "Tab") {
+        event.preventDefault();
+        emit("tabPressed");
+    }
+}
+
 </script>
 
 <template>
@@ -58,7 +71,11 @@ function selectInput() {
             <span class="input-wrapper">
                 <input type="text"
                        ref="tagInput"
-                       @input="resizeInput"
+                       :value="modelValue"
+                       v-on="{
+                           input: [resizeInput, emitModelValueUpdate]
+                       }"
+                       @keydown="onTab"
                 >
             </span>
         </span>

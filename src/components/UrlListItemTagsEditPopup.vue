@@ -8,10 +8,10 @@
                     </div>
                     <div class="modal-body">
                         <div class="tags selected-tags-group">
-                            <SelectedTags :entry="tagsPopupEntry"/>
+                            <SelectedTags :entry="tagsPopupEntry" v-model="inputTagText" @tabPressed="selectTag"/>
                         </div>
                         <div class="tags all-tags-group">
-                            <InputTags :entry="tagsPopupEntry" :tags="allTags"/>
+                            <InputTags :entry="tagsPopupEntry" :tagProps="filterTags"/>
                         </div>
                     </div>
                 </div>
@@ -22,15 +22,45 @@
 
 <script setup lang="ts">
 import {tagsPopupEntry} from "../core/core";
-import {allTags} from "../core/tags";
+import {allTags, TagProp} from "../core/tags";
 import InputTags from "./tags/InputTags.vue";
 import SelectedTags from "./tags/SelectedTags.vue";
+import {computed, ComputedRef, ref} from "vue";
 
-
+const inputTagText = ref("");
 function closePopup(event: MouseEvent) {
     if (event.currentTarget === event.target) {
         tagsPopupEntry.value = null;
     }
+}
+
+const tagProps: ComputedRef<TagProp[]> = computed(() => {
+    return allTags.value.map(tag => ({
+        tag,
+        selected: false,
+    }));
+});
+
+const filterTags: ComputedRef<TagProp[]> = computed(() => {
+    const starts:   TagProp[] = [];
+    const contains: TagProp[] = [];
+    for (const tagProp of tagProps.value) {
+        const index = tagProp.tag.indexOf(inputTagText.value);
+        if (index === -1) {
+            continue;
+        }
+        if (index === 0) {
+            starts.push(tagProp);
+        } else {
+            contains.push(tagProp);
+        }
+    }
+    return [starts, contains].flat();
+});
+
+function selectTag() { // @tabPressed
+    // todo ...
+    inputTagText.value = "";
 }
 
 </script>

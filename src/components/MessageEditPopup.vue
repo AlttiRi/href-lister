@@ -65,7 +65,7 @@ function removeComment() {
 
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .modal {
   min-width: 100vw;
   min-height: 100vh;

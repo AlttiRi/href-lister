@@ -64,3 +64,18 @@ export function timeAgo(ms: number) {
     return Math.trunc(secs / 60 / 60 / 24) + " days ago";
 }
 
+/**
+ * `hashCode` like
+ * @example
+ * hashString("Qwerty") === -1862984904
+ * hashString("A") === 65
+ * @param {string} str
+ * @return {number}
+ */
+export function hashString(str: string): number {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        hash = Math.imul(Math.imul(31, hash) + str.charCodeAt(i), 1);
+    }
+    return hash;
+}

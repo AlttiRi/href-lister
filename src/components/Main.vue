@@ -4,6 +4,8 @@
   <hr>
   <InputControls/>
   <hr>
+  <URLsInfoLine/>
+  <hr>
   <UrlList/>
   <MessageEditPopup v-if="messagePopupEntry"/>
   <UrlListItemTagsEditPopup v-if="tagsPopupEntry"/>
@@ -11,6 +13,7 @@
 
 <script setup lang="ts">
 import Filters from "./Filters.vue";
+import URLsInfoLine from "./URLsInfoLine.vue";
 import InputControls from "./InputControls.vue";
 import UrlList from "./UrlList.vue";
 import MessageEditPopup from "./MessageEditPopup.vue";

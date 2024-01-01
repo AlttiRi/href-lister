@@ -5,6 +5,7 @@
 
 <script setup lang="ts">
 import Main from "./components/Main.vue";
+import "./core/title-handler";
 </script>
 
 <style scoped>

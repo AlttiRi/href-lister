@@ -11,7 +11,7 @@
                             <SelectedTags :entry="tagsPopupEntry" v-model="inputTagText" @tabPressed="selectTag"/>
                         </div>
                         <div class="tags all-tags-group">
-                            <InputTags :entry="tagsPopupEntry" :tagProps="filterTags"/>
+                            <InputTags :tagPropsHelper="tagPropsHelper"/>
                         </div>
                     </div>
                 </div>
@@ -21,11 +21,12 @@
 </template>
 
 <script setup lang="ts">
-import {tagsPopupEntry} from "../core/core";
-import {allTags, TagProp} from "../core/tags";
 import InputTags from "./tags/InputTags.vue";
 import SelectedTags from "./tags/SelectedTags.vue";
-import {computed, ComputedRef, ref} from "vue";
+import {Ref, ref} from "vue";
+import {UrlInfo} from "../core/url-info-entry";
+import {TagPropsHelper} from "../core/tags";
+import {tagsPopupEntry} from "../core/core";
 
 const inputTagText = ref("");
 function closePopup(event: MouseEvent) {
@@ -34,29 +35,7 @@ function closePopup(event: MouseEvent) {
     }
 }
 
-const tagProps: ComputedRef<TagProp[]> = computed(() => {
-    return allTags.value.map(tag => ({
-        tag,
-        selected: false,
-    }));
-});
-
-const filterTags: ComputedRef<TagProp[]> = computed(() => {
-    const starts:   TagProp[] = [];
-    const contains: TagProp[] = [];
-    for (const tagProp of tagProps.value) {
-        const index = tagProp.tag.indexOf(inputTagText.value);
-        if (index === -1) {
-            continue;
-        }
-        if (index === 0) {
-            starts.push(tagProp);
-        } else {
-            contains.push(tagProp);
-        }
-    }
-    return [starts, contains].flat();
-});
+const tagPropsHelper = new TagPropsHelper(tagsPopupEntry as Ref<UrlInfo>, inputTagText);
 
 function selectTag() { // @tabPressed
     // todo ...

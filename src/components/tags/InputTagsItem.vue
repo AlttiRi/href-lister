@@ -8,7 +8,7 @@
 </script>
 
 <template>
-    <div class="tag" :class="{selected}" :data-tag="tag">{{tag}}</div>
+    <div class="tag InputTagsItem--comp" :class="{selected}" :data-tag="tag">{{tag}}</div>
 </template>
 
 <style scoped>

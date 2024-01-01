@@ -19,13 +19,13 @@ function toggleTag(event: MouseEvent) {
 </script>
 
 <template>
-    <div class="tag-master InputTags--comp" @click="toggleTag">
-        <InputTagsItem
-            v-for="tagProp of tagPropsHelper.tags.value"
-            :tag="tagProp.tag"
-            :selected="tagPropsHelper.isSelected(tagProp)"
-        />
-    </div>
+  <div class="tag-master" @click="toggleTag" data-comp="InputTags">
+    <InputTagsItem
+      v-for="tagProp of tagPropsHelper.tags.value"
+      :tag="tagProp.tag"
+      :selected="tagPropsHelper.isSelected(tagProp)"
+    />
+  </div>
 </template>
 
 <style scoped>

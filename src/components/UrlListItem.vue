@@ -1,37 +1,43 @@
 <template>
-  <tr @pointerenter="triggerVisitedMs"
-      :class="{
-        'clicked': isClicked,
-        'last-clicked': isLastClicked,
-      }"
-      class="list-item-row"
+  <tr
+    @pointerenter="triggerVisitedMs"
+    :class="{
+      'clicked': isClicked,
+      'last-clicked': isLastClicked,
+    }"
+    class="list-item-row"
+    data-comp="UrlListItem"
   >
     <td class="col-9 nowrap-text-ceil url url-cell">
       <span class="nowrap-text-ceil-content">
-        <span class="info-dot"
-              :class="{
-                ['has-comment']: ue.inputComment,
-                visited: visitedMs > 0,
-                [timePassedClass]: true,
-              }"
-              :title="visitedText"
-              @contextmenu.prevent="unmarkUrlAsClicked"
-              @pointerdown="removeVisitOnMMB"
+        <span
+          class="info-dot"
+          :class="{
+            ['has-comment']: ue.inputComment,
+            visited: visitedMs > 0,
+            [timePassedClass]: true,
+          }"
+          :title="visitedText"
+          @contextmenu.prevent="unmarkUrlAsClicked"
+          @pointerdown="removeVisitOnMMB"
         ></span>
-        <a class="url link-primary" target="_blank" rel="noreferrer noopener"
-           :href="ue.url"
-           :title="ue.inputComment"
-           @click="markUrlAsClicked"
-           @pointerup="markUrlAsClickedOnMMBClick"
+        <a
+          class="url link-primary"
+          target="_blank" rel="noreferrer noopener"
+          :href="ue.url"
+          :title="ue.inputComment"
+          @click="markUrlAsClicked"
+          @pointerup="markUrlAsClickedOnMMBClick"
         >{{ue.url}}</a>
       </span>
       <UrlListItemTags class="tags" :ue="ue"/>
     </td>
-    <td class="col-3 comment nowrap-text-ceil"
-        @dblclick="toggleMessageEditPopup"
-        :class="{
-          [commentCssClass]: commentCssClass
-        }"
+    <td
+      class="col-3 comment nowrap-text-ceil"
+      @dblclick="toggleMessageEditPopup"
+      :class="{
+        [commentCssClass]: commentCssClass
+      }"
     >
       <span class="comment-content nowrap-text-ceil-content no-dbl-click-select">{{comment || "&nbsp;"}}</span>
     </td>

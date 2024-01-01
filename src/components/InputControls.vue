@@ -1,10 +1,11 @@
 <template>
-  <div class="row row-cols-lg-3 g-3 align-items-end">
+  <div class="row row-cols-lg-3 g-3 align-items-end" data-comp="InputControls">
     <div class="input col-12">
       <label for="urls-textarea" class="fuck-off-lighthouse"></label>
-      <textarea id="urls-textarea" spellcheck="false"
-                v-model="inputText"
-                ref="textareaEl"
+      <textarea
+        id="urls-textarea" spellcheck="false"
+        v-model="inputText"
+        ref="textareaEl"
       ></textarea>
     </div>
     <div class="input col-12">
@@ -13,24 +14,28 @@
           <span class="btn-group">
             <span class="input-group-text me-2">Clipboard</span>
           </span>
-          <button class="btn btn-outline-primary me-1"
-                  @click="onReplaceClipboardText"
+          <button
+            class="btn btn-outline-primary me-1"
+            @click="onReplaceClipboardText"
           >Replace</button>
-          <button class="btn btn-outline-primary me-1"
-                  @click="onAppendClipboardText"
+          <button
+            class="btn btn-outline-primary me-1"
+            @click="onAppendClipboardText"
           >Append</button>
         </span>
         <span class=".col m-1">
           <span class="btn-group">
             <span class="input-group-text me-2 text-center">Controls</span>
           </span>
-          <button class="btn btn-outline-primary me-1"
-                  @click="onClearTextInput"
+          <button
+            class="btn btn-outline-primary me-1"
+            @click="onClearTextInput"
           >Clear</button>
-          <button class="btn btn-primary me-1" title="Copy URLs"
-                  @click="onCopyUrlsAsList"
-                  @contextmenu="onCopyUrlsAsColumn"
-                  @pointerdown="onCopyUrlsAsCodeArrays"
+          <button
+            class="btn btn-primary me-1" title="Copy URLs"
+            @click="onCopyUrlsAsList"
+            @contextmenu="onCopyUrlsAsColumn"
+            @pointerdown="onCopyUrlsAsCodeArrays"
           >Copy</button>
         </span>
       </span>

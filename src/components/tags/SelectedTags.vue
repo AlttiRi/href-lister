@@ -59,27 +59,28 @@ function onTab(event: KeyboardEvent) {console.log(event);
 </script>
 
 <template>
-    <div class="selected-tags SelectedTags--comp">
-        <div class="tag-master" @click="removeTag">
-            <div class="tag" v-for="tag of entry.tags" :data-tag="tag">{{tag}}</div>
-        </div>
-        <span
-                class="label"
-                @dblclick="selectInput"
-                @click="focusInput"
-        >
-            <span class="input-wrapper">
-                <input type="text"
-                       ref="tagInput"
-                       :value="modelValue"
-                       v-on="{
-                           input: [resizeInput, emitModelValueUpdate]
-                       }"
-                       @keydown="onTab"
-                >
-            </span>
-        </span>
+  <div class="selected-tags" data-comp="SelectedTags">
+    <div class="tag-master" @click="removeTag">
+      <div class="tag" v-for="tag of entry.tags" :data-tag="tag">{{tag}}</div>
     </div>
+    <span
+      class="label"
+      @dblclick="selectInput"
+      @click="focusInput"
+    >
+      <span class="input-wrapper">
+        <input
+          type="text"
+          ref="tagInput"
+          :value="modelValue"
+          v-on="{
+             input: [resizeInput, emitModelValueUpdate]
+          }"
+          @keydown="onTab"
+        >
+      </span>
+    </span>
+  </div>
 </template>
 
 <style scoped>

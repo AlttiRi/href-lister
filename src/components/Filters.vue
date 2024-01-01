@@ -1,7 +1,7 @@
 <template>
-  <div class="row row-cols-lg-3 g-3 align-items-center">
+  <div class="row row-cols-lg-3 g-3 align-items-center" data-comp="Filters">
     <div class="col-12">
-      <label style="display: contents;">
+      <label>
         <span class="input-group">
           <span class="input-group-text">Only</span>
           <input type="text" class="form-control" v-model="input_only">
@@ -9,7 +9,7 @@
       </label>
     </div>
     <div class="col-12">
-      <label style="display: contents;">
+      <label>
         <span class="input-group">
           <span class="input-group-text">Ignore</span>
           <input type="text" class="form-control" v-model="input_ignore">
@@ -24,5 +24,7 @@ import {input_only, input_ignore} from "../core/filters";
 </script>
 
 <style scoped>
-
+label {
+    display: contents;
+}
 </style>

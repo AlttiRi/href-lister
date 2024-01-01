@@ -1,6 +1,11 @@
 <template>
   <Teleport to="body">
-    <div class="modal message-edit-popup" v-if="messagePopupEntry" @pointerdown="closePopup">
+    <div
+      class="modal message-edit-popup"
+      data-comp="MessageEditPopup"
+      v-if="messagePopupEntry"
+      @pointerdown="closePopup"
+    >
       <div class="popup-content">
         <div class="modal-content">
           <div class="modal-header">
@@ -8,11 +13,12 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="closePopup"></button>
           </div>
           <div class="modal-body">
-            <textarea rows="5"
-                      :value="comment"
-                      @input="onInputSaveComment"
-                      ref="textareaElem"
-                      @keydown="closePopupOnEnter"
+            <textarea
+              rows="5"
+              :value="comment"
+              @input="onInputSaveComment"
+              ref="textareaElem"
+              @keydown="closePopupOnEnter"
             ></textarea>
           </div>
           <div class="modal-footer">

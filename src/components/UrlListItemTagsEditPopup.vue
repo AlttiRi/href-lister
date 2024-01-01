@@ -1,23 +1,28 @@
 <template>
-    <Teleport to="body">
-        <div class="modal tags-edit-popup" v-if="tagsPopupEntry" @pointerdown="closePopup">
-            <div class="popup-content">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">{{tagsPopupEntry.url}}</h5>
-                    </div>
-                    <div class="modal-body">
-                        <div class="tags selected-tags-group">
-                            <SelectedTags :entry="tagsPopupEntry" v-model="inputTagText" @tabPressed="selectTag"/>
-                        </div>
-                        <div class="tags all-tags-group">
-                            <InputTags :tagPropsHelper="tagPropsHelper"/>
-                        </div>
-                    </div>
-                </div>
+  <Teleport to="body">
+    <div
+      class="modal tags-edit-popup"
+      v-if="tagsPopupEntry"
+      @pointerdown="closePopup"
+      data-comp="URLsInfoLine"
+    >
+      <div class="popup-content">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">{{tagsPopupEntry.url}}</h5>
+          </div>
+          <div class="modal-body">
+            <div class="tags selected-tags-group">
+              <SelectedTags :entry="tagsPopupEntry" v-model="inputTagText" @tabPressed="selectTag"/>
             </div>
+            <div class="tags all-tags-group">
+              <InputTags :tagPropsHelper="tagPropsHelper"/>
+            </div>
+          </div>
         </div>
-    </Teleport>
+      </div>
+    </div>
+  </Teleport>
 </template>
 
 <script setup lang="ts">

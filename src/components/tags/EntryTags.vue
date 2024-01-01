@@ -8,9 +8,9 @@ defineProps<{
 </script>
 
 <template>
-    <div class="tag-master EntryTags--comp">
-        <div class="tag" v-for="tag of entry.tags" :data-tag="tag">{{tag}}</div>
-    </div>
+  <div class="tag-master" data-comp="EntryTags">
+    <div class="tag" v-for="tag of entry.tags" :data-tag="tag">{{tag}}</div>
+  </div>
 </template>
 
 <style scoped>

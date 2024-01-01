@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div data-comp="UrlList">
     <table class="table table-borderless">
       <tbody>
         <UrlListItem v-for="ue in urlEntryListFiltered" :ue="ue"/>

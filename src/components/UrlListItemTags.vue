@@ -1,10 +1,14 @@
 <template>
-<div class="tags-wrapper" @click="toggleTagsEditPopup">
+  <div
+    class="tags-wrapper"
+    @click="toggleTagsEditPopup"
+    data-comp="UrlListItemTags"
+  >
     <div class="tags">
-        <EntryTags :entry="ue"/>
+      <EntryTags :entry="ue"/>
     </div>
     <div v-if="!ue.tags?.length" class="tag add-tag"><span class="plus">+</span></div>
-</div>
+  </div>
 </template>
 
 <script setup lang="ts">

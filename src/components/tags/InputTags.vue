@@ -28,7 +28,7 @@ function isSelected(tag: string) {
 </script>
 
 <template>
-    <div class="tag-master" @click="toggleTag">
+    <div class="tag-master InputTags--comp" @click="toggleTag">
         <InputTagsItem v-for="tagProp of tagProps" :tag="tagProp.tag" :selected="isSelected(tagProp.tag)"/>
     </div>
 </template>

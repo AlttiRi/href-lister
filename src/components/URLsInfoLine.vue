@@ -30,17 +30,22 @@ function formatCounts(count: number, uniqueCount: number): string {
         <span title="URLs count, (unique one)">{{urlsCount.count}} ({{urlsCount.uniqueCount}})</span>
         <span class="grey"> — </span>
         <span title="URLs hash">
-            <span class="grey">#</span>{{hash}}
+            <span class="grey">#</span>
+            <span class="urls-hash">{{hash}}</span>
         </span>
         <span v-if="clickedUrlsCount.count">
-            <span class="sep"> — </span>
-            <span title="Clicked URLs count, (unique one)">[ {{clickedUrlsCount.count}} ({{clickedUrlsCount.uniqueCount}}) ]</span>
+            <span class="grey"> — </span>
+            <span title="Clicked URLs count, (unique one)">
+                <span class="grey">[</span>
+                {{clickedUrlsCount.count}} ({{clickedUrlsCount.uniqueCount}})
+                <span class="grey">]</span>
+            </span>
         </span>
     </div>
 </template>
 
 <style scoped>
-.sep {
+.grey, .urls-hash {
     color: grey;
 }
 </style>

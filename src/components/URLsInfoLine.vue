@@ -26,7 +26,7 @@ function formatCounts(count: number, uniqueCount: number): string {
 </script>
 
 <template>
-    <div>
+    <div class="URLsInfoLine--comp">
         <span title="URLs count, (unique one)">{{urlsCount.count}} ({{urlsCount.uniqueCount}})</span>
         <span class="grey"> — </span>
         <span title="URLs hash">

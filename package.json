@@ -1,6 +1,6 @@
 {
   "name": "href-lister",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "type": "module",
   "scripts": {
     "dev": "vite --host",
@@ -9,13 +9,13 @@
     "build-serve": "vite build && vite preview"
   },
   "dependencies": {
-    "@alttiri/util-js": "1.7.0",
+    "@alttiri/util-js": "1.9.1",
     "idb-keyval": "6.2.1",
-    "vue": "3.2.47"
+    "vue": "3.4.3"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "4.2.1",
-    "sass": "1.62.1",
-    "vite": "4.3.5"
+    "@vitejs/plugin-vue": "4.6.2",
+    "sass": "1.69.6",
+    "vite": "4.5.1"
   }
 }

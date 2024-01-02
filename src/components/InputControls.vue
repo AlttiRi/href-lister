@@ -38,6 +38,7 @@
             @pointerdown="onCopyUrlsAsCodeArrays"
           >Copy</button>
           <button
+            hidden
             class="btn btn-outline-primary me-1"
             title="Popup"
             @click="showAutoClickPopup = !showAutoClickPopup"

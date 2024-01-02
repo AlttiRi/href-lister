@@ -1,6 +1,6 @@
 {
   "name": "href-lister",
-  "version": "0.5.2-dev",
+  "version": "0.5.3",
   "type": "module",
   "scripts": {
     "dev": "vite --host",

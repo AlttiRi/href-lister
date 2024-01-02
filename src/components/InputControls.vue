@@ -37,6 +37,11 @@
             @contextmenu="onCopyUrlsAsColumn"
             @pointerdown="onCopyUrlsAsCodeArrays"
           >Copy</button>
+          <button
+            class="btn btn-outline-primary me-1"
+            title="Popup"
+            @click="showAutoClickPopup = !showAutoClickPopup"
+          >Popup</button>
         </span>
       </span>
     </div>
@@ -46,7 +51,7 @@
 <script setup lang="ts">
 import {Ref, ref} from "vue";
 import {sleep} from "@alttiri/util-js";
-import {inputText, urlsFiltered} from "../core/core";
+import {inputText, showAutoClickPopup, urlsFiltered} from "../core/core";
 import {getCodeArrays} from "../core/util";
 
 

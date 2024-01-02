@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import {ref, watchEffect} from "vue";
 import {makeMovable, makeResizable, storeStateInLS} from "../core/make-fancy";
+import {showAutoClickPopup} from "../core/core";
 
 
 const popupElem = ref<HTMLElement>();
 const headerElem = ref<HTMLElement>();
 
-const stop = watchEffect(() => {
+watchEffect(() => {
   if (!popupElem.value || !headerElem.value) {
     return;
   }
@@ -25,16 +26,17 @@ const stop = watchEffect(() => {
       id: "href-lister-popup-resize-state",
     }),
   });
-  stop();
 });
 
 </script>
 
 <template>
-  <div ref="popupElem" class="popup" data-comp="AutoClickPopup">
-    <div ref="headerElem" class="header">Header</div>
-    <div>Popup</div>
-  </div>
+  <Teleport to="body" v-if="showAutoClickPopup">
+    <div ref="popupElem" class="popup" data-comp="AutoClickPopup">
+      <div ref="headerElem" class="header">Header</div>
+      <div>Popup</div>
+    </div>
+  </Teleport>
 </template>
 
 <style scoped>

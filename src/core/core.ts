@@ -11,6 +11,7 @@ export const messagePopupEntry: Ref<UrlInfo | null> = ref(null);
 export const tagsPopupEntry:    Ref<UrlInfo | null> = ref(null);
 export const lastClickedEntry:  Ref<UrlInfo | null> = ref(null);
 export const clickedUrls = ref(new Set<string>());
+export const showAutoClickPopup = ref<boolean>(false);
 
 export const urlEntryList: Ref<UrlInfo[]> = ref([]);
 watchEffect(async () => {

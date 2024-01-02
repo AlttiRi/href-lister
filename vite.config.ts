@@ -11,7 +11,11 @@ export default defineConfig({
   server: {
     open: "./"
   },
+  esbuild: {
+    target: "es2021",
+  },
   build: {
+    target: "es2020",
     sourcemap: true,
     rollupOptions: {
       output: {

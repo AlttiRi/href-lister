@@ -6,7 +6,7 @@
     <InputControls/>
     <hr>
     <URLsInfoLine/>
-<!--    <AutoClickPopup/>-->
+    <AutoClickPopup/>
     <hr>
     <UrlList/>
     <MessageEditPopup v-if="messagePopupEntry"/>
@@ -18,7 +18,7 @@
 import Filters from "./Filters.vue";
 import InputControls from "./InputControls.vue";
 import URLsInfoLine from "./URLsInfoLine.vue";
-// import AutoClickPopup from "./AutoClickPopup.vue";
+import AutoClickPopup from "./AutoClickPopup.vue";
 import UrlList from "./UrlList.vue";
 import MessageEditPopup from "./MessageEditPopup.vue";
 import UrlListItemTagsEditPopup from "./UrlListItemTagsEditPopup.vue";

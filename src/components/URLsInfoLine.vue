@@ -27,7 +27,13 @@ function formatCounts(count: number, uniqueCount: number): string {
 
 <template>
   <div data-comp="URLsInfoLine">
-    <span title="URLs count, (unique one)">{{urlsCount.count}} ({{urlsCount.uniqueCount}})</span>
+    <span>
+       <span title="URLs count">{{urlsCount.count}}</span>
+       <span
+         title="URLs count (unique)"
+         v-if="urlsCount.count !== urlsCount.uniqueCount"
+       > ({{urlsCount.uniqueCount}})</span>
+    </span>
     <span class="grey"> — </span>
     <span title="URLs hash">
       <span class="grey">#</span>
@@ -35,9 +41,13 @@ function formatCounts(count: number, uniqueCount: number): string {
     </span>
     <span v-if="clickedUrlsCount.count">
       <span class="grey"> — </span>
-      <span title="Clicked URLs count, (unique one)">
+      <span>
         <span class="grey">[</span>
-        {{clickedUrlsCount.count}} ({{clickedUrlsCount.uniqueCount}})
+        <span title="Clicked URLs count">{{clickedUrlsCount.count}}</span>
+        <span
+          title="Clicked URLs count (unique)"
+          v-if="clickedUrlsCount.count !== clickedUrlsCount.uniqueCount"
+        > ({{clickedUrlsCount.uniqueCount}})</span>
         <span class="grey">]</span>
       </span>
     </span>
@@ -46,6 +56,6 @@ function formatCounts(count: number, uniqueCount: number): string {
 
 <style scoped>
 .grey, .urls-hash {
-    color: grey;
+    color: #777;
 }
 </style>

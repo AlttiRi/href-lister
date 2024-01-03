@@ -7,6 +7,7 @@
     }"
     class="list-item-row"
     data-comp="UrlListItem"
+    :data-index="index + 1"
   >
     <td class="col-9 nowrap-text-ceil url url-cell">
       <span class="nowrap-text-ceil-content">
@@ -53,7 +54,7 @@ import {RefTriggerTimer} from "../core/relative-time-trigger";
 import {UrlInfo} from "../core/url-info-entry";
 import UrlListItemTags from "./UrlListItemTags.vue";
 
-const props = defineProps<{ue: UrlInfo}>();
+const props = defineProps<{ue: UrlInfo, index: number}>();
 
 
 const visitedMs: ComputedRef<number> = computed(() => props.ue.visited || NEVER_VISITED_TIME);

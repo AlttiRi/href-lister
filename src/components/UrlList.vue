@@ -2,7 +2,7 @@
   <div data-comp="UrlList">
     <table class="table table-borderless">
       <tbody>
-        <UrlListItem v-for="ue in urlEntryListFiltered" :ue="ue"/>
+        <UrlListItem v-for="(ue, index) in urlEntryListFiltered" :ue="ue" :index="index"/>
       </tbody>
     </table>
   </div>

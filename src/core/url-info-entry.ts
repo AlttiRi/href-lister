@@ -1,4 +1,5 @@
-import * as idb from "idb-keyval";
+import {createStore, del, get, set, entries} from "idb-keyval";
+const idb = {createStore, del, get, set, entries};
 import {InputUrlEntry} from "./url-parser";
 import {toRaw} from "vue";
 
@@ -94,7 +95,6 @@ export class UrlInfo {
 // The old stores
 const commentsStore = idb.createStore("HrefListerComments", "Comments");
 const visitsStore = idb.createStore("HrefLister", "Visits");
-const {createStore, del, get, set, entries} = idb;
 Object.assign(globalThis, {
     idb: {
         createStore, del, get, set, entries,

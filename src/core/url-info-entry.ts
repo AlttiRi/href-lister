@@ -1,9 +1,9 @@
-import {createStore, del, get, set, entries} from "idb-keyval";
+import * as idb from "idb-keyval";
 import {InputUrlEntry} from "./url-parser";
 import {toRaw} from "vue";
 
 
-const urlInfoStore = createStore("HrefListerUrlInfo", "UrlInfo");
+const urlInfoStore = idb.createStore("HrefListerUrlInfo", "UrlInfo");
 
 export type UrlInfoState = {
     comment?: string,
@@ -84,16 +84,17 @@ export class UrlInfo {
     }
     private update() {
         if (!Object.keys(this.state).length) {
-            return del(this.url, urlInfoStore);
+            return idb.del(this.url, urlInfoStore);
         }
-        return set(this.url, toRaw(this.state), urlInfoStore);
+        return idb.set(this.url, toRaw(this.state), urlInfoStore);
     }
 }
 
 
 // The old stores
-const commentsStore = createStore("HrefListerComments", "Comments");
-const visitsStore = createStore("HrefLister", "Visits");
+const commentsStore = idb.createStore("HrefListerComments", "Comments");
+const visitsStore = idb.createStore("HrefLister", "Visits");
+const {createStore, del, get, set, entries} = idb;
 Object.assign(globalThis, {
     idb: {
         createStore, del, get, set, entries,
@@ -103,4 +104,3 @@ Object.assign(globalThis, {
     },
     UrlInfo,
 });
-

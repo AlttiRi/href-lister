@@ -79,3 +79,15 @@ export function hashString(str: string): number {
     }
     return hash;
 }
+
+
+const ordinals = [
+    "1st", "2nd", "3rd"
+];
+export function ordinalIndicator(index: number | string) {
+    index = Number(index);
+    if (ordinals[index]) {
+        return ordinals[index];
+    }
+    return index + 1 + "th";
+}

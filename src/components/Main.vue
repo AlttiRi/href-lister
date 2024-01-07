@@ -21,7 +21,7 @@ import URLsInfoLine from "./URLsInfoLine.vue";
 import AutoClickPopup from "./AutoClickPopup.vue";
 import UrlList from "./UrlList.vue";
 import MessageEditPopup from "./MessageEditPopup.vue";
-import UrlListItemTagsEditPopup from "./UrlListItemTagsEditPopup.vue";
+import UrlListItemTagsEditPopup from "./edit-tags-popup/UrlListItemTagsEditPopup.vue";
 import {messagePopupEntry, tagsPopupEntry} from "../core/core";
 import "../style/tag.scss";
 </script>

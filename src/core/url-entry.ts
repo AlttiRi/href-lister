@@ -1,24 +1,24 @@
+import {toRaw} from "vue";
 import {createStore, del, get, set, entries} from "idb-keyval";
 const idb = {createStore, del, get, set, entries};
 import {InputUrlEntry} from "./url-parser";
-import {toRaw} from "vue";
 
 
-const urlInfoStore = idb.createStore("HrefListerUrlInfo", "UrlInfo");
+const urlInfoStore = idb.createStore("HrefListerUrlInfo", "UrlInfo"); // todo rename to `UrlEntry`
 
-export type UrlInfoState = {
+export type UrlEntryState = {
     comment?: string,
     visited?: number,
     tags?: string[],
 }
 
-export class UrlInfo {
-    static stateMap = new Map<string, UrlInfoState>();
-    private readonly state: UrlInfoState;
+export class UrlEntry {
+    static stateMap = new Map<string, UrlEntryState>();
+    private readonly state: UrlEntryState;
     readonly url: string;
     readonly inputComment?: string;
     readonly initialVisited?: number;
-    constructor(url: string, state: UrlInfoState, inputComment?: string) {
+    constructor(url: string, state: UrlEntryState, inputComment?: string) {
         this.url = url;
         this.state = state;
         if (inputComment) {
@@ -28,17 +28,17 @@ export class UrlInfo {
             this.initialVisited = state.visited;
         }
     }
-    static async getInstance({url, inputComment}: InputUrlEntry): Promise<UrlInfo> {
-        let state = UrlInfo.stateMap.get(url);
+    static async getInstance({url, inputComment}: InputUrlEntry): Promise<UrlEntry> {
+        let state = UrlEntry.stateMap.get(url);
         if (state) {
-            return new UrlInfo(url, state, inputComment);
+            return new UrlEntry(url, state, inputComment);
         }
         state = await get(url, urlInfoStore);
         if (state === undefined) {
             state = {};
         }
-        UrlInfo.stateMap.set(url, state);
-        return new UrlInfo(url, state, inputComment);
+        UrlEntry.stateMap.set(url, state);
+        return new UrlEntry(url, state, inputComment);
     }
     get comment() { return this.state.comment; }
     get visited() { return this.state.visited; }
@@ -94,7 +94,7 @@ export class UrlInfo {
 
 // The old stores
 const commentsStore = idb.createStore("HrefListerComments", "Comments");
-const visitsStore = idb.createStore("HrefLister", "Visits");
+const visitsStore   = idb.createStore("HrefLister", "Visits");
 Object.assign(globalThis, {
     idb: {
         createStore, del, get, set, entries,
@@ -102,5 +102,5 @@ Object.assign(globalThis, {
         visitsStore,   // await idb.entries(idb.visitsStore)
         urlInfoStore,  // await idb.get("http://localhost:5173/")
     },
-    UrlInfo,
+    UrlEntry,
 });

@@ -33,11 +33,12 @@
 
 <script setup lang="ts">
 import {computed, onMounted, Ref, ref} from "vue";
+import {UrlEntry} from "../core/url-entry";
 import {messagePopupEntry} from "../core/core";
-import {UrlInfo} from "../core/url-info-entry";
+
 
 const comment = computed(() => {
-  const urlEntry = messagePopupEntry.value as UrlInfo;
+  const urlEntry = messagePopupEntry.value as UrlEntry;
   return urlEntry.comment === undefined ? urlEntry.inputComment : urlEntry.comment;
 });
 

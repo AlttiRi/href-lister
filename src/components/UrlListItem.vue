@@ -51,10 +51,10 @@ import {formatDate} from "@alttiri/util-js";
 import {clickedUrls, lastClickedEntry, NEVER_VISITED_TIME, messagePopupEntry} from "../core/core";
 import {throttle, timeAgo} from "../core/util";
 import {RefTriggerTimer} from "../core/relative-time-trigger";
-import {UrlInfo} from "../core/url-info-entry";
+import {UrlEntry} from "../core/url-entry";
 import UrlListItemTags from "./UrlListItemTags.vue";
 
-const props = defineProps<{ue: UrlInfo, index: number}>();
+const props = defineProps<{ue: UrlEntry, index: number}>();
 
 
 const visitedMs: ComputedRef<number> = computed(() => props.ue.visited || NEVER_VISITED_TIME);

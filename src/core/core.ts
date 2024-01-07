@@ -1,29 +1,29 @@
 import {computed, ref, Ref, ComputedRef, watchEffect} from "vue";
-import {urlFilter} from "./filters";
+import {UrlEntry} from "./url-entry";
 import {InputUrlEntry, parseUrlEntries} from "./url-parser";
-import {UrlInfo} from "./url-info-entry";
+import {urlFilter} from "./filters";
 
 
 export const NEVER_VISITED_TIME = -1;
 
 export const inputText: Ref<string> = ref("");
-export const messagePopupEntry: Ref<UrlInfo | null> = ref(null);
-export const tagsPopupEntry:    Ref<UrlInfo | null> = ref(null);
-export const lastClickedEntry:  Ref<UrlInfo | null> = ref(null);
+export const messagePopupEntry: Ref<UrlEntry | null> = ref(null);
+export const tagsPopupEntry:    Ref<UrlEntry | null> = ref(null);
+export const lastClickedEntry:  Ref<UrlEntry | null> = ref(null);
 export const clickedUrls = ref(new Set<string>());
 export const showAutoClickPopup = ref<boolean>(false);
 
-export const urlEntryList: Ref<UrlInfo[]> = ref([]);
+export const urlEntryList: Ref<UrlEntry[]> = ref([]);
 watchEffect(async () => {
     const urlEntries: InputUrlEntry[] = parseUrlEntries(inputText.value);
-    const urlInfos: UrlInfo[] = [];
+    const urlInfos: UrlEntry[] = [];
     for (const urlEntry of urlEntries) {
-        urlInfos.push(await UrlInfo.getInstance(urlEntry));
+        urlInfos.push(await UrlEntry.getInstance(urlEntry));
     }
     urlEntryList.value = urlInfos;
 });
 
-export const urlEntryListFiltered: ComputedRef<UrlInfo[]> = computed(() => {
+export const urlEntryListFiltered: ComputedRef<UrlEntry[]> = computed(() => {
     return urlEntryList.value.filter(ue => urlFilter.value(ue.url));
 });
 

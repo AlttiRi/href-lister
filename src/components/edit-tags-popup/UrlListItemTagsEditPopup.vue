@@ -16,7 +16,9 @@
               <SelectedTags :entry="tagsPopupEntry" v-model="inputTagText" @tabPressed="selectTag"/>
             </div>
             <div class="tags all-tags-group">
-              <InputTags :tagPropsHelper="tagPropsHelper"/>
+              <div class="tag-master">
+                <SuggestedTag :tag-wrap="tagWrap" v-for="tagWrap of tagWrapsFiltered"/>
+              </div>
             </div>
           </div>
         </div>
@@ -26,25 +28,51 @@
 </template>
 
 <script setup lang="ts">
-import InputTags from "./tags/InputTags.vue";
-import SelectedTags from "./tags/SelectedTags.vue";
-import {Ref, ref} from "vue";
-import {UrlInfo} from "../core/url-info-entry";
-import {TagPropsHelper} from "../core/tags";
-import {tagsPopupEntry} from "../core/core";
+import SelectedTags  from "./SelectedTags.vue";
+import SuggestedTag  from "./SuggestedTag.vue";
+import {computed, ComputedRef, Ref, ref} from "vue";
+import {UrlEntry} from "../../core/url-entry";
+import {tagsPopupEntry} from "../../core/core";
+import {allTags, TagWrap} from "../../core/tags";
+
 
 const inputTagText = ref("");
-function closePopup(event: MouseEvent) {
-    if (event.currentTarget === event.target) {
-        tagsPopupEntry.value = null;
-    }
-}
 
-const tagPropsHelper = new TagPropsHelper(tagsPopupEntry as Ref<UrlInfo>, inputTagText);
+
+const entry: Ref<UrlEntry> = tagsPopupEntry as Ref<UrlEntry>;
+const tagWraps: ComputedRef<TagWrap[]> = computed(() => {
+  return allTags.value.map(tag => ({
+    tag,
+    entry: entry.value,
+  }));
+});
+const tagWrapsFiltered: ComputedRef<TagWrap[]> = computed(() => {
+  const starts:   TagWrap[] = [];
+  const contains: TagWrap[] = [];
+  for (const tagProp of tagWraps.value) {
+    const index = tagProp.tag.indexOf(inputTagText.value);
+    if (index === -1) {
+      continue;
+    }
+    if (index === 0) {
+      starts.push(tagProp);
+    } else {
+      contains.push(tagProp);
+    }
+  }
+  return [starts, contains].flat();
+});
+
 
 function selectTag() { // @tabPressed
-    // todo ...
-    inputTagText.value = "";
+  // todo ...
+  inputTagText.value = "";
+}
+
+function closePopup(event: MouseEvent) {
+  if (event.currentTarget === event.target) {
+    tagsPopupEntry.value = null;
+  }
 }
 
 </script>

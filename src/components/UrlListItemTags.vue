@@ -5,7 +5,9 @@
     data-comp="UrlListItemTags"
   >
     <div class="tags">
-      <EntryTags :entry="ue"/>
+      <div class="tag-master" data-comp="EntryTags">
+        <div class="tag" v-for="tag of ue.tags" :data-tag="tag">{{tag}}</div>
+      </div>
     </div>
     <div v-if="!ue.tags?.length" class="tag add-tag"><span class="plus">+</span></div>
   </div>
@@ -13,12 +15,11 @@
 
 <script setup lang="ts">
 import {toRaw} from "vue";
-import {UrlInfo} from "../core/url-info-entry";
+import {UrlEntry} from "../core/url-entry";
 import {tagsPopupEntry} from "../core/core";
-import EntryTags from "./tags/EntryTags.vue";
 
 
-const props = defineProps<{ue: UrlInfo}>();
+const props = defineProps<{ue: UrlEntry}>();
 
 function toggleTagsEditPopup() { // <.tags-wrapper> @click
     if (toRaw(tagsPopupEntry.value) === toRaw(props.ue)) {

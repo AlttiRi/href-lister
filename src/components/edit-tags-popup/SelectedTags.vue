@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {UrlInfo} from "../../core/url-info-entry";
+import {UrlEntry} from "../../core/url-entry";
 import {onMounted, Ref, ref} from "vue";
 
 const props = defineProps<{
-    entry: UrlInfo,
+    entry: UrlEntry,
     modelValue: string
 }>();
 

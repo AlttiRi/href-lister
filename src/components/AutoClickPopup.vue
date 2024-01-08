@@ -32,20 +32,40 @@ watchEffect(() => {
 
 <template>
   <Teleport to="body" v-if="showAutoClickPopup">
-    <div ref="popupElem" class="popup" data-comp="AutoClickPopup">
-      <div ref="headerElem" class="header">Header</div>
-      <div>Popup</div>
+    <div class="popup-root" data-comp="AutoClickPopup">
+      <div class="popup" ref="popupElem">
+        <div class="popup-header" ref="headerElem">Header</div>
+        <div>Popup</div>
+      </div>
     </div>
   </Teleport>
 </template>
 
 <style scoped>
+.popup-root {
+  display: flex;
+  margin-top: 40px;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 99999;
+  font-size: 16px;
+  font-family: serif;
+}
+.popup-root > * {
+  pointer-events: all;
+}
+
 .popup {
   border: #4b88b9 1px solid;
   background-color: #4ba4b6;
   z-index: 10;
 }
-.header {
+.popup-header {
   background-color: #5b5cb6;
 }
 </style>

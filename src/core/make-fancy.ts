@@ -14,6 +14,7 @@ function assignStyleState(element: HTMLElement, state: AnyState) {
     }
 }
 
+
 export type MovableOpts = {
     handle?: HTMLElement,
     onStop?: (state: MoveState) => void,
@@ -114,8 +115,6 @@ export function makeResizable(element: HTMLElement, {
 }
 
 
-
-
 type StoreStateOpt<T extends AnyState> = {
     id: string,
     onMove?: (state: T) => void,
@@ -130,7 +129,9 @@ type StoreStateReturn<T extends AnyState> = {
     state?: T,
 };
 
-export function storeStateInLS<T extends AnyState>({id: lsName, onMove, onStop, reset, restore}: StoreStateOpt<T>): StoreStateReturn<T> {
+export function storeStateInLS<T extends AnyState>(
+    {id: lsName, onMove, onStop, reset, restore}: StoreStateOpt<T>
+): StoreStateReturn<T> {
     if (reset && lsName) {
         localStorage.removeItem(lsName);
     }
@@ -157,9 +158,5 @@ export function storeStateInLS<T extends AnyState>({id: lsName, onMove, onStop, 
         _onStop = saveStateLS;
     }
 
-    return {
-        onMove,
-        onStop: _onStop,
-        state
-    };
+    return {onMove, onStop: _onStop, state};
 }

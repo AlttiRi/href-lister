@@ -70,11 +70,13 @@ function onPointerleave() {
       <span class="grey"> — </span>
       <span>
         <span class="grey">[</span>
-        <span title="Clicked URLs count" class="clicked-count">{{clickedUrlsCount.count}}</span>
-        <span
-          title="Clicked URLs count (unique)"
-          v-if="clickedUrlsCount.count !== clickedUrlsCount.uniqueCount"
-        > ({{clickedUrlsCount.uniqueCount}})</span>
+        <span class="clicked-count">
+          <span title="Clicked URLs count">{{clickedUrlsCount.count}}</span>
+          <span
+            title="Clicked URLs count (unique)"
+            v-if="clickedUrlsCount.count !== clickedUrlsCount.uniqueCount"
+          > ({{clickedUrlsCount.uniqueCount}})</span>
+        </span>
         <span class="grey">]</span>
       </span>
     </span>

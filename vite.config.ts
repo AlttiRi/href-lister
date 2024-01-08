@@ -17,6 +17,7 @@ export default defineConfig({
   build: {
     target: "es2020",
     sourcemap: true,
+    minify: true,
     rollupOptions: {
       output: {
         entryFileNames: `[name].js`,

@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import {watchEffect} from "vue";
 import {clickedUrlsCount, hash, urlsCount} from "../core/title-handler";
+import {lastClickedInfo} from "../core/core";
+import {ordinalIndicator} from "../core/util";
+import {sleep} from "@alttiri/util-js";
+
 
 watchEffect(() => {
     const {count, uniqueCount} = urlsCount.value;
@@ -23,6 +27,18 @@ function formatCounts(count: number, uniqueCount: number): string {
     }
     return countText;
 }
+
+async function scrollToListItem() {
+  if (!lastClickedInfo.value) {
+    return;
+  }
+  const elem = lastClickedInfo.value.elem;
+  elem.scrollIntoView();
+  elem.classList.add("highlighted-2");
+  await sleep(400);
+  elem.classList.remove("highlighted-2");
+}
+
 </script>
 
 <template>
@@ -49,6 +65,17 @@ function formatCounts(count: number, uniqueCount: number): string {
           v-if="clickedUrlsCount.count !== clickedUrlsCount.uniqueCount"
         > ({{clickedUrlsCount.uniqueCount}})</span>
         <span class="grey">]</span>
+      </span>
+    </span>
+    <span
+      v-if="lastClickedInfo"
+      @click="scrollToListItem"
+    >
+      <span class="grey"> — </span>
+      <span
+        class="grey"
+        :title="'Last clicked URL index\n' + lastClickedInfo.entry.url">
+        {{ordinalIndicator(lastClickedInfo.index)}}
       </span>
     </span>
   </div>

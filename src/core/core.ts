@@ -9,9 +9,15 @@ export const NEVER_VISITED_TIME = -1;
 export const inputText: Ref<string> = ref("");
 export const messagePopupEntry: Ref<UrlEntry | null> = ref(null);
 export const tagsPopupEntry:    Ref<UrlEntry | null> = ref(null);
-export const lastClickedEntry:  Ref<UrlEntry | null> = ref(null);
 export const clickedUrls = ref(new Set<string>());
 export const showAutoClickPopup = ref<boolean>(false);
+
+export type LastClickedInfo = {
+    index: number,
+    entry: UrlEntry,
+    elem:  HTMLTableRowElement,
+};
+export const lastClickedInfo: Ref<LastClickedInfo | null> = ref(null);
 
 export const urlEntryList: Ref<UrlEntry[]> = ref([]);
 watchEffect(async () => {

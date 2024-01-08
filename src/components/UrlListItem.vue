@@ -1,13 +1,14 @@
 <template>
   <tr
     @pointerenter="triggerVisitedMs"
+    :data-index="index"
     :class="{
       'clicked': isClicked,
       'last-clicked': isLastClicked,
     }"
     class="list-item-row"
     data-comp="UrlListItem"
-    :data-index="index + 1"
+    ref="htmlCompRef"
   >
     <td class="col-9 nowrap-text-ceil url url-cell">
       <span class="nowrap-text-ceil-content">
@@ -46,9 +47,14 @@
 </template>
 
 <script setup lang="ts">
-import {computed, toRaw, ComputedRef} from "vue";
+import {computed, toRaw, ComputedRef, ref, onBeforeUnmount} from "vue";
 import {formatDate} from "@alttiri/util-js";
-import {clickedUrls, lastClickedEntry, NEVER_VISITED_TIME, messagePopupEntry} from "../core/core";
+import {
+  clickedUrls,
+  NEVER_VISITED_TIME,
+  messagePopupEntry,
+  lastClickedInfo,
+} from "../core/core";
 import {throttle, timeAgo} from "../core/util";
 import {RefTriggerTimer} from "../core/relative-time-trigger";
 import {UrlEntry} from "../core/url-entry";
@@ -104,14 +110,18 @@ function toggleMessageEditPopup() { // <td> @dblclick
   }
 }
 
-
+const htmlCompRef = ref<HTMLTableRowElement>();
 const isClicked = computed(() => {
   return clickedUrls.value.has(props.ue.url);
 });
 function markUrlAsClicked() { // <a.url> @click
   clickedUrls.value.add(props.ue.url);
   visitUrl();
-  lastClickedEntry.value = toRaw(props.ue);
+  lastClickedInfo.value = {
+    entry: props.ue,
+    index: props.index,
+    elem:  htmlCompRef.value as HTMLTableRowElement,
+  };
 }
 function markUrlAsClickedOnMMBClick(event: PointerEvent) { // <a.url> @pointerup
   const MIDDLE_BUTTON = 1;
@@ -128,9 +138,18 @@ function unmarkUrlAsClicked() { // <.info-dot> @contextmenu.prevent
   clickedUrls.value.delete(props.ue.url);
 }
 const isLastClicked = computed(() => {
-  return toRaw(lastClickedEntry.value) === toRaw(props.ue);
+  const lcInfo = lastClickedInfo.value;
+  if (!lcInfo) {
+    return false;
+  }
+  return props.index === lcInfo.index && props.ue.isEquals(lcInfo.entry);
 });
 
+onBeforeUnmount(() => {
+  if (isLastClicked.value) {
+    lastClickedInfo.value = null;
+  }
+});
 
 
 // Recalculates `timePassedClass`, `visitedText` based on `visitedMs`
@@ -248,6 +267,13 @@ a:visited {
 
 tr:hover {
   box-shadow: 0 0 1px gray;
+}
+
+.highlighted-1 {
+  box-shadow: 0 0 1px gray;
+}
+.highlighted-2 {
+  box-shadow: 0 0 2px gray;
 }
 
 .no-dbl-click-select:active {

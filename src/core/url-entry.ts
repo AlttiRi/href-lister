@@ -33,12 +33,18 @@ export class UrlEntry {
         if (state) {
             return new UrlEntry(url, state, inputComment);
         }
-        state = await get(url, urlInfoStore);
+        state = await idb.get(url, urlInfoStore);
         if (state === undefined) {
             state = {};
         }
         UrlEntry.stateMap.set(url, state);
         return new UrlEntry(url, state, inputComment);
+    }
+    isEquals(target: UrlEntry | null): boolean {
+        if (!target) {
+            return false;
+        }
+        return this.state === target.state && this.inputComment === target.inputComment;
     }
     get comment() { return this.state.comment; }
     get visited() { return this.state.visited; }

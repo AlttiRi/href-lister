@@ -21,7 +21,7 @@ watchEffect(() => {
 
 function formatCounts(count: number, uniqueCount: number): string {
     let countText = count.toString();
-    const hasDuplicates = uniqueCount !== length;
+    const hasDuplicates = count !== uniqueCount;
     if (hasDuplicates) {
         countText = `${countText} (${uniqueCount})`;
     }
@@ -33,9 +33,9 @@ async function scrollToListItem() {
     return;
   }
   const elem = lastClickedInfo.value.elem;
-  elem.scrollIntoView();
+  elem.scrollIntoView({block: "center"});
   elem.classList.add("highlighted-2");
-  await sleep(400);
+  await sleep(800);
   elem.classList.remove("highlighted-2");
 }
 
@@ -70,7 +70,7 @@ function onPointerleave() {
       <span class="grey"> — </span>
       <span>
         <span class="grey">[</span>
-        <span title="Clicked URLs count">{{clickedUrlsCount.count}}</span>
+        <span title="Clicked URLs count" class="clicked-count">{{clickedUrlsCount.count}}</span>
         <span
           title="Clicked URLs count (unique)"
           v-if="clickedUrlsCount.count !== clickedUrlsCount.uniqueCount"
@@ -97,5 +97,8 @@ function onPointerleave() {
 <style scoped>
 .grey, .urls-hash {
     color: #777;
+}
+.clicked-count {
+  padding: 0 3px;
 }
 </style>

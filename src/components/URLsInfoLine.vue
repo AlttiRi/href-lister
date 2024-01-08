@@ -39,6 +39,17 @@ async function scrollToListItem() {
   elem.classList.remove("highlighted-2");
 }
 
+function onPointerenter() {
+  if (lastClickedInfo.value) {
+    lastClickedInfo.value.elem.classList.add("highlighted-1");
+  }
+}
+function onPointerleave() {
+  if (lastClickedInfo.value) {
+    lastClickedInfo.value.elem.classList.remove("highlighted-1");
+  }
+}
+
 </script>
 
 <template>
@@ -70,6 +81,8 @@ async function scrollToListItem() {
     <span
       v-if="lastClickedInfo"
       @click="scrollToListItem"
+      @pointerenter="onPointerenter"
+      @pointerleave="onPointerleave"
     >
       <span class="grey"> — </span>
       <span

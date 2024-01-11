@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import {ref, watchEffect} from "vue";
 import {makeMovable, makeResizable, storeStateInLS} from "../core/make-fancy";
-import {showAutoClickPopup} from "../core/core";
+import {resetAutoClickPopupRequested} from "../core/core";
 
-
-const popupElem = ref<HTMLElement>();
+const popupElem  = ref<HTMLElement>();
 const headerElem = ref<HTMLElement>();
+
 
 watchEffect(() => {
   if (!popupElem.value || !headerElem.value) {
@@ -16,7 +16,9 @@ watchEffect(() => {
     ...storeStateInLS({
       restore: true,
       id: "href-lister-popup-move-state",
+      reset: resetAutoClickPopupRequested.value,
     }),
+    passive: true,
   });
   makeResizable(popupElem.value, {
     minH: parseInt(getComputedStyle(popupElem.value).height),
@@ -24,48 +26,38 @@ watchEffect(() => {
     ...storeStateInLS({
       restore: true,
       id: "href-lister-popup-resize-state",
+      reset: resetAutoClickPopupRequested.value,
     }),
+    passive: true,
   });
+  resetAutoClickPopupRequested.value = false;
 });
+
 
 </script>
 
 <template>
-  <Teleport to="body" v-if="showAutoClickPopup">
-    <div class="popup-root" data-comp="AutoClickPopup">
-      <div class="popup" ref="popupElem">
-        <div class="popup-header" ref="headerElem">Header</div>
-        <div>Popup</div>
+  <div class="popup-root" data-comp="AutoClickPopup">
+    <div class="popup" ref="popupElem" tabindex="-1" @focus="console.log">
+      <div class="popup-header p-1" ref="headerElem">Auto Clicker</div>
+      <div class="popup-content ">
+        <div class="btn-group m-1" role="group" aria-label="Basic example">
+          <button class="btn btn-primary">Start</button>
+          <button class="btn btn-secondary">Pause</button>
+          <button class="btn btn-secondary">Stop</button>
+        </div>
+        <div class="input-wrap m-1">
+          <input class="form-control" type="number" value="5000">
+        </div>
+        <div class="m-1">
+          <div>123456</div>
+          <div>qwerty</div>
+        </div>
       </div>
     </div>
-  </Teleport>
+  </div>
 </template>
 
 <style scoped>
-.popup-root {
-  display: flex;
-  margin-top: 40px;
-  justify-content: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 99999;
-  font-size: 16px;
-  font-family: serif;
-}
-.popup-root > * {
-  pointer-events: all;
-}
 
-.popup {
-  border: #4b88b9 1px solid;
-  background-color: #4ba4b6;
-  z-index: 10;
-}
-.popup-header {
-  background-color: #5b5cb6;
-}
 </style>

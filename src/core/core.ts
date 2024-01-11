@@ -2,6 +2,7 @@ import {computed, ref, Ref, ComputedRef, watchEffect} from "vue";
 import {UrlEntry} from "./url-entry";
 import {InputUrlEntry, parseUrlEntries} from "./url-parser";
 import {urlFilter} from "./filters";
+import {sleep} from "@alttiri/util-js";
 
 
 export const NEVER_VISITED_TIME = -1;
@@ -11,6 +12,15 @@ export const messagePopupEntry: Ref<UrlEntry | null> = ref(null);
 export const tagsPopupEntry:    Ref<UrlEntry | null> = ref(null);
 export const clickedUrls = ref(new Set<string>());
 export const showAutoClickPopup = ref<boolean>(false);
+export const resetAutoClickPopupRequested = ref<boolean>(false);
+export async function resetPopup() {
+    resetAutoClickPopupRequested.value = true;
+    if (showAutoClickPopup.value) {
+        showAutoClickPopup.value = false;
+        await sleep();
+        showAutoClickPopup.value = true;
+    }
+}
 
 export type LastClickedInfo = {
     index: number,

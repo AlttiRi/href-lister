@@ -38,10 +38,10 @@
             @pointerdown="onCopyUrlsAsCodeArrays"
           >Copy</button>
           <button
-            hidden
             class="btn btn-outline-primary me-1"
             title="Popup"
             @click="showAutoClickPopup = !showAutoClickPopup"
+            @contextmenu.prevent="resetPopup"
           >Popup</button>
         </span>
       </span>
@@ -52,9 +52,8 @@
 <script setup lang="ts">
 import {Ref, ref} from "vue";
 import {sleep} from "@alttiri/util-js";
-import {inputText, showAutoClickPopup, urlsFiltered} from "../core/core";
+import {inputText, resetPopup, showAutoClickPopup, urlsFiltered} from "../core/core";
 import {getCodeArrays} from "../core/util";
-
 
 const blinkButtonMap = new WeakMap();
 async function blink(elem: HTMLElement) {

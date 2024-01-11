@@ -1,34 +1,32 @@
 <template>
-  <Teleport to="body">
-    <div
-      class="modal message-edit-popup"
-      data-comp="MessageEditPopup"
-      v-if="messagePopupEntry"
-      @pointerdown="closePopup"
-    >
-      <div class="popup-content">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">{{messagePopupEntry.url}}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="closePopup"></button>
-          </div>
-          <div class="modal-body">
-            <textarea
-              rows="5"
-              :value="comment"
-              @input="onInputSaveComment"
-              ref="textareaElem"
-              @keydown="closePopupOnEnter"
-            ></textarea>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" @click="removeComment">Reset</button>
+  <div
+    class="modal message-edit-popup"
+    data-comp="MessageEditPopup"
+    v-if="messagePopupEntry"
+    @pointerdown="closePopup"
+  >
+    <div class="popup-content">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{messagePopupEntry.url}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="closePopup"></button>
+        </div>
+        <div class="modal-body">
+          <textarea
+            rows="5"
+            :value="comment"
+            @input="onInputSaveComment"
+            ref="textareaElem"
+            @keydown="closePopupOnEnter"
+          ></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" @click="removeComment">Reset</button>
 <!--            <button type="button" class="btn btn-primary">Select</button>-->
-          </div>
         </div>
       </div>
     </div>
-  </Teleport>
+  </div>
 </template>
 
 <script setup lang="ts">

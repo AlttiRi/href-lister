@@ -7,30 +7,37 @@ const popupElem  = ref<HTMLElement>();
 const headerElem = ref<HTMLElement>();
 
 
-watchEffect(() => {
+const stopWE = watchEffect(() => {
   if (!popupElem.value || !headerElem.value) {
     return;
   }
+  const popup  = popupElem.value;
+  const header = headerElem.value;
+
   makeMovable(popupElem.value, {
-    handle: headerElem.value,
+    handle: header,
     ...storeStateInLS({
       restore: true,
       id: "href-lister-popup-move-state",
       reset: resetAutoClickPopupRequested.value,
     }),
-    passive: true,
   });
-  makeResizable(popupElem.value, {
-    minH: parseInt(getComputedStyle(popupElem.value).height),
-    minW: parseInt(getComputedStyle(popupElem.value).width),
+  header.addEventListener("pointerdown", event => {
+    popup.focus();
+  }, {passive: true});
+
+  makeResizable(popup, {
+    minH: parseInt(getComputedStyle(popup).height),
+    minW: parseInt(getComputedStyle(popup).width),
     ...storeStateInLS({
       restore: true,
       id: "href-lister-popup-resize-state",
       reset: resetAutoClickPopupRequested.value,
     }),
-    passive: true,
   });
+
   resetAutoClickPopupRequested.value = false;
+  stopWE();
 });
 
 

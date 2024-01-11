@@ -15,15 +15,11 @@
     <PopupWrapper v-if="showAutoClickPopup">
       <AutoClickPopup/>
     </PopupWrapper>
-    <PopupWrapperShadow v-if="showAutoClickPopup">
-      <AutoClickPopup/>
-    </PopupWrapperShadow>
   </div>
 </template>
 
 <script setup lang="ts">
 import Filters from "./Filters.vue";
-import PopupWrapperShadow from "./PopupWrapperShadow.vue";
 import PopupWrapper from "./PopupWrapper.vue";
 import InputControls from "./InputControls.vue";
 import URLsInfoLine from "./URLsInfoLine.vue";

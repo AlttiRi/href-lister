@@ -7,13 +7,6 @@ type ResizeState = Record<ResizeStyleProps, string>;
 type AnyStyleProps = MoveStyleProps | ResizeStyleProps;
 type AnyState = MoveState | ResizeState;
 
-/**
- * @note
- * Use `passive` option of `MovableOpts`/`ResizableOpts` if the popup is wrapped into a ShadowDOM container.
- * In this case there is no bugs when a text on the page is selected.
- * With `passive` option, for example, the `focus` event will be triggered normally by a click on the element
- * with the attached "pointerdown" listener of `makeMovable`/`makeResizable` function.
- */
 
 /**
  * @param {HTMLElement} element
@@ -31,11 +24,10 @@ export type MovableOpts = {
     onStop?: (state: MoveState) => void,
     onMove?: (state: MoveState) => void,
     state?: MoveState,
-    passive?: boolean,
 }
 
 export function makeMovable(element: HTMLElement, {
-    handle, onStop: _onStop, onMove, state, passive = false
+    handle, onStop: _onStop, onMove, state
 }: MovableOpts = {}) {
     const _onMove = (state: MoveState) => {
         onMove?.(state);
@@ -52,7 +44,7 @@ export function makeMovable(element: HTMLElement, {
     element.style.position    = "absolute";
 
     _handle.addEventListener("pointerdown", (event: PointerEvent) => {
-        !passive && event.preventDefault();
+        event.preventDefault(); // To prevent bugs when all text on the page is selected (Ctrl + A)
         const offsetY = event.clientY - parseInt(getComputedStyle(element).top);
         const offsetX = event.clientX - parseInt(getComputedStyle(element).left);
 
@@ -71,7 +63,7 @@ export function makeMovable(element: HTMLElement, {
         }
         addEventListener("pointermove", onMove, {passive: true});
         addEventListener("pointerup", onEnd, {once: true});
-    }, {passive});
+    });
 }
 
 
@@ -82,11 +74,10 @@ export type ResizableOpts = {
     onStop?: (state: ResizeState) => void,
     onMove?: (state: ResizeState) => void,
     state?: ResizeState,
-    passive?: boolean,
 }
 
 export function makeResizable(element: HTMLElement, {
-    minW = 32, minH = 32, size = 16, onStop: _onStop, onMove, state, passive = false
+    minW = 32, minH = 32, size = 16, onStop: _onStop, onMove, state
 }: ResizableOpts = {}) {
     const _onMove = (state: ResizeState) => {
         onMove?.(state);
@@ -105,7 +96,7 @@ export function makeResizable(element: HTMLElement, {
     element.append(lrCorner);
 
     lrCorner.addEventListener("pointerdown",event => {
-        !passive && event.preventDefault();
+        event.preventDefault();
         lrCorner.setPointerCapture(event.pointerId);
         const offsetX = event.clientX - element.offsetLeft - parseInt(getComputedStyle(element).width);
         const offsetY = event.clientY - element.offsetTop  - parseInt(getComputedStyle(element).height);
@@ -128,7 +119,7 @@ export function makeResizable(element: HTMLElement, {
         }
         lrCorner.addEventListener("pointermove", onMove, {passive: true});
         lrCorner.addEventListener("lostpointercapture", onEnd, {once: true});
-    }, {passive});
+    });
 }
 
 

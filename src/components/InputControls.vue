@@ -33,6 +33,7 @@
           <button
             class="btn btn-outline-primary me-1"
             @click="onClearTextInput"
+            :disabled="!editable"
           >Clear</button>
           <button
             class="btn btn-primary me-1" title="Copy URLs"

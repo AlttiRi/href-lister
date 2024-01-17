@@ -197,6 +197,18 @@ function onPointerleave() {
             </span>
           </label>
         </div>
+
+<!--        <div class="div-wrap">-->
+<!--          <label class="p-1 pt-0 col-12">-->
+<!--              <input-->
+<!--                title="Only un-clicked"-->
+<!--                class="form-check-input"-->
+<!--                type="checkbox"-->
+<!--              >-->
+<!--              <span class="p-1 pt-0">Only un-clicked</span>-->
+<!--          </label>-->
+<!--        </div>-->
+
       </div>
     </div>
   </div>

@@ -160,7 +160,7 @@ function recalculateComponentState() {
 const triggerVisitedMs = throttle(recalculateComponentState, 2000); // <tr> @pointerenter
 
 const visitedText = computed(() => {
-  let text = "";
+  let text: string;
   if (visitedMs.value < 0) {
     text = "never clicked";
   } else {

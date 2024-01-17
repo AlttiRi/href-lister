@@ -87,6 +87,9 @@ async function startClicking() {
 }
 
 function interrupt(reason: "paused" | "stopped") {
+  if (lastClickedIndex.value === 0) {
+    reason = "stopped";
+  }
   state.value = reason;
   controller.abort(reason);
   controller = new AbortController();
@@ -157,7 +160,7 @@ function onPointerleave() {
             @pointerenter="onPointerenter"
             @pointerleave="onPointerleave"
             :disabled="!(state === 'ready' || state === 'paused')"
-          >{{ state === "ready" || !lastClickedIndex ? "Start" : "Next"}}</button>
+          >{{ state === "ready" || !lastClickedIndex ? "Start" : "Next" }}</button>
           <button
             class="btn btn-secondary col-4"
             :disabled="state !== 'started'"
@@ -167,7 +170,7 @@ function onPointerleave() {
             class="btn btn-secondary col-4"
             :disabled="!lastClickedIndex"
             @click="stop"
-          >Stop</button>
+          >{{ state === "paused" ? "Reset" : "Stop" }}</button>
         </div>
 
         <div class="div-wrap">

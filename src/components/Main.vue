@@ -8,7 +8,7 @@
     <URLsInfoLine/>
     <hr>
     <UrlList/>
-    <UrlListItemTagsEditPopup v-if="tagsPopupEntry"/>
+    <UrlEntryTagsEditPopup v-if="tagsPopupEntry"/>
     <PopupWrapper v-if="messagePopupEntry">
       <MessageEditPopup/>
     </PopupWrapper>
@@ -26,7 +26,7 @@ import URLsInfoLine from "./URLsInfoLine.vue";
 import AutoClickPopup from "./AutoClickPopup.vue";
 import UrlList from "./UrlList.vue";
 import MessageEditPopup from "./MessageEditPopup.vue";
-import UrlListItemTagsEditPopup from "./edit-tags-popup/UrlListItemTagsEditPopup.vue";
+import UrlEntryTagsEditPopup from "./edit-tags-popup/UrlEntryTagsEditPopup.vue";
 import {messagePopupEntry, showAutoClickPopup, tagsPopupEntry} from "../core/core";
 import "../style/tag.scss";
 import "../style/popup-auto-click.scss";

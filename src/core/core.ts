@@ -22,6 +22,9 @@ export async function resetPopup() {
     }
 }
 
+export const editable   = ref(true);
+export const appendable = ref(true);
+
 export type LastClickedInfo = {
     index: number,
     entry: UrlEntry,

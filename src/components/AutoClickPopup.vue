@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {reactive, ref, toRefs, watch, watchEffect} from "vue";
 import {makeMovable, storeStateInLS} from "../core/make-fancy";
-import {lastClickedInfo, resetAutoClickPopupRequested} from "../core/core";
+import {appendable, editable, lastClickedInfo, resetAutoClickPopupRequested} from "../core/core";
 import {sleep} from "@alttiri/util-js";
 import {sleepEx} from "../core/util";
 
@@ -52,6 +52,16 @@ type ClickingState = "ready" | "started" | "paused" | "stopped";
 const state = ref<ClickingState>("ready");
 const lastClickedIndex = ref(0);
 let controller = new AbortController();
+
+watch(state,() => {
+  if (state.value === "ready") {
+    appendable.value = editable.value = true;
+  } else if (state.value === "started") {
+    appendable.value = editable.value = false;
+  } else if (state.value === "paused") {
+    appendable.value = true;
+  }
+});
 
 async function startClicking() {
   console.log("startClicking");

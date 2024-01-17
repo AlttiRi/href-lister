@@ -6,6 +6,7 @@
         id="urls-textarea" spellcheck="false"
         v-model="inputText"
         ref="textareaEl"
+        :disabled="!editable"
       ></textarea>
     </div>
     <div class="input col-12">
@@ -17,10 +18,12 @@
           <button
             class="btn btn-outline-primary me-1"
             @click="onReplaceClipboardText"
+            :disabled="!editable"
           >Replace</button>
           <button
             class="btn btn-outline-primary me-1"
             @click="onAppendClipboardText"
+            :disabled="!(editable || appendable)"
           >Append</button>
         </span>
         <span class=".col m-1">
@@ -52,7 +55,7 @@
 <script setup lang="ts">
 import {Ref, ref} from "vue";
 import {sleep} from "@alttiri/util-js";
-import {inputText, resetPopup, showAutoClickPopup, urlsFiltered} from "../core/core";
+import {appendable, editable, inputText, resetPopup, showAutoClickPopup, urlsFiltered} from "../core/core";
 import {getCodeArrays} from "../core/util";
 
 const blinkButtonMap = new WeakMap();

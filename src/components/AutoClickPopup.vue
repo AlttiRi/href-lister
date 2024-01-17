@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {reactive, ref, toRefs, watch, watchEffect} from "vue";
 import {makeMovable, storeStateInLS} from "../core/make-fancy";
-import {resetAutoClickPopupRequested} from "../core/core";
+import {lastClickedInfo, resetAutoClickPopupRequested} from "../core/core";
 import {sleep} from "@alttiri/util-js";
 import {sleepEx} from "../core/util";
 
@@ -112,6 +112,29 @@ function focusout() {
   }, 250);
 }
 
+let startElem: Element | null;
+function onPointerenter() {
+  if (lastClickedInfo.value && state.value !== "ready") {
+    const nextElem = lastClickedInfo.value.elem.nextElementSibling;
+    if (nextElem) {
+      nextElem.classList.add("highlighted-1");
+      startElem = nextElem;
+    }
+  } else {
+    const firstElem = document.querySelector(`[data-comp="UrlListItem"]`);
+    if (firstElem) {
+      firstElem.classList.add("highlighted-1");
+      startElem = firstElem;
+    }
+  }
+}
+function onPointerleave() {
+  if (startElem) {
+    startElem.classList.remove("highlighted-1");
+    startElem = null;
+  }
+}
+
 </script>
 
 <template>
@@ -131,6 +154,8 @@ function focusout() {
           <button
             class="btn btn-primary col-4"
             @click="startClicking"
+            @pointerenter="onPointerenter"
+            @pointerleave="onPointerleave"
             :disabled="!(state === 'ready' || state === 'paused')"
           >{{ state === "ready" || !lastClickedIndex ? "Start" : "Next"}}</button>
           <button

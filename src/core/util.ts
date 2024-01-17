@@ -91,3 +91,17 @@ export function ordinalIndicator(index: number | string) {
     }
     return index + 1 + "th";
 }
+
+export function sleepEx(ms: number, signal: AbortSignal) {
+    if (signal.aborted) {
+        return Promise.resolve(signal.reason);
+    }
+    let timerId: number;
+    return new Promise(resolve => {
+        timerId = setTimeout(resolve, ms);
+        signal.onabort = () => {
+            clearTimeout(timerId);
+            resolve(signal.reason);
+        };
+    });
+}

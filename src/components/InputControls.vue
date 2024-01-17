@@ -39,10 +39,10 @@
           >Copy</button>
           <button
             class="btn btn-outline-primary me-1"
-            title="Popup"
+            title="Toggle Auto Clicker Popup"
             @click="showAutoClickPopup = !showAutoClickPopup"
             @contextmenu.prevent="resetPopup"
-          >Popup</button>
+          >Auto Clicker</button>
         </span>
       </span>
     </div>

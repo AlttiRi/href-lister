@@ -265,7 +265,7 @@ a:visited {
 .month-6 { background-color: #7633ab; }
 .long-ago { background-color: gray; }
 
-tr:hover {
+tr:hover, tr.hover {
   box-shadow: 0 0 1px gray;
 }
 

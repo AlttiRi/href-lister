@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, watchEffect} from "vue";
+import {reactive, ref, toRefs, watch, watchEffect} from "vue";
 import {makeMovable, storeStateInLS} from "../core/make-fancy";
 import {resetAutoClickPopupRequested} from "../core/core";
 import {sleep} from "@alttiri/util-js";
@@ -31,8 +31,21 @@ const stopWE = watchEffect(() => {
   stopWE();
 });
 
-const delay = ref(1);
-const count = ref(0);
+
+function useLocalStorageObject<T extends object>(itemName: string, defaultValue: T) {
+  const lsValue: string | null = localStorage.getItem(itemName);
+  const object = reactive(lsValue ? JSON.parse(lsValue) : defaultValue);
+  watch(object,() => {
+    localStorage.setItem(itemName, JSON.stringify(object));
+  });
+  return object;
+}
+
+const {delay, count} = toRefs(useLocalStorageObject("href-lister-clicker-settings", {
+  delay: 1,
+  count: 0,
+}));
+
 
 
 type ClickingState = "ready" | "started" | "paused" | "stopped";

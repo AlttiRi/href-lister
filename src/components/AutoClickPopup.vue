@@ -145,13 +145,13 @@ function focusout() {
           >Stop</button>
         </div>
 
-        <div class="col-12">
-          <label class="m-1 mt-0">
+        <div class="div-wrap">
+          <label class="p-1 pt-0 col-12">
             <span class="input-group">
-              <span class="input-group-text">Delay</span>
+              <span class="input-group-text col-3">Delay</span>
               <input
                 title="Click delay (seconds)"
-                class="form-control "
+                class="form-control"
                 type="number"
                 v-model="delay"
               >
@@ -159,13 +159,13 @@ function focusout() {
           </label>
         </div>
 
-        <div class="col-12">
-          <label class="m-1 mt-0">
+        <div class="div-wrap">
+          <label class="p-1 pt-0 col-12">
             <span class="input-group">
-              <span class="input-group-text">Count</span>
+              <span class="input-group-text col-3">Count</span>
               <input
                 title="Count"
-                class="form-control "
+                class="form-control"
                 type="number"
                 v-model="count"
               >

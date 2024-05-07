@@ -11,7 +11,7 @@ export const inputText: Ref<string> = ref("");
 export const messagePopupEntry: Ref<UrlEntry | null> = ref(null);
 export const tagsPopupEntry:    Ref<UrlEntry | null> = ref(null);
 export const clickedUrls = ref(new Set<string>());
-export const showAutoClickPopup = ref<boolean>(true);
+export const showAutoClickPopup = ref<boolean>(false);
 export const resetAutoClickPopupRequested = ref<boolean>(false);
 export async function resetPopup() {
     resetAutoClickPopupRequested.value = true;

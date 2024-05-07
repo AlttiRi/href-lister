@@ -31,7 +31,7 @@
             <span class="input-group-text me-2 text-center">Controls</span>
           </span>
           <button
-            class="btn btn-outline-primary me-1"
+            class="btn btn-outline-danger me-1"
             @click="onClearTextInput"
             :disabled="!editable"
           >Clear</button>

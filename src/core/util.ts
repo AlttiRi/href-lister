@@ -105,3 +105,16 @@ export function sleepEx(ms: number, signal: AbortSignal) {
         };
     });
 }
+
+
+export function downloadBlob(blob: Blob, name: string, url?: string): void {
+    const anchor = document.createElement("a");
+    anchor.setAttribute("download", name || "");
+    const blobUrl = URL.createObjectURL(blob);
+    anchor.href = blobUrl + (url ? ("#" + url) : "");
+    anchor.click();
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 15000);
+}
+
+// @ts-ignore
+globalThis.downloadBlob = downloadBlob;

@@ -118,3 +118,14 @@ export function downloadBlob(blob: Blob, name: string, url?: string): void {
 
 // @ts-ignore
 globalThis.downloadBlob = downloadBlob;
+
+/*
+// back up href-lister
+let json = {};
+for (const [url, value] of await idb.entries(idb.urlInfoStore)) {
+    console.log([url, value])
+    json[url] = value;
+}
+let text = JSON.stringify(json, null, " ");
+downloadBlob(new Blob([text]), `[href-lister] urlInfoStore-${Date.now()}.json`);
+*/

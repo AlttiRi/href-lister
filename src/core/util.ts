@@ -116,8 +116,7 @@ export function downloadBlob(blob: Blob, name: string, url?: string): void {
     setTimeout(() => URL.revokeObjectURL(blobUrl), 15000);
 }
 
-// @ts-ignore
-globalThis.downloadBlob = downloadBlob;
+Object.assign(globalThis, {downloadBlob});
 
 /*
 // back up href-lister

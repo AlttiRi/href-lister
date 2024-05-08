@@ -19,10 +19,13 @@ export default defineConfig({
     sourcemap: true,
     minify: true,
     rollupOptions: {
+      preserveEntrySignatures: "strict",
       output: {
+        compact: false,
+        minifyInternalExports: false,
         entryFileNames: `[name].js`,
         chunkFileNames: `[name].js`,
-        assetFileNames: `[name].[ext]`
+        assetFileNames: `[name].[ext]`,
       }
     }
   }

@@ -99,14 +99,15 @@ export class UrlEntry {
 
 
 // The old stores
-const commentsStore = idb.createStore("HrefListerComments", "Comments");
-const visitsStore   = idb.createStore("HrefLister", "Visits");
+// const commentsStore = idb.createStore("HrefListerComments", "Comments");
+// const visitsStore   = idb.createStore("HrefLister", "Visits");
 Object.assign(globalThis, {
     idb: {
         createStore, del, get, set, entries,
-        commentsStore, // await idb.entries(idb.commentsStore)
-        visitsStore,   // await idb.entries(idb.visitsStore)
-        urlInfoStore,  // await idb.get("http://localhost:5173/")
+        // commentsStore, visitsStore,
+        urlInfoStore,
+        // await idb.get("http://localhost:5173/", idb.urlInfoStore)
+        // await idb.entries(idb.urlInfoStore)
     },
     UrlEntry,
 });

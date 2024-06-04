@@ -1,7 +1,7 @@
 <template>
   <tr
     @pointerenter="triggerVisitedMs"
-    :data-index="index"
+    :data-index="index + 1"
     :class="{
       'clicked': isClicked,
       'last-clicked': isLastClicked,
@@ -19,7 +19,7 @@
             visited: visitedMs > 0,
             [timePassedClass]: true,
           }"
-          :title="visitedText"
+          :title="titleText"
           @contextmenu.prevent="unmarkUrlAsClicked"
           @pointerdown="removeVisitOnMMB"
         ></span>
@@ -159,12 +159,12 @@ function recalculateComponentState() {
 }
 const triggerVisitedMs = throttle(recalculateComponentState, 2000); // <tr> @pointerenter
 
-const visitedText = computed(() => {
-  let text: string;
+const titleText = computed(() => {
+  let text: string = `№ ${props.index + 1}.\n`;
   if (visitedMs.value < 0) {
-    text = "never clicked";
+    text += "never clicked";
   } else {
-    text = formatVisitedMs(visitedMs.value);
+    text += formatVisitedMs(visitedMs.value);
   }
   if (props.ue.initialVisited && props.ue.initialVisited !== visitedMs.value) {
     return `${text}\n${formatVisitedMs(props.ue.initialVisited)}`;

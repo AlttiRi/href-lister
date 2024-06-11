@@ -47,7 +47,10 @@ export const urlEntryListFiltered: ComputedRef<UrlEntry[]> = computed(() => {
 });
 
 export const urlsFiltered: ComputedRef<string[]> = computed(() => {
-    return urlEntryListFiltered.value.map(ue => ue.url);
+    const urls = urlEntryListFiltered.value.map(ue => ue.url);
+    // @ts-ignore
+    globalThis.__urls = urls;
+    return urls;
 });
 
 

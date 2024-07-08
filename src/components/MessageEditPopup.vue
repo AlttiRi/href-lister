@@ -59,7 +59,7 @@ const focusTextarea = () => {
 };
 onMounted(focusTextarea);
 
-function onInputSaveComment(event: InputEvent) {
+function onInputSaveComment(event: Event /* InputEvent */) {
   const newValue = (event.currentTarget as HTMLInputElement).value;
   void messagePopupEntry.value?.setComment(newValue);
 }

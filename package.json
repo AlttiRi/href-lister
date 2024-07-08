@@ -9,13 +9,13 @@
     "build-serve": "vite build && vite preview"
   },
   "dependencies": {
-    "@alttiri/util-js": "1.9.1",
+    "@alttiri/util-js": "1.10.2-20240603",
     "idb-keyval": "6.2.1",
-    "vue": "3.4.19"
+    "vue": "3.4.31"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "5.0.4",
-    "sass": "1.71.0",
-    "vite": "5.1.3"
+    "@vitejs/plugin-vue": "5.0.5",
+    "sass": "1.77.6",
+    "vite": "5.3.3"
   }
 }

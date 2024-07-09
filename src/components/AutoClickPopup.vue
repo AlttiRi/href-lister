@@ -162,8 +162,8 @@ function onPointerleave() {
       }"
     >
       <div class="popup-header p-1" ref="headerElem">Auto Clicker</div>
-      <div class="popup-content ">
-        <div class="btn-group p-1 container" role="group" aria-label="Basic example">
+      <div class="popup-content">
+        <div class="btn-group p-1 container">
           <button
             class="btn btn-primary col-4"
             @click="startClicking"

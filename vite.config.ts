@@ -26,9 +26,9 @@ export default defineConfig({
         chunkFileNames: `[name].js`,
         assetFileNames: `[name].[ext]`,
         manualChunks: {
-          "vue-js": ["vue"],
-          "util":   ["@alttiri/string-magic", "@alttiri/util-js"],
-          "idb":    ["idb-keyval"],
+          "vue":  ["vue"],
+          "util": ["@alttiri/string-magic", "@alttiri/util-js"],
+          "idb":  ["idb-keyval"],
         },
       }
     }

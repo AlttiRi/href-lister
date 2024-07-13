@@ -48,14 +48,14 @@
 
 <script setup lang="ts">
 import {computed, toRaw, ComputedRef, ref, onBeforeUnmount} from "vue";
-import {formatDate} from "@alttiri/util-js";
+import {formatDate, throttle} from "@alttiri/util-js";
 import {
   clickedUrls,
   NEVER_VISITED_TIME,
   messagePopupEntry,
   lastClickedInfo,
 } from "../core/core";
-import {throttle, timeAgo} from "../core/util";
+import {timeAgo} from "../core/util";
 import {RefTriggerTimer} from "../core/relative-time-trigger";
 import {UrlEntry} from "../core/url-entry";
 import UrlListItemTags from "./UrlListItemTags.vue";

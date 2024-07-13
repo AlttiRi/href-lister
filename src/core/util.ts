@@ -1,32 +1,3 @@
-export function throttle<A extends any[]>(runnable: (...args: A) => any, time = 50): (...args: A) => void {
-    let waiting = false;
-    let queued  = false;
-    let context: any;
-    let args: A;
-
-    function cb() {
-        if (queued) {
-            setTimeout(cb, time);
-            runnable.apply(context, args);
-        } else {
-            waiting = false;
-        }
-        queued = false;
-    }
-
-    return function(this: any, ...current_args: A) {
-        if (!waiting) {
-            waiting = true;
-            setTimeout(cb, time);
-            runnable.apply(this, current_args);
-        } else {
-            context = this;
-            args = current_args;
-            queued = true;
-        }
-    }
-}
-
 export function getCodeArrays(items: string[], size = 100) {
     const jsonArray = (a: string[]) => `${a.length ? "[\"" + a.join(`", "`) + "\"]" : "[]"}`;
     if (items.length <= size) {
@@ -64,22 +35,6 @@ export function timeAgo(ms: number) {
     return Math.trunc(secs / 60 / 60 / 24) + " days ago";
 }
 
-/**
- * `hashCode` like
- * @example
- * hashString("Qwerty") === -1862984904
- * hashString("A") === 65
- * @param {string} str
- * @return {number}
- */
-export function hashString(str: string): number {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-        hash = Math.imul(Math.imul(31, hash) + str.charCodeAt(i), 1);
-    }
-    return hash;
-}
-
 
 const ordinals = [
     "1st", "2nd", "3rd"
@@ -90,20 +45,6 @@ export function ordinalIndicator(index: number | string) {
         return ordinals[index];
     }
     return index + 1 + "th";
-}
-
-export function sleepEx(ms: number, signal: AbortSignal) {
-    if (signal.aborted) {
-        return Promise.resolve(signal.reason);
-    }
-    let timerId: number;
-    return new Promise(resolve => {
-        timerId = setTimeout(resolve, ms);
-        signal.onabort = () => {
-            clearTimeout(timerId);
-            resolve(signal.reason);
-        };
-    });
 }
 
 

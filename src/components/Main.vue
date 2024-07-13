@@ -1,5 +1,5 @@
 <template>
-  <div data-comp="Main">
+  <div data-component="Main">
     <hr>
     <Filters/>
     <hr>
@@ -13,7 +13,12 @@
       <MessageEditPopup/>
     </PopupWrapper>
     <PopupWrapper v-if="showAutoClickPopup">
-      <AutoClickPopup/>
+      <FancyPopup id="auto-clicker" v-slot="{fancyPopupSlotProps}">
+        <AutoClickPopup :fancyPopupSlotProps/>
+      </FancyPopup>
+    </PopupWrapper>
+    <PopupWrapper v-if="showUrlCleanerPopup">
+      <UrlCleanerPopup/>
     </PopupWrapper>
   </div>
 </template>
@@ -26,8 +31,10 @@ import URLsInfoLine from "./URLsInfoLine.vue";
 import AutoClickPopup from "./AutoClickPopup.vue";
 import UrlList from "./UrlList.vue";
 import MessageEditPopup from "./MessageEditPopup.vue";
+import FancyPopup from "./popup/FancyPopup.vue";
+import UrlCleanerPopup from "./UrlCleanerPopup.vue";
 import UrlEntryTagsEditPopup from "./edit-tags-popup/UrlEntryTagsEditPopup.vue";
-import {messagePopupEntry, showAutoClickPopup, tagsPopupEntry} from "../core/core";
+import {messagePopupEntry, showAutoClickPopup, showUrlCleanerPopup, tagsPopupEntry} from "../core/core";
 import "../style/tag.scss";
 import "../style/popup-auto-click.scss";
 </script>

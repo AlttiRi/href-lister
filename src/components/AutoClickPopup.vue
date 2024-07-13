@@ -1,51 +1,13 @@
 <script setup lang="ts">
-import {reactive, ref, toRefs, watch, watchEffect} from "vue";
-import {makeMovable, storeStateInLS} from "../core/make-fancy";
-import {appendable, editable, lastClickedInfo, resetAutoClickPopupRequested} from "../core/core";
-import {sleep} from "@alttiri/util-js";
-import {sleepEx} from "../core/util";
-
-const popupElem  = ref<HTMLElement>();
-const headerElem = ref<HTMLElement>();
-
-const stopWE = watchEffect(() => {
-  if (!popupElem.value || !headerElem.value) {
-    return;
-  }
-  const popup  = popupElem.value;
-  const header = headerElem.value;
-
-  makeMovable(popupElem.value, {
-    handle: header,
-    ...storeStateInLS({
-      restore: true,
-      id: "href-lister-popup-move-state",
-      reset: resetAutoClickPopupRequested.value,
-    }),
-  });
-  header.addEventListener("pointerdown", event => {
-    popup.focus();
-  }, {passive: true});
-
-  resetAutoClickPopupRequested.value = false;
-  stopWE();
-});
+import {ref, watch} from "vue";
+import {appendable, clickerSettings, editable, lastClickedInfo} from "../core/core";
+import {sleep, sleepEx} from "@alttiri/util-js";
 
 
-function useLocalStorageObject<T extends object>(itemName: string, defaultValue: T) {
-  const lsValue: string | null = localStorage.getItem(itemName);
-  const object = reactive(lsValue ? JSON.parse(lsValue) : defaultValue);
-  watch(object,() => {
-    localStorage.setItem(itemName, JSON.stringify(object));
-  });
-  return object;
-}
+const props = defineProps(["fancyPopupSlotProps"]);
+const {headerElem} = props.fancyPopupSlotProps;
 
-const {delay, count} = toRefs(useLocalStorageObject("href-lister-clicker-settings", {
-  delay: 1,
-  count: 0,
-}));
-
+const {delay, count} = clickerSettings;
 
 
 type ClickingState = "ready" | "started" | "paused" | "stopped";
@@ -113,17 +75,6 @@ function stop() {
   state.value = "ready";
 }
 
-const focus = ref(false);
-let blurTimerId = 0;
-function focusin() {
-  focus.value = true;
-  setTimeout(() => clearTimeout(blurTimerId));
-}
-function focusout() {
-  blurTimerId = setTimeout(() => {
-    focus.value = false;
-  }, 250);
-}
 
 let startElem: Element | null;
 function onPointerenter() {
@@ -151,78 +102,68 @@ function onPointerleave() {
 </script>
 
 <template>
-  <div class="popup-root" data-comp="AutoClickPopup">
-    <div
-      class="popup" tabindex="-1"
-      ref="popupElem"
-      @focusin="focusin"
-      @focusout="focusout"
-      :class="{
-        focus
-      }"
-    >
-      <div class="popup-header p-1" ref="headerElem">Auto Clicker</div>
-      <div class="popup-content">
-        <div class="btn-group p-1 container">
-          <button
-            class="btn btn-primary col-4"
-            @click="startClicking"
-            @pointerenter="onPointerenter"
-            @pointerleave="onPointerleave"
-            :disabled="!(state === 'ready' || state === 'paused')"
-          >{{ state === "ready" || !lastClickedIndex ? "Start" : "Next" }}</button>
-          <button
-            class="btn btn-secondary col-4"
-            :disabled="state !== 'started'"
-            @click="interrupt('paused')"
-          >Pause</button>
-          <button
-            class="btn btn-secondary col-4"
-            :disabled="!lastClickedIndex"
-            @click="stop"
-          >{{ state === "paused" ? "Reset" : "Stop" }}</button>
-        </div>
-
-        <div class="div-wrap">
-          <label class="p-1 pt-0 col-12">
-            <span class="input-group">
-              <span class="input-group-text col-3">Delay</span>
-              <input
-                title="Click delay (seconds)"
-                class="form-control"
-                type="number"
-                v-model="delay"
-              >
-            </span>
-          </label>
-        </div>
-
-        <div class="div-wrap">
-          <label class="p-1 pt-0 col-12">
-            <span class="input-group">
-              <span class="input-group-text col-3">Count</span>
-              <input
-                title="Count"
-                class="form-control"
-                type="number"
-                v-model="count"
-              >
-            </span>
-          </label>
-        </div>
-
-<!--        <div class="div-wrap">-->
-<!--          <label class="p-1 pt-0 col-12">-->
-<!--              <input-->
-<!--                title="Only un-clicked"-->
-<!--                class="form-check-input"-->
-<!--                type="checkbox"-->
-<!--              >-->
-<!--              <span class="p-1 pt-0">Only un-clicked</span>-->
-<!--          </label>-->
-<!--        </div>-->
-
+  <div data-component="AutoClickPopup">
+    <div class="popup-header p-1" ref="headerElem">Auto Clicker</div>
+    <div class="popup-content">
+      <div class="btn-group p-1 container">
+        <button
+          class="btn btn-primary col-4"
+          @click="startClicking"
+          @pointerenter="onPointerenter"
+          @pointerleave="onPointerleave"
+          :disabled="!(state === 'ready' || state === 'paused')"
+        >{{ state === "ready" || !lastClickedIndex ? "Start" : "Next" }}</button>
+        <button
+          class="btn btn-secondary col-4"
+          :disabled="state !== 'started'"
+          @click="interrupt('paused')"
+        >Pause</button>
+        <button
+          class="btn btn-secondary col-4"
+          :disabled="!lastClickedIndex"
+          @click="stop"
+        >{{ state === "paused" ? "Reset" : "Stop" }}</button>
       </div>
+
+      <div class="div-wrap">
+        <label class="p-1 pt-0 col-12">
+          <span class="input-group">
+            <span class="input-group-text col-3">Delay</span>
+            <input
+              title="Click delay (seconds)"
+              class="form-control"
+              type="number"
+              v-model="delay"
+            >
+          </span>
+        </label>
+      </div>
+
+      <div class="div-wrap">
+        <label class="p-1 pt-0 col-12">
+          <span class="input-group">
+            <span class="input-group-text col-3">Count</span>
+            <input
+              title="Count"
+              class="form-control"
+              type="number"
+              v-model="count"
+            >
+          </span>
+        </label>
+      </div>
+
+<!--      <div class="div-wrap">-->
+<!--        <label class="p-1 pt-0 col-12">-->
+<!--            <input-->
+<!--              title="Only un-clicked"-->
+<!--              class="form-check-input"-->
+<!--              type="checkbox"-->
+<!--            >-->
+<!--            <span class="p-1 pt-0">Only un-clicked</span>-->
+<!--        </label>-->
+<!--      </div>-->
+
     </div>
   </div>
 </template>

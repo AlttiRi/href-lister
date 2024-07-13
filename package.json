@@ -1,6 +1,6 @@
 {
   "name": "href-lister",
-  "version": "0.6.0-dev",
+  "version": "0.7.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host",
@@ -9,7 +9,8 @@
     "build-serve": "vite build && vite preview"
   },
   "dependencies": {
-    "@alttiri/util-js": "1.10.2-20240603",
+    "@alttiri/string-magic": "0.1.0-20240707",
+    "@alttiri/util-js": "1.13.0-20240713",
     "idb-keyval": "6.2.1",
     "vue": "3.4.31"
   },

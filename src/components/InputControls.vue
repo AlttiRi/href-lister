@@ -10,43 +10,59 @@
       ></textarea>
     </div>
     <div class="input col-12">
-      <span  class="row">
-        <span class=".col m-1">
+      <span class="row">
+        <span class="line m-1">
           <span class="btn-group">
-            <span class="input-group-text me-2">Clipboard</span>
+            <span class="input-group-text me-1">Clipboard</span>
           </span>
           <button
-            class="btn btn-outline-primary me-1"
+            class="btn btn-outline-primary"
             @click="onReplaceClipboardText"
             :disabled="!editable"
           >Replace</button>
           <button
-            class="btn btn-outline-primary me-1"
+            class="btn btn-outline-primary"
             @click="onAppendClipboardText"
             :disabled="!(editable || appendable)"
           >Append</button>
         </span>
-        <span class=".col m-1">
+        <span class="line m-1">
           <span class="btn-group">
-            <span class="input-group-text me-2 text-center">Controls</span>
+            <span class="input-group-text me-1 text-center">Controls</span>
           </span>
           <button
-            class="btn btn-outline-danger me-1"
+            class="btn btn-outline-danger"
             @click="onClearTextInput"
             :disabled="!editable"
           >Clear</button>
           <button
-            class="btn btn-primary me-1" title="Copy URLs"
+            class="btn btn-primary" title="Copy URLs"
             @click="onCopyUrlsAsList"
             @contextmenu="onCopyUrlsAsColumn"
             @pointerdown="onCopyUrlsAsCodeArrays"
           >Copy</button>
+        </span>
+
+      </span>
+    </div>
+    <div class="input col-12" style="align-self: end;">
+      <span class="row">
+        <span class="line m-1">
+          <span class="btn-group">
+            <span class="input-group-text me-1 text-center">Popups</span>
+          </span>
           <button
-            class="btn btn-outline-primary me-1"
+            class="btn btn-outline-primary"
             title="Toggle Auto Clicker Popup"
             @click="showAutoClickPopup = !showAutoClickPopup"
-            @contextmenu.prevent="resetPopup"
+            @contextmenu.prevent="resetACPopup"
           >Auto Clicker</button>
+          <button
+            class="btn btn-outline-primary"
+            title="Toggle Url Cleaner Popup"
+            @click="showUrlCleanerPopup = !showUrlCleanerPopup"
+            @contextmenu.prevent="resetUCPopup"
+          >Url Cleaner</button>
         </span>
       </span>
     </div>
@@ -56,7 +72,15 @@
 <script setup lang="ts">
 import {Ref, ref} from "vue";
 import {sleep} from "@alttiri/util-js";
-import {appendable, editable, inputText, resetPopup, showAutoClickPopup, urlsFiltered} from "../core/core";
+import {
+  appendable,
+  editable,
+  inputText,
+  resetACPopup, resetUCPopup,
+  showAutoClickPopup,
+  showUrlCleanerPopup,
+  urlsFiltered
+} from "../core/core";
 import {getCodeArrays} from "../core/util";
 
 const blinkButtonMap = new WeakMap();
@@ -128,6 +152,14 @@ async function onReplaceClipboardText(event: MouseEvent) {
 .btn-active:active {
   background-color: black;
   color: white;
+}
+.btn {
+  white-space: nowrap;
+}
+
+.line {
+  display: flex;
+  gap: 0.25rem;
 }
 
 textarea {

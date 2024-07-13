@@ -1,11 +1,10 @@
-import {defineConfig, splitVendorChunkPlugin} from "vite";
+import {defineConfig} from "vite";
 import vuePlugin from "@vitejs/plugin-vue";
 
 
 export default defineConfig({
   plugins: [
     vuePlugin(),
-    splitVendorChunkPlugin(),
   ],
   base: "./",
   server: {
@@ -26,6 +25,11 @@ export default defineConfig({
         entryFileNames: `[name].js`,
         chunkFileNames: `[name].js`,
         assetFileNames: `[name].[ext]`,
+        manualChunks: {
+          "vue-js": ["vue"],
+          "util":   ["@alttiri/string-magic", "@alttiri/util-js"],
+          "idb":    ["idb-keyval"],
+        },
       }
     }
   }

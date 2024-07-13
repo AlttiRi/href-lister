@@ -1,8 +1,9 @@
-import {computed, ref, Ref, ComputedRef, watchEffect} from "vue";
-import {UrlEntry} from "./url-entry";
-import {InputUrlEntry, parseUrlEntries} from "./url-parser";
-import {urlFilter} from "./filters";
+import {computed, ref, Ref, ComputedRef, watchEffect, reactive, watch, Reactive, toRefs} from "vue";
+import {UCCompiledRules, UCRuleStrings, UrlCleaner} from "@alttiri/string-magic";
 import {sleep} from "@alttiri/util-js";
+import {InputUrlEntry, parseUrlEntries} from "./url-parser";
+import {UrlEntry} from "./url-entry";
+import {urlFilter} from "./filters";
 
 
 export const NEVER_VISITED_TIME = -1;
@@ -11,14 +12,24 @@ export const inputText: Ref<string> = ref("");
 export const messagePopupEntry: Ref<UrlEntry | null> = ref(null);
 export const tagsPopupEntry:    Ref<UrlEntry | null> = ref(null);
 export const clickedUrls = ref(new Set<string>());
-export const showAutoClickPopup = ref<boolean>(false);
+export const showAutoClickPopup  = ref<boolean>(false);
+export const showUrlCleanerPopup = ref<boolean>(false);
 export const resetAutoClickPopupRequested = ref<boolean>(false);
-export async function resetPopup() {
+export const resetUrlCleanerPopupRequested = ref<boolean>(false);
+export async function resetACPopup() {
     resetAutoClickPopupRequested.value = true;
     if (showAutoClickPopup.value) {
         showAutoClickPopup.value = false;
         await sleep();
         showAutoClickPopup.value = true;
+    }
+}
+export async function resetUCPopup() {
+    resetUrlCleanerPopupRequested.value = true;
+    if (showUrlCleanerPopup.value) {
+        showUrlCleanerPopup.value = false;
+        await sleep();
+        showUrlCleanerPopup.value = true;
     }
 }
 
@@ -32,11 +43,38 @@ export type LastClickedInfo = {
 };
 export const lastClickedInfo: Ref<LastClickedInfo | null> = ref(null);
 
+
+// todo "inline"
+function useLocalStorageObject<T extends object>(itemName: string, defaultValue: T): Reactive<T> {
+    const lsValue: string | null = localStorage.getItem(itemName);
+    const object = reactive(lsValue === null ? defaultValue : JSON.parse(lsValue));
+    watch(object,() => {
+        localStorage.setItem(itemName, JSON.stringify(object));
+    });
+    return object;
+}
+
+export const clickerSettings = toRefs(useLocalStorageObject("href-lister-clicker-settings", {
+    delay: 1,
+    count: 0,
+}));
+
+export const urlCleanerSettings = toRefs(useLocalStorageObject("href-lister-url-cleaner-settings", {
+    ucRuleStrings:   [] as UCRuleStrings,
+    ucCompiledRules: {} as UCCompiledRules,
+}));
+
+const cleaner = ref(UrlCleaner.fromRuleRecords(urlCleanerSettings.ucCompiledRules.value));
+watch(urlCleanerSettings.ucCompiledRules, () => {
+    cleaner.value = UrlCleaner.fromRuleRecords(urlCleanerSettings.ucCompiledRules.value);
+});
+
 export const urlEntryList: Ref<UrlEntry[]> = ref([]);
 watchEffect(async () => {
     const urlEntries: InputUrlEntry[] = parseUrlEntries(inputText.value);
     const urlInfos: UrlEntry[] = [];
     for (const urlEntry of urlEntries) {
+        urlEntry.url = cleaner.value.clean(urlEntry.url);
         urlInfos.push(await UrlEntry.getInstance(urlEntry));
     }
     urlEntryList.value = urlInfos;

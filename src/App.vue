@@ -1,6 +1,6 @@
 <template>
   <Main/>
-  <a class="readme" title="Open Readme" href="https://github.com/AlttiRi/href-lister#keeplister" target="_blank"><i>i</i></a>
+  <a class="readme" title="Open Readme" href="https://github.com/AlttiRi/href-lister" target="_blank"><i>i</i></a>
 </template>
 
 <script setup lang="ts">

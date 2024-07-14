@@ -23,8 +23,6 @@ watchEffect(() => {
 });
 
 const stopWE = watchEffect(() => {
-  console.log(popupElem.value , headerElem.value);
-
   if (!popupElem.value || !headerElem.value) {
     return;
   }

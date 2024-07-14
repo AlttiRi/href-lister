@@ -45,35 +45,32 @@ export const lastClickedInfo: Ref<LastClickedInfo | null> = ref(null);
 
 
 // todo "inline"
-function useLocalStorageObject<T extends object>(itemName: string, defaultValue: T): Reactive<T> {
+function useLocalStorageObject<T extends object>(itemName: string, defaultValue: T | (() => T)): Reactive<T> {
     const lsValue: string | null = localStorage.getItem(itemName);
-    const object = reactive(lsValue === null ? defaultValue : JSON.parse(lsValue));
+    const object = reactive(lsValue === null
+        ? (typeof defaultValue === "function" ? defaultValue() : defaultValue)
+        : JSON.parse(lsValue));
     watch(object,() => {
         localStorage.setItem(itemName, JSON.stringify(object));
     });
     return object;
 }
 
-export const commonSettings = toRefs(useLocalStorageObject("href-lister-common-settings", {
-    useCleaner:  true,
-    useOriginer: true,
-}));
-
 export const clickerSettings = toRefs(useLocalStorageObject("href-lister-clicker-settings", {
     delay: 1,
     count: 0,
 }));
 
-const defaultUCRules: UCRuleStrings = [
-    "site:youtube.com",    "trim-search-params:feature t si",
-    "site:t.umblr.com",    "filter-start:https://t.umblr.com/redirect", "search-param:z", "recursive",
-    "site:deviantart.com", "trim-start:https://www.deviantart.com/users/outgoing?", "decode-url", "recursive",
-];
-const defaultUORules: UCRuleStrings = ["site:cdn.discordapp.com", "trim-search-params:ex is hm"];
-
-export const urlCleanerSettings = toRefs(useLocalStorageObject("href-lister-url-cleaner-settings", {
-    ucRuleStrings:   defaultUCRules as UCRuleStrings,
-    ucCompiledRules: UrlCleaner.compileRuleStrings(defaultUCRules) as UCCompiledRules,
+export const urlCleanerSettings = toRefs(useLocalStorageObject("href-lister-url-cleaner-settings", () => {
+    const defaultUCRules: UCRuleStrings = [
+        "site:youtube.com",    "trim-search-params:feature t si",
+        "site:t.umblr.com",    "filter-start:https://t.umblr.com/redirect", "search-param:z", "recursive",
+        "site:deviantart.com", "trim-start:https://www.deviantart.com/users/outgoing?", "decode-url", "recursive",
+    ];
+    return {
+        ucRuleStrings:   defaultUCRules as UCRuleStrings,
+        ucCompiledRules: UrlCleaner.compileRuleStrings(defaultUCRules) as UCCompiledRules,
+    }
 }));
 export type UCSettings = typeof urlCleanerSettings;
 
@@ -82,15 +79,23 @@ watch(urlCleanerSettings.ucCompiledRules, () => {
     cleaner.value = UrlCleaner.fromRuleRecords(urlCleanerSettings.ucCompiledRules.value);
 });
 
-export const urlOriginSettings = toRefs(useLocalStorageObject("href-lister-url-origin-settings", {
-    ucRuleStrings:   defaultUORules as UCRuleStrings,
-    ucCompiledRules: UrlCleaner.compileRuleStrings(defaultUORules) as UCCompiledRules,
+export const urlOriginSettings = toRefs(useLocalStorageObject("href-lister-url-origin-settings", () => {
+    const defaultUORules: UCRuleStrings = ["site:cdn.discordapp.com", "trim-search-params:ex is hm"];
+    return {
+        ucRuleStrings:   defaultUORules as UCRuleStrings,
+        ucCompiledRules: UrlCleaner.compileRuleStrings(defaultUORules) as UCCompiledRules,
+    }
 }));
 
 const origin = ref(UrlCleaner.fromRuleRecords(urlOriginSettings.ucCompiledRules.value));
 watch(urlOriginSettings.ucCompiledRules, () => {
     origin.value = UrlCleaner.fromRuleRecords(urlOriginSettings.ucCompiledRules.value);
 });
+
+export const commonSettings = toRefs(useLocalStorageObject("href-lister-common-settings", {
+    useCleaner:  true,
+    useOriginer: true,
+}));
 
 const {useCleaner, useOriginer} = commonSettings;
 export const urlEntryList: Ref<UrlEntry[]> = ref([]);
@@ -127,4 +132,5 @@ if (location.href === "http://localhost:5173/") {
         + "http://localhost:5173/#qqq\n"
         + "http://localhost:5173/#www\n"
      // + "http://localhost:5173/#qwe #qwerty1qwerty2qwerty3qwerty4qwerty5qwerty6\n"
+        + "https://www.youtube.com/watch?feature=player_embedded&v=Qwert123"
 }

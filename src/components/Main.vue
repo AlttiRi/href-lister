@@ -32,7 +32,7 @@ import AutoClickPopup from "./AutoClickPopup.vue";
 import UrlList from "./UrlList.vue";
 import MessageEditPopup from "./MessageEditPopup.vue";
 import FancyPopup from "./popup/FancyPopup.vue";
-import UrlCleanerPopup from "./UrlCleanerPopup.vue";
+import UrlCleanerPopup from "./UrlMagicPopup.vue";
 import UrlEntryTagsEditPopup from "./edit-tags-popup/UrlEntryTagsEditPopup.vue";
 import {messagePopupEntry, showAutoClickPopup, showUrlCleanerPopup, tagsPopupEntry} from "../core/core";
 import "../style/tag.scss";

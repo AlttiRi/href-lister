@@ -2,9 +2,14 @@
 import {ref, Ref, watch} from "vue";
 import {debounce, sleep, isString} from "@alttiri/util-js";
 import {isUCRuleStringArray, UCRuleString, UrlCleaner} from "@alttiri/string-magic";
-import {urlCleanerSettings} from "../core/core";
+import {UCSettings} from "../core/core";
 
-const {ucRuleStrings, ucCompiledRules} = urlCleanerSettings;
+
+const props = defineProps<{
+  ucSettings: UCSettings,
+  btnInsertPlace: HTMLElement | null,
+}>();
+const {ucRuleStrings, ucCompiledRules} = props.ucSettings;
 
 
 const saveBtn: Ref<HTMLButtonElement | null> = ref(null);
@@ -92,17 +97,18 @@ function formatRuleStringArray(array: UCRuleString[]): string {
 
 <template>
   <div data-comp="UrlCleanerConfig" class="url-cleaner">
-    <h4 title="Rule String Array based config">Url Cleaner Config</h4>
     <textarea spellcheck="false" id="editor" class="form-control"
               v-model="editorValue"
     ></textarea>
 
-    <button ref="saveBtn" id="save" class="btn btn-outline-primary"
-            @click="save"
-            :class="{
+    <teleport :to="btnInsertPlace">
+      <button ref="saveBtn" id="save" class="btn btn-outline-primary"
+              @click="save"
+              :class="{
               disabled: saved || !valid,
             }"
-    >Save</button>
+      >Save</button>
+    </teleport>
     <span class="warning">{{warnText}}</span>
   </div>
 </template>
@@ -110,9 +116,6 @@ function formatRuleStringArray(array: UCRuleString[]): string {
 <style scoped>
 .url-cleaner {
   padding: 2px;
-}
-button {
-  margin-top: 2px;
 }
 #editor {
   width: 540px;

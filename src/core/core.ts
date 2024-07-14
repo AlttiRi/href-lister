@@ -2,7 +2,7 @@ import {computed, ref, Ref, ComputedRef, watchEffect, reactive, watch, Reactive,
 import {UCCompiledRules, UCRuleStrings, UrlCleaner} from "@alttiri/string-magic";
 import {sleep} from "@alttiri/util-js";
 import {InputUrlEntry, parseUrlEntries} from "./url-parser";
-import {UrlEntry} from "./url-entry";
+import {InputUrlEntryEx, UrlEntry} from "./url-entry";
 import {urlFilter} from "./filters";
 
 
@@ -61,12 +61,24 @@ export const clickerSettings = toRefs(useLocalStorageObject("href-lister-clicker
 
 export const urlCleanerSettings = toRefs(useLocalStorageObject("href-lister-url-cleaner-settings", {
     ucRuleStrings:   [] as UCRuleStrings,
-    ucCompiledRules: {} as UCCompiledRules,
+    ucCompiledRules: {ruleRecords: {}, ruleRecordsWC: null} as UCCompiledRules,
 }));
+export type UCSettings = typeof urlCleanerSettings;
 
 const cleaner = ref(UrlCleaner.fromRuleRecords(urlCleanerSettings.ucCompiledRules.value));
 watch(urlCleanerSettings.ucCompiledRules, () => {
     cleaner.value = UrlCleaner.fromRuleRecords(urlCleanerSettings.ucCompiledRules.value);
+});
+
+// todo default: ["site:cdn.discordapp.com", "trim-search-params:ex is hm"]
+export const urlOriginSettings = toRefs(useLocalStorageObject("href-lister-url-origin-settings", {
+    ucRuleStrings:   [] as UCRuleStrings,
+    ucCompiledRules: {ruleRecords: {}, ruleRecordsWC: null} as UCCompiledRules,
+}));
+
+const origin = ref(UrlCleaner.fromRuleRecords(urlOriginSettings.ucCompiledRules.value));
+watch(urlOriginSettings.ucCompiledRules, () => {
+    origin.value = UrlCleaner.fromRuleRecords(urlOriginSettings.ucCompiledRules.value);
 });
 
 export const urlEntryList: Ref<UrlEntry[]> = ref([]);
@@ -75,6 +87,10 @@ watchEffect(async () => {
     const urlInfos: UrlEntry[] = [];
     for (const urlEntry of urlEntries) {
         urlEntry.url = cleaner.value.clean(urlEntry.url);
+        const urlOrigin = origin.value.clean(urlEntry.url);
+        if (urlOrigin !== urlEntry.url) {
+            (urlEntry as InputUrlEntryEx).urlOrigin = urlOrigin;
+        }
         urlInfos.push(await UrlEntry.getInstance(urlEntry));
     }
     urlEntryList.value = urlInfos;

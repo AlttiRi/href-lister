@@ -1,5 +1,5 @@
 <template>
-  <div class="row row-cols-lg-3 g-3 align-items-end" data-comp="InputControls">
+  <div class="row row-cols-lg-3 g-3 align-items-end" data-component="InputControls">
     <div class="input col-12">
       <label for="urls-textarea" class="fuck-off-lighthouse"></label>
       <textarea
@@ -62,7 +62,7 @@
             title="Toggle Url Cleaner Popup"
             @click="showUrlCleanerPopup = !showUrlCleanerPopup"
             @contextmenu.prevent="resetUCPopup"
-          >Url Cleaner</button>
+          >Url Magic</button>
         </span>
       </span>
     </div>

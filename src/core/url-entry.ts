@@ -12,13 +12,17 @@ export type UrlEntryState = {
     tags?: string[],
 }
 
+export type UrlInit = {url: string, inputComment?: string, urlOrigin?: string};
+export type InputUrlEntryEx = InputUrlEntry & {urlOrigin?: string};
+
 export class UrlEntry {
     static stateMap = new Map<string, UrlEntryState>();
     private readonly state: UrlEntryState;
     readonly url: string;
     readonly inputComment?: string;
     readonly initialVisited?: number;
-    constructor(url: string, state: UrlEntryState, inputComment?: string) {
+    readonly urlOrigin?: string;
+    private constructor({url, inputComment, urlOrigin}: UrlInit, state: UrlEntryState, ) {
         this.url = url;
         this.state = state;
         if (inputComment) {
@@ -27,18 +31,22 @@ export class UrlEntry {
         if (state.visited) {
             this.initialVisited = state.visited;
         }
+        if (urlOrigin) {
+            this.urlOrigin = urlOrigin;
+        }
     }
-    static async getInstance({url, inputComment}: InputUrlEntry): Promise<UrlEntry> {
+    static async getInstance(init: InputUrlEntryEx): Promise<UrlEntry> {
+        const url = init.urlOrigin || init.url;
         let state = UrlEntry.stateMap.get(url);
         if (state) {
-            return new UrlEntry(url, state, inputComment);
+            return new UrlEntry(init, state);
         }
         state = await idb.get(url, urlInfoStore);
         if (state === undefined) {
             state = {};
         }
         UrlEntry.stateMap.set(url, state);
-        return new UrlEntry(url, state, inputComment);
+        return new UrlEntry(init, state);
     }
     isEquals(target: UrlEntry | null): boolean {
         if (!target) {
@@ -91,9 +99,9 @@ export class UrlEntry {
     }
     private update() {
         if (!Object.keys(this.state).length) {
-            return idb.del(this.url, urlInfoStore);
+            return idb.del(this.urlOrigin || this.url, urlInfoStore);
         }
-        return idb.set(this.url, toRaw(this.state), urlInfoStore);
+        return idb.set(this.urlOrigin || this.url, toRaw(this.state), urlInfoStore);
     }
 }
 

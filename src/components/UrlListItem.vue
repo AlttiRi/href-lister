@@ -27,7 +27,8 @@
           class="url link-primary"
           target="_blank" rel="noreferrer noopener"
           :href="ue.url"
-          :title="ue.inputComment"
+          :title="ue.inputComment || ue.urlOrigin"
+          :data-url-origin="ue.urlOrigin"
           @click="markUrlAsClicked"
           @pointerup="markUrlAsClickedOnMMBClick"
         >{{ue.url}}</a>

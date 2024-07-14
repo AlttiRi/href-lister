@@ -4,6 +4,16 @@ Just [a webpage](https://alttiri.github.io/href-lister) to list text URLs as cli
 
 ![image](https://user-images.githubusercontent.com/16310547/226176272-8000fd78-1b62-49d0-8252-bbfcac1b36bb.png)
 
+This web application is useful if you have a bulk of links, and you want to visit them in the browser.
+
+It keeps the last link click time, allows you to add tags and comments to the links.
+
+---
+
+It's a standalone web application. 
+
+All data is stored/processed only in your browser, no data is sent to external servers.
+
 ---
 
 Link parsing is very primitive:

@@ -53,7 +53,7 @@ function onPointerleave() {
 </script>
 
 <template>
-  <div data-comp="URLsInfoLine">
+  <div data-component="URLsInfoLine">
     <span>
        <span title="URLs count">{{urlsCount.count}}</span>
        <span

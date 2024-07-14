@@ -1,5 +1,5 @@
 <template>
-  <div class="row row-cols-lg-3 g-3 align-items-center" data-comp="Filters">
+  <div class="row row-cols-lg-3 g-3 align-items-center" data-component="Filters">
     <div class="col-12">
       <label>
         <span class="input-group">

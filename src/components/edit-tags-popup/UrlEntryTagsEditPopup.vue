@@ -4,7 +4,7 @@
       class="modal tags-edit-popup"
       v-if="tagsPopupEntry"
       @pointerdown="closePopup"
-      data-comp="URLsInfoLine"
+      data-component="URLsInfoLine"
     >
       <div class="popup-content">
         <div class="modal-content">

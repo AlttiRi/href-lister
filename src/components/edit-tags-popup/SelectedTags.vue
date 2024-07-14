@@ -59,7 +59,7 @@ function onTab(event: KeyboardEvent) {console.log(event);
 </script>
 
 <template>
-  <div class="selected-tags" data-comp="SelectedTags">
+  <div class="selected-tags" data-component="SelectedTags">
     <div class="tag-master" @click="removeTag">
       <div class="tag" v-for="tag of entry.tags" :data-tag="tag">{{tag}}</div>
     </div>

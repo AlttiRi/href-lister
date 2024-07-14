@@ -96,7 +96,7 @@ function formatRuleStringArray(array: UCRuleString[]): string {
 </script>
 
 <template>
-  <div data-comp="UrlCleanerConfig" class="url-cleaner">
+  <div data-component="UrlCleanerConfig" class="url-cleaner">
     <textarea spellcheck="false" id="editor" class="form-control"
               v-model="editorValue"
     ></textarea>

@@ -7,7 +7,7 @@
       'last-clicked': isLastClicked,
     }"
     class="list-item-row"
-    data-comp="UrlListItem"
+    data-component="UrlListItem"
     ref="htmlCompRef"
   >
     <td class="col-9 nowrap-text-ceil url url-cell">

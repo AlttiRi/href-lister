@@ -1,7 +1,7 @@
 <template>
   <div
     class="modal message-edit-popup"
-    data-comp="MessageEditPopup"
+    data-component="MessageEditPopup"
     v-if="messagePopupEntry"
     @pointerdown="closePopup"
   >

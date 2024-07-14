@@ -25,7 +25,7 @@ function toggleTag() {
     class="tag"
     @click="toggleTag"
     :data-tag="tagWrap.tag"
-    data-comp="SuggestedTag"
+    data-component="SuggestedTag"
     :class="{
       selected
     }"

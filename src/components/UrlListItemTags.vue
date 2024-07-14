@@ -2,7 +2,7 @@
   <div
     class="tags-wrapper"
     @click="toggleTagsEditPopup"
-    data-comp="UrlListItemTags"
+    data-component="UrlListItemTags"
   >
     <div class="tags">
       <div class="tag-master" data-comp="EntryTags">

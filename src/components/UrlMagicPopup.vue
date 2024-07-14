@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import {defineAsyncComponent, ref} from "vue";
+import {ref, watchEffect} from "vue";
 import FancyPopup from "./popup/FancyPopup.vue";
+import UrlCleanerConfig from "./UrlCleanerConfig.vue";
 import {urlCleanerSettings, urlOriginSettings} from "../core/core";
 
 const headerElem = ref<HTMLElement | null>(null);
@@ -9,17 +10,17 @@ const activeTab = ref<"cleaner" | "originer">("cleaner");
 const btnInsertPlace = ref<HTMLElement | null>(null);
 
 const ready = ref(false);
-const UrlCleanerConfigAsync = defineAsyncComponent(() => {
-  const component = import("./UrlCleanerConfig.vue");
-  component.then(() => ready.value = true);
-  return component;
+watchEffect(() => {
+  if (btnInsertPlace.value) {
+    ready.value = true;
+  }
 });
 </script>
 
 <template>
   <FancyPopup data-slot-component="UrlCleanerPopup"
               id="url-cleaner" :header="headerElem"
-             v-show="ready"
+              v-show="ready"
   >
     <div class="popup-header p-1" ref="headerElem">Url Magic Transforms</div>
     <div class="popup-content">
@@ -43,11 +44,13 @@ const UrlCleanerConfigAsync = defineAsyncComponent(() => {
           <!-- teleport place -->
         </span>
       </div>
-      <div v-if="activeTab === 'cleaner'">
-        <UrlCleanerConfigAsync :ucSettings="urlCleanerSettings" :btnInsertPlace/>
-      </div>
-      <div v-else>
-        <UrlCleanerConfigAsync :ucSettings="urlOriginSettings" :btnInsertPlace/>
+      <div v-if="ready" class="ready-required">
+        <div v-if="activeTab === 'cleaner'">
+          <UrlCleanerConfig :ucSettings="urlCleanerSettings" :btnInsertPlace/>
+        </div>
+        <div v-else>
+          <UrlCleanerConfig :ucSettings="urlOriginSettings" :btnInsertPlace/>
+        </div>
       </div>
     </div>
   </FancyPopup>

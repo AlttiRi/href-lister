@@ -54,6 +54,11 @@ function useLocalStorageObject<T extends object>(itemName: string, defaultValue:
     return object;
 }
 
+export const commonSettings = toRefs(useLocalStorageObject("href-lister-common-settings", {
+    useCleaner:  true,
+    useOriginer: true,
+}));
+
 export const clickerSettings = toRefs(useLocalStorageObject("href-lister-clicker-settings", {
     delay: 1,
     count: 0,
@@ -81,13 +86,14 @@ watch(urlOriginSettings.ucCompiledRules, () => {
     origin.value = UrlCleaner.fromRuleRecords(urlOriginSettings.ucCompiledRules.value);
 });
 
+const {useCleaner, useOriginer} = commonSettings;
 export const urlEntryList: Ref<UrlEntry[]> = ref([]);
 watchEffect(async () => {
     const urlEntries: InputUrlEntry[] = parseUrlEntries(inputText.value);
     const urlInfos: UrlEntry[] = [];
     for (const urlEntry of urlEntries) {
-        urlEntry.url = cleaner.value.clean(urlEntry.url);
-        const urlOrigin = origin.value.clean(urlEntry.url);
+        urlEntry.url    = useCleaner.value  ? cleaner.value.clean(urlEntry.url) : urlEntry.url;
+        const urlOrigin = useOriginer.value ?  origin.value.clean(urlEntry.url) : urlEntry.url;
         if (urlOrigin !== urlEntry.url) {
             (urlEntry as InputUrlEntryEx).urlOrigin = urlOrigin;
         }

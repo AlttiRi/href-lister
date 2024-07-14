@@ -2,7 +2,7 @@
 import {ref, watchEffect} from "vue";
 import FancyPopup from "./popup/FancyPopup.vue";
 import UrlCleanerConfig from "./UrlCleanerConfig.vue";
-import {urlCleanerSettings, urlOriginSettings} from "../core/core";
+import {commonSettings, urlCleanerSettings, urlOriginSettings} from "../core/core";
 
 const headerElem = ref<HTMLElement | null>(null);
 
@@ -15,6 +15,11 @@ watchEffect(() => {
     ready.value = true;
   }
 });
+
+const {useCleaner, useOriginer} = commonSettings;
+function toggle(property: "useCleaner" | "useOriginer") {
+  commonSettings[property].value = !commonSettings[property].value;
+}
 </script>
 
 <template>
@@ -31,12 +36,22 @@ watchEffect(() => {
         <span class="btn-group">
           <button title="Rule String Array based config"
                   class="btn btn-outline-primary"
-                  :class="{'active': activeTab === 'cleaner'}"
-                  @click="activeTab = 'cleaner'">Url Cleaner</button>
+                  :class="{
+                    'active': activeTab === 'cleaner',
+                    'turned-off': !useCleaner,
+                  }"
+                  @click="activeTab = 'cleaner'"
+                  @contextmenu.prevent="() => toggle('useCleaner')"
+          >Url Cleaner</button>
           <button title="Rule String Array based config"
                   class="btn btn-outline-primary"
-                  :class="{'active': activeTab === 'originer'}"
-                  @click="activeTab = 'originer'">Url Origin</button>
+                  :class="{
+                    'active': activeTab === 'originer',
+                    'turned-off': !useOriginer,
+                  }"
+                  @click="activeTab = 'originer'"
+                  @contextmenu.prevent="() => toggle('useOriginer')"
+          >Url Origin</button>
         </span>
         <span style="margin-left: auto;" class="btn-insert-place"
               ref="btnInsertPlace"
@@ -59,5 +74,8 @@ watchEffect(() => {
 <style scoped>
 .flex {
   display: flex;
+}
+.turned-off {
+  text-decoration: line-through;
 }
 </style>

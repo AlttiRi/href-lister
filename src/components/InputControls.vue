@@ -2,7 +2,7 @@
 import {Ref, ref} from "vue";
 import {sleep} from "@alttiri/util-js";
 import {
-  appendable,
+  appendable, commonSettings,
   editable,
   inputText,
   resetACPopup, resetUCPopup,
@@ -69,6 +69,7 @@ async function onReplaceClipboardText(event: MouseEvent) {
   void blink(currentTarget as HTMLElement);
 }
 
+const {useCleaner, useOriginer} = commonSettings;
 </script>
 
 <template>
@@ -135,6 +136,9 @@ async function onReplaceClipboardText(event: MouseEvent) {
             title="Toggle Url Cleaner Popup"
             @click="showUrlCleanerPopup = !showUrlCleanerPopup"
             @contextmenu.prevent="resetUCPopup"
+            :class="{
+              'turned-off': !useCleaner && !useOriginer
+            }"
           >Url Magic</button>
         </span>
       </span>
@@ -176,5 +180,8 @@ textarea:focus {
   left: -1000px;
   height: 0;
   width: 0;
+}
+.turned-off {
+  text-decoration: line-through;
 }
 </style>

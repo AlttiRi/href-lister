@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import {input_only, input_ignore} from "../core/filters";
+</script>
+
 <template>
   <div class="row row-cols-lg-3 g-3 align-items-center" data-component="Filters">
     <div class="col-12">
@@ -18,10 +22,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import {input_only, input_ignore} from "../core/filters";
-</script>
 
 <style scoped>
 label {

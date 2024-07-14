@@ -1,3 +1,21 @@
+<script setup lang="ts">
+import {toRaw} from "vue";
+import {UrlEntry} from "../core/url-entry";
+import {tagsPopupEntry} from "../core/core";
+
+
+const props = defineProps<{ue: UrlEntry}>();
+
+function toggleTagsEditPopup() { // <.tags-wrapper> @click
+  if (toRaw(tagsPopupEntry.value) === toRaw(props.ue)) {
+    tagsPopupEntry.value = null;
+  } else {
+    tagsPopupEntry.value = props.ue;
+  }
+  console.log(tagsPopupEntry.value);
+}
+</script>
+
 <template>
   <div
     class="tags-wrapper"
@@ -12,24 +30,6 @@
     <div v-if="!ue.tags?.length" class="tag add-tag"><span class="plus">+</span></div>
   </div>
 </template>
-
-<script setup lang="ts">
-import {toRaw} from "vue";
-import {UrlEntry} from "../core/url-entry";
-import {tagsPopupEntry} from "../core/core";
-
-
-const props = defineProps<{ue: UrlEntry}>();
-
-function toggleTagsEditPopup() { // <.tags-wrapper> @click
-    if (toRaw(tagsPopupEntry.value) === toRaw(props.ue)) {
-        tagsPopupEntry.value = null;
-    } else {
-        tagsPopupEntry.value = props.ue;
-    }
-    console.log(tagsPopupEntry.value);
-}
-</script>
 
 <style scoped lang="scss">
 .tags-wrapper {

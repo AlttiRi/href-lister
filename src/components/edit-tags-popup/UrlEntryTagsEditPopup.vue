@@ -1,32 +1,3 @@
-<template>
-  <Teleport to="body">
-    <div
-      class="modal tags-edit-popup"
-      v-if="tagsPopupEntry"
-      @pointerdown="closePopup"
-      data-component="URLsInfoLine"
-    >
-      <div class="popup-content">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">{{tagsPopupEntry.url}}</h5>
-          </div>
-          <div class="modal-body">
-            <div class="tags selected-tags-group">
-              <SelectedTags :entry="tagsPopupEntry" v-model="inputTagText" @tabPressed="selectTag"/>
-            </div>
-            <div class="tags all-tags-group">
-              <div class="tag-master">
-                <SuggestedTag :tag-wrap="tagWrap" v-for="tagWrap of tagWrapsFiltered"/>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </Teleport>
-</template>
-
 <script setup lang="ts">
 import SelectedTags  from "./SelectedTags.vue";
 import SuggestedTag  from "./SuggestedTag.vue";
@@ -65,7 +36,7 @@ const tagWrapsFiltered: ComputedRef<TagWrap[]> = computed(() => {
 
 
 function selectTag() { // @tabPressed
-  // todo ...
+                       // todo ...
   inputTagText.value = "";
 }
 
@@ -76,6 +47,35 @@ function closePopup(event: MouseEvent) {
 }
 
 </script>
+
+<template>
+  <Teleport to="body">
+    <div
+      class="modal tags-edit-popup"
+      v-if="tagsPopupEntry"
+      @pointerdown="closePopup"
+      data-component="URLsInfoLine"
+    >
+      <div class="popup-content">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">{{tagsPopupEntry.url}}</h5>
+          </div>
+          <div class="modal-body">
+            <div class="tags selected-tags-group">
+              <SelectedTags :entry="tagsPopupEntry" v-model="inputTagText" @tabPressed="selectTag"/>
+            </div>
+            <div class="tags all-tags-group">
+              <div class="tag-master">
+                <SuggestedTag :tag-wrap="tagWrap" v-for="tagWrap of tagWrapsFiltered"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Teleport>
+</template>
 
 <style scoped lang="scss">
 .modal {

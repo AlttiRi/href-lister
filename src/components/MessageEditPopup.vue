@@ -1,34 +1,3 @@
-<template>
-  <div
-    class="modal message-edit-popup"
-    data-component="MessageEditPopup"
-    v-if="messagePopupEntry"
-    @pointerdown="closePopup"
-  >
-    <div class="popup-content">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">{{messagePopupEntry.url}}</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="closePopup"></button>
-        </div>
-        <div class="modal-body">
-          <textarea
-            rows="5"
-            :value="comment"
-            @input="onInputSaveComment"
-            ref="textareaElem"
-            @keydown="closePopupOnEnter"
-          ></textarea>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" @click="removeComment">Reset</button>
-<!--            <button type="button" class="btn btn-primary">Select</button>-->
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import {computed, onMounted, Ref, ref} from "vue";
 import {UrlEntry} from "../core/url-entry";
@@ -69,6 +38,37 @@ function removeComment() {
 }
 
 </script>
+
+<template>
+  <div
+    class="modal message-edit-popup"
+    data-component="MessageEditPopup"
+    v-if="messagePopupEntry"
+    @pointerdown="closePopup"
+  >
+    <div class="popup-content">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{messagePopupEntry.url}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="closePopup"></button>
+        </div>
+        <div class="modal-body">
+          <textarea
+            rows="5"
+            :value="comment"
+            @input="onInputSaveComment"
+            ref="textareaElem"
+            @keydown="closePopupOnEnter"
+          ></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" @click="removeComment">Reset</button>
+<!--            <button type="button" class="btn btn-primary">Select</button>-->
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
 
 <style scoped lang="scss">
 .modal {

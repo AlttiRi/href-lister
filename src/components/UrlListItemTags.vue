@@ -12,7 +12,7 @@ function toggleTagsEditPopup() { // <.tags-wrapper> @click
   } else {
     tagsPopupEntry.value = props.ue;
   }
-  console.log(tagsPopupEntry.value);
+  console.log(toRaw(tagsPopupEntry.value));
 }
 </script>
 

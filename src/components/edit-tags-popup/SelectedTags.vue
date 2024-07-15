@@ -49,11 +49,12 @@ function emitModelValueUpdate(event: InputEvent) {
     emit("update:modelValue", (event.target as HTMLInputElement).value);
 }
 
-function onTab(event: KeyboardEvent) {console.log(event);
-    if (event.code === "Tab") {
-        event.preventDefault();
-        emit("tabPressed");
-    }
+function onTab(event: KeyboardEvent) {
+  console.log(event);
+  if (event.code === "Tab") {
+      event.preventDefault();
+      emit("tabPressed");
+  }
 }
 
 </script>

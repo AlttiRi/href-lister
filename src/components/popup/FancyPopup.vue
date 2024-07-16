@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {ref, watchEffect} from "vue";
-import {resetAutoClickPopupRequested} from "@/core/core";
-import {makeMovable, storeStateInLS}  from "@/core/make-fancy";
+import {resetPopupAutoClickerRequested} from "@/core/core";
+import {makeMovable, storeStateInLS}    from "@/core/make-fancy";
 
 
 const props = defineProps<{
@@ -34,14 +34,14 @@ const stopWE = watchEffect(() => {
     ...storeStateInLS({
       restore: true,
       id: `href-lister-${props.id}-popup-move-state`,
-      reset: resetAutoClickPopupRequested.value,
+      reset: resetPopupAutoClickerRequested.value,
     }),
   });
   header.addEventListener("pointerdown", event => {
     popup.focus();
   }, {passive: true});
 
-  resetAutoClickPopupRequested.value = false;
+  resetPopupAutoClickerRequested.value = false;
   stopWE();
 });
 

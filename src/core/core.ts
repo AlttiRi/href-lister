@@ -12,24 +12,24 @@ export const inputText: Ref<string> = ref("");
 export const messagePopupEntry: Ref<UrlEntry | null> = ref(null);
 export const tagsPopupEntry:    Ref<UrlEntry | null> = ref(null);
 export const clickedUrls = ref(new Set<string>());
-export const showAutoClickPopup  = ref<boolean>(false);
-export const showUrlCleanerPopup = ref<boolean>(false);
-export const resetAutoClickPopupRequested = ref<boolean>(false);
-export const resetUrlCleanerPopupRequested = ref<boolean>(false);
+export const showPopupAutoClicker = ref<boolean>(false);
+export const showPopupUrlCleaner  = ref<boolean>(false);
+export const resetPopupAutoClickerRequested = ref<boolean>(false);
+export const resetPopupUrlCleanerRequested  = ref<boolean>(false);
 export async function resetACPopup() {
-    resetAutoClickPopupRequested.value = true;
-    if (showAutoClickPopup.value) {
-        showAutoClickPopup.value = false;
+    resetPopupAutoClickerRequested.value = true;
+    if (showPopupAutoClicker.value) {
+        showPopupAutoClicker.value = false;
         await sleep();
-        showAutoClickPopup.value = true;
+        showPopupAutoClicker.value = true;
     }
 }
 export async function resetUCPopup() {
-    resetUrlCleanerPopupRequested.value = true;
-    if (showUrlCleanerPopup.value) {
-        showUrlCleanerPopup.value = false;
+    resetPopupUrlCleanerRequested.value = true;
+    if (showPopupUrlCleaner.value) {
+        showPopupUrlCleaner.value = false;
         await sleep();
-        showUrlCleanerPopup.value = true;
+        showPopupUrlCleaner.value = true;
     }
 }
 

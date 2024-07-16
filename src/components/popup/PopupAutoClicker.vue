@@ -103,7 +103,7 @@ function onPointerleave() {
 
 <template>
   <FancyPopup data-slot-component="PopupAutoClicker"
-              id="url-cleaner" :header="headerElem"
+              id="auto-clicker" :header="headerElem"
   >
     <div class="popup-header p-1" ref="headerElem">Auto Clicker</div>
     <div class="popup-content">

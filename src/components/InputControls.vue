@@ -6,8 +6,8 @@ import {
   editable,
   inputText,
   resetACPopup, resetUCPopup,
-  showAutoClickPopup,
-  showUrlCleanerPopup,
+  showPopupAutoClicker,
+  showPopupUrlCleaner,
   urlsFiltered
 } from "@/core/core";
 import {getCodeArrays} from "@/core/util";
@@ -163,13 +163,13 @@ const {useCleaner, useOriginer} = commonSettings;
           <button
             class="btn btn-outline-primary"
             title="Toggle Auto Clicker Popup"
-            @click="showAutoClickPopup = !showAutoClickPopup"
+            @click="showPopupAutoClicker = !showPopupAutoClicker"
             @contextmenu.prevent="resetACPopup"
           >Auto Clicker</button>
           <button
             class="btn btn-outline-primary"
             title="Toggle Url Cleaner Popup"
-            @click="showUrlCleanerPopup = !showUrlCleanerPopup"
+            @click="showPopupUrlCleaner = !showPopupUrlCleaner"
             @contextmenu.prevent="resetUCPopup"
             :class="{
               'turned-off': !useCleaner && !useOriginer

@@ -23,7 +23,7 @@ function toggleTagsEditPopup() { // <.tags-wrapper> @click
     data-component="UrlListItemTags"
   >
     <div class="tags">
-      <div class="tag-master" data-comp="EntryTags">
+      <div class="tag-master" data-component="EntryTags">
         <div class="tag" v-for="tag of ue.tags" :data-tag="tag">{{tag}}</div>
       </div>
     </div>

@@ -2,10 +2,10 @@
 import {ref, watch} from "vue";
 import {sleep, sleepEx} from "@alttiri/util-js";
 import {appendable, clickerSettings, editable, lastClickedInfo} from "@/core/core";
+import FancyPopup from "@/components/popup/FancyPopup.vue";
 
 
-const props = defineProps(["fancyPopupSlotProps"]);
-const {headerElem} = props.fancyPopupSlotProps;
+const headerElem = ref<HTMLElement | null>(null);
 
 const {delay, count} = clickerSettings;
 
@@ -33,7 +33,7 @@ async function startClicking() {
   state.value = "started";
   while (lastClickedIndex.value < to) {
     const a = anchors[lastClickedIndex.value];
-    const urlListItem = a.closest(`[data-comp="UrlListItem"]`)!;
+    const urlListItem = a.closest(`[data-component="UrlListItem"]`)!;
     urlListItem.classList.add("hover");
     await sleepEx(delay.value * 1000, controller.signal);
     urlListItem.classList.remove("hover");
@@ -85,7 +85,7 @@ function onPointerenter() {
       startElem = nextElem;
     }
   } else {
-    const firstElem = document.querySelector(`[data-comp="UrlListItem"]`);
+    const firstElem = document.querySelector(`[data-component="UrlListItem"]`);
     if (firstElem) {
       firstElem.classList.add("highlighted-1");
       startElem = firstElem;
@@ -102,7 +102,9 @@ function onPointerleave() {
 </script>
 
 <template>
-  <div data-component="PopupAutoClicker">
+  <FancyPopup data-slot-component="PopupAutoClicker"
+              id="url-cleaner" :header="headerElem"
+  >
     <div class="popup-header p-1" ref="headerElem">Auto Clicker</div>
     <div class="popup-content">
       <div class="btn-group p-1 container">
@@ -165,7 +167,7 @@ function onPointerleave() {
 <!--      </div>-->
 
     </div>
-  </div>
+  </FancyPopup>
 </template>
 
 <style scoped>

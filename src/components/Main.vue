@@ -29,9 +29,7 @@ import "../style/popup-auto-click.scss";
       <MessageEditPopup/>
     </PopupWrapper>
     <PopupWrapper v-if="showAutoClickPopup">
-      <FancyPopup id="auto-clicker" v-slot="{fancyPopupSlotProps}">
-        <PopupAutoClicker :fancyPopupSlotProps/>
-      </FancyPopup>
+      <PopupAutoClicker/>
     </PopupWrapper>
     <PopupWrapper v-if="showUrlCleanerPopup">
       <PopupUrlCleaner/>

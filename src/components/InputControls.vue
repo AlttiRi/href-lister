@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {Ref, ref} from "vue";
-import {sleep} from "@alttiri/util-js";
+import {hashString, sleep} from "@alttiri/util-js";
 import {
   appendable, commonSettings,
   editable,
@@ -13,13 +13,13 @@ import {
 import {getCodeArrays} from "../core/util";
 
 const blinkButtonMap = new WeakMap();
-async function blink(elem: HTMLElement) {
-  elem.classList.add("btn-active");
-  const sleep_time = sleep(150);
+async function blink(elem: HTMLElement, {klass = "btn-active", time = 180} = {}) {
+  elem.classList.add(klass);
+  const sleep_time = sleep(time);
   blinkButtonMap.set(elem, sleep_time);
   await sleep_time;
   if (blinkButtonMap.get(elem) === sleep_time) {
-    elem.classList.remove("btn-active");
+    elem.classList.remove(klass);
   }
 }
 
@@ -29,6 +29,7 @@ const textareaEl: Ref<HTMLTextAreaElement | null> = ref(null);
 function onClearTextInput(event: MouseEvent) {
   inputText.value = "";
   textareaEl.value?.focus();
+  onInput();
   void blink(event.currentTarget as HTMLElement);
 }
 
@@ -51,9 +52,36 @@ function onCopyUrlsAsCodeArrays(event: PointerEvent) {
   }
 }
 
+let lastPasteInfo: {
+  size: number, hash: number,
+  type: "append" | "replace",
+} | null = null;
+function onInput() {
+  lastPasteInfo = null;
+}
+function sameTextPasted(text: string, type: "append" | "replace"): boolean {
+  const last = lastPasteInfo;
+  const {hash, size} = {hash: hashString(text), size: text.length};
+  lastPasteInfo = {hash, size, type};
+
+  if (last) {
+    if (last.type === "append" && type === "replace") {
+      return inputText.value === text;
+    }
+    return size === last.size && hash === last.hash;
+  }
+  return false;
+}
+
 async function onAppendClipboardText(event: MouseEvent) {
   const {currentTarget} = event;
   const text = await navigator.clipboard.readText();
+
+  if (sameTextPasted(text, "append")) {
+    void blink(currentTarget as HTMLElement, {klass: "same-data-warning", time: 300});
+    return;
+  }
+
   console.log("[clipboard] readText:", text);
   if (inputText.value && !inputText.value.endsWith("\n")) {
     inputText.value += "\n";
@@ -64,6 +92,12 @@ async function onAppendClipboardText(event: MouseEvent) {
 async function onReplaceClipboardText(event: MouseEvent) {
   const {currentTarget} = event;
   const text = await navigator.clipboard.readText();
+
+  if (sameTextPasted(text, "replace")) {
+    void blink(currentTarget as HTMLElement, {klass: "same-data-warning", time: 300});
+    return;
+  }
+
   console.log("[clipboard] readText:", text);
   inputText.value = text;
   void blink(currentTarget as HTMLElement);
@@ -80,6 +114,7 @@ const {useCleaner, useOriginer} = commonSettings;
         id="urls-textarea" spellcheck="false"
         v-model="inputText"
         ref="textareaEl"
+        @input="onInput"
         :disabled="!editable"
       ></textarea>
     </div>
@@ -153,7 +188,8 @@ const {useCleaner, useOriginer} = commonSettings;
 }
 .btn-active,
 .btn-active:active {
-  background-color: black;
+  background-color: #198754;
+  border-color: #198754;;
   color: white;
 }
 .btn {
@@ -183,5 +219,9 @@ textarea:focus {
 }
 .turned-off {
   text-decoration: line-through;
+}
+.same-data-warning {
+  background-color: #adb5bd;
+  border-color: #6c757d;
 }
 </style>

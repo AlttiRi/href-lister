@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import {urlEntryListFiltered} from "@/core/core";
 import UrlListItem from "./UrlListItem.vue";
-import {urlEntryListFiltered} from "../core/core";
 </script>
 
 <template>

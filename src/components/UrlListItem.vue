@@ -6,11 +6,11 @@ import {
   NEVER_VISITED_TIME,
   messagePopupEntry,
   lastClickedInfo,
-} from "../core/core";
-import {timeAgo} from "../core/util";
-import {RefTriggerTimer} from "../core/relative-time-trigger";
-import {UrlEntry} from "../core/url-entry";
-import UrlListItemTags from "./UrlListItemTags.vue";
+}                        from "@/core/core";
+import {timeAgo}         from "@/core/util";
+import {RefTriggerTimer} from "@/core/relative-time-trigger";
+import {UrlEntry}        from "@/core/url-entry";
+import UrlListItemTags   from "./UrlListItemTags.vue";
 
 const props = defineProps<{ue: UrlEntry, index: number}>();
 

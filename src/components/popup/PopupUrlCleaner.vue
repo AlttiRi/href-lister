@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import {ref, watchEffect} from "vue";
-import FancyPopup from "./popup/FancyPopup.vue";
+import {commonSettings, urlCleanerSettings, urlOriginSettings} from "@/core/core";
+import FancyPopup       from "./FancyPopup.vue";
 import UrlCleanerConfig from "./UrlCleanerConfig.vue";
-import {commonSettings, urlCleanerSettings, urlOriginSettings} from "../core/core";
 
 const headerElem = ref<HTMLElement | null>(null);
 
@@ -23,7 +23,7 @@ function toggle(property: "useCleaner" | "useOriginer") {
 </script>
 
 <template>
-  <FancyPopup data-slot-component="UrlCleanerPopup"
+  <FancyPopup data-slot-component="PopupUrlCleaner"
               id="url-cleaner" :header="headerElem"
               v-show="ready"
   >

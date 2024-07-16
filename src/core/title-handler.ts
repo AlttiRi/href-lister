@@ -1,6 +1,6 @@
 import {computed} from "vue";
-import {clickedUrls, urlsFiltered} from "./core";
 import {hashString} from "@alttiri/util-js";
+import {clickedUrls, urlsFiltered} from "./core";
 
 
 export const hash = computed<string>(() => {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {computed, onMounted, Ref, ref} from "vue";
-import {UrlEntry} from "../core/url-entry";
-import {messagePopupEntry} from "../core/core";
+import {UrlEntry} from "@/core/url-entry";
+import {messagePopupEntry} from "@/core/core";
 
 
 const comment = computed(() => {

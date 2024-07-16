@@ -2,7 +2,7 @@
 import {ref, Ref, watch} from "vue";
 import {debounce, sleep, isString} from "@alttiri/util-js";
 import {isUCRuleStringArray, UCRuleString, UrlCleaner} from "@alttiri/string-magic";
-import {UCSettings} from "../core/core";
+import {UCSettings} from "@/core/core";
 
 
 const props = defineProps<{

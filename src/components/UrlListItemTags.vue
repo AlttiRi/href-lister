@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {toRaw} from "vue";
-import {UrlEntry} from "../core/url-entry";
-import {tagsPopupEntry} from "../core/core";
+import {UrlEntry}       from "@/core/url-entry";
+import {tagsPopupEntry} from "@/core/core";
 
 
 const props = defineProps<{ue: UrlEntry}>();

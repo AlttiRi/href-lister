@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import Filters from "./Filters.vue";
-import PopupWrapper from "./PopupWrapper.vue";
-import InputControls from "./InputControls.vue";
-import URLsInfoLine from "./URLsInfoLine.vue";
-import AutoClickPopup from "./AutoClickPopup.vue";
-import UrlList from "./UrlList.vue";
+import Filters          from "./Filters.vue";
+import PopupWrapper     from "./PopupWrapper.vue";
+import InputControls    from "./InputControls.vue";
+import URLsInfoLine     from "./URLsInfoLine.vue";
+import UrlList          from "./UrlList.vue";
 import MessageEditPopup from "./MessageEditPopup.vue";
-import FancyPopup from "./popup/FancyPopup.vue";
-import UrlCleanerPopup from "./UrlMagicPopup.vue";
+import FancyPopup       from "./popup/FancyPopup.vue";
+import PopupUrlCleaner  from "./popup/PopupUrlCleaner.vue";
+import PopupAutoClicker from "./popup/PopupAutoClicker.vue";
 import UrlEntryTagsEditPopup from "./edit-tags-popup/UrlEntryTagsEditPopup.vue";
-import {messagePopupEntry, showAutoClickPopup, showUrlCleanerPopup, tagsPopupEntry} from "../core/core";
+import {messagePopupEntry, showAutoClickPopup, showUrlCleanerPopup, tagsPopupEntry} from "@/core/core";
 import "../style/tag.scss";
 import "../style/popup-auto-click.scss";
 </script>
@@ -30,11 +30,11 @@ import "../style/popup-auto-click.scss";
     </PopupWrapper>
     <PopupWrapper v-if="showAutoClickPopup">
       <FancyPopup id="auto-clicker" v-slot="{fancyPopupSlotProps}">
-        <AutoClickPopup :fancyPopupSlotProps/>
+        <PopupAutoClicker :fancyPopupSlotProps/>
       </FancyPopup>
     </PopupWrapper>
     <PopupWrapper v-if="showUrlCleanerPopup">
-      <UrlCleanerPopup/>
+      <PopupUrlCleaner/>
     </PopupWrapper>
   </div>
 </template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {ref, watchEffect} from "vue";
-import {makeMovable, storeStateInLS} from "../../core/make-fancy";
-import {resetAutoClickPopupRequested} from "../../core/core";
+import {resetAutoClickPopupRequested} from "@/core/core";
+import {makeMovable, storeStateInLS}  from "@/core/make-fancy";
 
 
 const props = defineProps<{
@@ -53,7 +53,7 @@ function focusin() {
   setTimeout(() => clearTimeout(blurTimerId));
 }
 function focusout() {
-  blurTimerId = setTimeout(() => {
+  blurTimerId = window.setTimeout(() => {
     focus.value = false;
   }, 250);
 }

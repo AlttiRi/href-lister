@@ -32,7 +32,7 @@ export class RefTriggerTimer {
         } else {
             return;
         }
-        this.timerId = setTimeout(() => {
+        this.timerId = window.setTimeout(() => {
             triggerRef(this.timeRef);
             this.setTimer();
         }, time);

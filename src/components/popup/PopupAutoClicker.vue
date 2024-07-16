@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {ref, watch} from "vue";
-import {appendable, clickerSettings, editable, lastClickedInfo} from "../core/core";
 import {sleep, sleepEx} from "@alttiri/util-js";
+import {appendable, clickerSettings, editable, lastClickedInfo} from "@/core/core";
 
 
 const props = defineProps(["fancyPopupSlotProps"]);
@@ -102,7 +102,7 @@ function onPointerleave() {
 </script>
 
 <template>
-  <div data-component="AutoClickPopup">
+  <div data-component="PopupAutoClicker">
     <div class="popup-header p-1" ref="headerElem">Auto Clicker</div>
     <div class="popup-content">
       <div class="btn-group p-1 container">

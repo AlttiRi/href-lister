@@ -2,9 +2,9 @@
 import SelectedTags  from "./SelectedTags.vue";
 import SuggestedTag  from "./SuggestedTag.vue";
 import {computed, ComputedRef, Ref, ref} from "vue";
-import {UrlEntry} from "../../core/url-entry";
-import {tagsPopupEntry} from "../../core/core";
-import {allTags, TagWrap} from "../../core/tags";
+import {UrlEntry} from "@/core/url-entry";
+import {tagsPopupEntry} from "@/core/core";
+import {allTags, TagWrap} from "@/core/tags";
 
 
 const inputTagText = ref("");

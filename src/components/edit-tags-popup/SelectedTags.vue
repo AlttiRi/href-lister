@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {UrlEntry} from "../../core/url-entry";
+import {UrlEntry} from "@/core/url-entry";
 import {onMounted, Ref, ref} from "vue";
 
 const props = defineProps<{

@@ -9,8 +9,8 @@ import {
   showAutoClickPopup,
   showUrlCleanerPopup,
   urlsFiltered
-} from "../core/core";
-import {getCodeArrays} from "../core/util";
+} from "@/core/core";
+import {getCodeArrays} from "@/core/util";
 
 const blinkButtonMap = new WeakMap();
 async function blink(elem: HTMLElement, {klass = "btn-active", time = 180} = {}) {

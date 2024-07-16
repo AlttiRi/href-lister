@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import {watchEffect} from "vue";
-import {clickedUrlsCount, hash, urlsCount} from "../core/title-handler";
-import {lastClickedInfo} from "../core/core";
-import {ordinalIndicator} from "../core/util";
 import {sleep} from "@alttiri/util-js";
+import {clickedUrlsCount, hash, urlsCount} from "@/core/title-handler";
+import {lastClickedInfo}  from "@/core/core";
+import {ordinalIndicator} from "@/core/util";
 
 
 watchEffect(() => {

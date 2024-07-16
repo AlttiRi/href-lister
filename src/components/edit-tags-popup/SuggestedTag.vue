@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {computed} from "vue";
-import {TagWrap} from "../../core/tags";
+import {TagWrap} from "@/core/tags";
 
 const props = defineProps<{
     tagWrap: TagWrap,

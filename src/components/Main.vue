@@ -11,7 +11,6 @@ import UrlEntryTagsEditPopup from "./edit-tags-popup/UrlEntryTagsEditPopup.vue";
 import {messagePopupEntry, showPopupAutoClicker, showPopupUrlCleaner, tagsPopupEntry} from "@/core/core";
 import "../style/main.scss";
 import "../style/tag.scss";
-import "../style/popup-auto-click.scss";
 </script>
 
 <template>

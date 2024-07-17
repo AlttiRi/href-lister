@@ -1,3 +1,9 @@
+/* scroll fix */
+body {
+  margin-left: calc(100vw - 100%);
+  overflow-x: hidden;
+}
+
 .input-group-text {
   user-select: none;
 }

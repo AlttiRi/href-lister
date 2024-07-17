@@ -61,3 +61,9 @@ They will share the same last click time, tags, and a comment.
 
 _Also, it's useful when you just don't want to expose to the server that the link was modified,
 but you still need to normalize it to keep the last click time (tags, a comment) of the normalized link._
+
+## See also
+
+### [HrefTaker](https://github.com/AlttiRi/href-taker)
+
+It's a userscript ([href-taker.user.js](https://github.com/AlttiRi/href-taker/raw/master/dist/href-taker.user.js)) to grab links.

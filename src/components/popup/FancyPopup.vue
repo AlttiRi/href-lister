@@ -83,14 +83,13 @@ function focusout() {
   height: 100vh;
   pointer-events: none;
   z-index: 99999;
-  font-size: 16px;
-  font-family: serif;
   > * {
     pointer-events: all;
   }
 }
 
 .popup {
+  height: fit-content;
   border: grey 1px solid;
   background-color: white;
   z-index: 10;

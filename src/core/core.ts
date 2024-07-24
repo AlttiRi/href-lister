@@ -1,6 +1,5 @@
 import {computed, ref, Ref, ComputedRef, watchEffect, reactive, watch, Reactive, toRefs} from "vue";
 import {UCCompiledRules, UCRuleStrings, UrlCleaner} from "@alttiri/string-magic";
-import {sleep} from "@alttiri/util-js";
 import {InputUrlEntry, parseUrlEntries} from "./url-parser";
 import {InputUrlEntryEx, UrlEntry} from "./url-entry";
 import {urlFilter} from "./filters";
@@ -14,23 +13,12 @@ export const tagsPopupEntry:    Ref<UrlEntry | null> = ref(null);
 export const clickedUrls = ref(new Set<string>());
 export const showPopupAutoClicker = ref<boolean>(false);
 export const showPopupUrlCleaner  = ref<boolean>(false);
-export const resetPopupAutoClickerRequested = ref<boolean>(false);
-export const resetPopupUrlCleanerRequested  = ref<boolean>(false);
-export async function resetACPopup() {
-    resetPopupAutoClickerRequested.value = true;
-    if (showPopupAutoClicker.value) {
-        showPopupAutoClicker.value = false;
-        await sleep();
-        showPopupAutoClicker.value = true;
-    }
+export const resets: Record<string, Function> = {};
+export function resetACPopup() {
+    resets["auto-clicker"]?.();
 }
-export async function resetUCPopup() {
-    resetPopupUrlCleanerRequested.value = true;
-    if (showPopupUrlCleaner.value) {
-        showPopupUrlCleaner.value = false;
-        await sleep();
-        showPopupUrlCleaner.value = true;
-    }
+export function resetUCPopup() {
+    resets["url-cleaner"]?.();
 }
 
 export const editable   = ref(true);

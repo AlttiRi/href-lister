@@ -1,112 +1,40 @@
 <script setup lang="ts">
 import {ref, watchEffect} from "vue";
-import {resetPopupAutoClickerRequested} from "@/core/core";
-import {makeMovable, storeStateInLS}    from "@/core/make-fancy";
+import {getPopupEnh, makeFocusable} from "@alttiri/popup-enhance";
+import {resets} from "@/core/core";
 
+const {makeMovableEx} = getPopupEnh("href-lister");
 
 const props = defineProps<{
   id: string;
-  header?: HTMLElement | null;
+  header: HTMLElement | null;
 }>();
 
 const popupElem  = ref<HTMLElement>();
-const headerElem = ref<HTMLElement>();
-
-watchEffect(() => {
-  if (props.header) {
-    headerElem.value = props.header;
-  }
-});
 
 const stopWE = watchEffect(() => {
-  if (!popupElem.value || !headerElem.value) {
+  if (!popupElem.value || !props.header) {
     return;
   }
-  const popup  = popupElem.value;
-  const header = headerElem.value;
-
-  makeMovable(popupElem.value, {
-    handle: header,
-    ...storeStateInLS({
-      restore: true,
-      id: `href-lister-${props.id}-popup-move-state`,
-      reset: resetPopupAutoClickerRequested.value,
-    }),
-  });
-  header.addEventListener("pointerdown", event => {
-    popup.focus();
-  }, {passive: true});
-
-  resetPopupAutoClickerRequested.value = false;
+  const popup = popupElem.value;
+  const handle = props.header;
+  const {reset} = makeMovableEx(popup, props.id, {handle});
+  resets[props.id] = reset;
+  makeFocusable(popup, handle);
   stopWE();
 });
-
-
-const focus = ref(false);
-let blurTimerId = 0;
-function focusin() {
-  focus.value = true;
-  setTimeout(() => clearTimeout(blurTimerId));
-}
-function focusout() {
-  blurTimerId = window.setTimeout(() => {
-    focus.value = false;
-  }, 250);
-}
 </script>
 
 <template>
   <div data-component="FancyPopup" class="popup-root">
-    <div
-      class="popup" tabindex="-1"
-      ref="popupElem"
-      @focusin="focusin"
-      @focusout="focusout"
-      :class="{
-        focus
-      }"
-    >
+    <div class="popup" ref="popupElem">
       <slot></slot>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-.popup-root {
-  display: flex;
-  margin-top: 40px;
-  justify-content: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 99999;
-  > * {
-    pointer-events: all;
-  }
-}
-
-.popup {
-  height: fit-content;
-  border: grey 1px solid;
-  background-color: white;
-  z-index: 10;
-  :deep(.popup-header) {
-    background-color: #e9ecef;
-  }
-}
-
-.popup[tabindex] {
-  outline: none;
-}
-
-.popup.focus {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-.popup {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-  transition: box-shadow 0.4s;
+.popup :deep(.popup-header) {
+  background-color: #e9ecef;
 }
 </style>

@@ -35,7 +35,7 @@ export default defineConfig({
         assetFileNames: `[name].[ext]`,
         manualChunks: {
           "vue":  ["vue"],
-          "util": ["@alttiri/string-magic", "@alttiri/util-js"],
+          "util": ["@alttiri/util-js", "@alttiri/string-magic", "@alttiri/popup-enhance"],
           "idb":  ["idb-keyval"],
         },
       }

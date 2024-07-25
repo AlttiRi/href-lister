@@ -10,7 +10,7 @@ const props = defineProps<{
   header: HTMLElement | null;
 }>();
 
-const popupElem  = ref<HTMLElement>();
+const popupElem = ref<HTMLElement>();
 
 const stopWE = watchEffect(() => {
   if (!popupElem.value || !props.header) {

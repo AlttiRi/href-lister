@@ -1,4 +1,4 @@
-# HrefLister
+# [HrefLister](https://github.com/AlttiRi/href-lister)
 
 Just [a webpage](https://alttiri.github.io/href-lister) to list text URLs as clickable hypertexts.
 

@@ -13,6 +13,9 @@ export default defineConfig({
   },
   plugins: [
     vuePlugin(),
+    // viteSingleFile(), // for a single HTML file output
+    // add import {viteSingleFile} from "vite-plugin-singlefile"; // comment "manualChunks" and "sourcemap"
+    // but bootstrap.css will be remoted anyway
   ],
   base: "./",
   server: {

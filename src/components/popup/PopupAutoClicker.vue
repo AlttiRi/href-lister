@@ -136,6 +136,7 @@ function onPointerleave() {
               class="form-control"
               type="number"
               v-model="delay"
+              min="0"
             >
           </span>
         </label>
@@ -150,6 +151,7 @@ function onPointerleave() {
               class="form-control"
               type="number"
               v-model="count"
+              min="0"
             >
           </span>
         </label>

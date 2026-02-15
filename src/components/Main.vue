@@ -9,9 +9,6 @@ import PopupUrlCleaner  from "./popup/PopupUrlCleaner.vue";
 import PopupAutoClicker from "./popup/PopupAutoClicker.vue";
 import UrlEntryTagsEditPopup from "./edit-tags-popup/UrlEntryTagsEditPopup.vue";
 import {messagePopupEntry, showPopupAutoClicker, showPopupUrlCleaner, tagsPopupEntry} from "@/core/core";
-import "../style/main.scss";
-import "../style/tag.scss";
-import "@alttiri/popup-enhance/css/popup.css";
 </script>
 
 <template>

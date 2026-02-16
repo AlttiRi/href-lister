@@ -42,7 +42,7 @@ export default defineConfig({
         // },
         manualChunks: (id) => {
           if (id.includes("bootstrap"))   { return "bootstrap"; }
-          if (id.includes("vue")        ) { return "vue";  }
+          if (id.includes("@vue")       ) { return "vue";  }
           if (id.includes("idb-keyval") ) { return "idb";  }
           if (id.includes("@alttiri")   ) { return "util"; }
         },

@@ -8,7 +8,12 @@ import MessageEditPopup from "./MessageEditPopup.vue";
 import PopupUrlCleaner  from "./popup/PopupUrlCleaner.vue";
 import PopupAutoClicker from "./popup/PopupAutoClicker.vue";
 import UrlEntryTagsEditPopup from "./edit-tags-popup/UrlEntryTagsEditPopup.vue";
-import {messagePopupEntry, showPopupAutoClicker, showPopupUrlCleaner, tagsPopupEntry} from "@/core/core";
+import {
+  messagePopupEntry,
+  showPopupAutoClicker, showPopupUrlCleaner, showPopupSettings,
+  tagsPopupEntry
+} from "@/core/core";
+import PopupSettings from "@/components/popup/PopupSettings.vue";
 </script>
 
 <template>
@@ -30,6 +35,9 @@ import {messagePopupEntry, showPopupAutoClicker, showPopupUrlCleaner, tagsPopupE
     </PopupWrapper>
     <PopupWrapper v-if="showPopupUrlCleaner">
       <PopupUrlCleaner/>
+    </PopupWrapper>
+    <PopupWrapper v-if="showPopupSettings">
+      <PopupSettings/>
     </PopupWrapper>
   </div>
 </template>

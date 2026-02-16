@@ -5,9 +5,10 @@ import {
   appendable, commonSettings,
   editable,
   inputText,
-  resetACPopup, resetUCPopup,
+  resetACPopup, resetUCPopup, resetSTPopup,
   showPopupAutoClicker,
   showPopupUrlCleaner,
+  showPopupSettings,
   urlsFiltered
 } from "@/core/core";
 import {getCodeArrays} from "@/core/util";
@@ -175,6 +176,12 @@ const {useCleaner, useOriginer} = commonSettings;
               'turned-off': !useCleaner && !useOriginer
             }"
           >Url Magic</button>
+          <button
+            class="btn btn-outline-primary"
+            title="Toggle Settings Popup"
+            @click="showPopupSettings = !showPopupSettings"
+            @contextmenu.prevent="resetSTPopup"
+          >Settings</button>
         </span>
       </span>
     </div>

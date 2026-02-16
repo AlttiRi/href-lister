@@ -1,6 +1,7 @@
 import {toRaw} from "vue";
-import {createStore, del, get, set, entries} from "idb-keyval";
-const idb = {createStore, del, get, set, entries};
+import {isString} from "@alttiri/util-js";
+import {createStore, del, get, set, entries, setMany} from "idb-keyval";
+const idb = {createStore, del, get, set, entries, setMany};
 import {InputUrlEntry} from "./url-parser";
 
 
@@ -10,6 +11,24 @@ export type UrlEntryState = {
     comment?: string,
     visited?: number,
     tags?: string[],
+}
+
+export function exportUrlEntryStore(): Promise<[string, UrlEntryState][]> {
+    return idb.entries(urlInfoStore);
+}
+export async function importUrlEntryStore(entries: [string, UrlEntryState][]): Promise<boolean> {
+    if (!Array.isArray(entries)) {
+        return false;
+    }
+    if (entries.length === 0) {
+        return false;
+    }
+    const [k, v] = entries[0];
+    if (!isString(k) || typeof v !== "object") {
+        return false;
+    }
+    await idb.setMany(entries, urlInfoStore);
+    return true;
 }
 
 export type UrlInit = {url: string, inputComment?: string, urlOrigin?: string};

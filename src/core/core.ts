@@ -13,7 +13,7 @@ export const tagsPopupEntry:    Ref<UrlEntry | null> = ref(null);
 export const clickedUrls = ref(new Set<string>());
 export const showPopupAutoClicker = ref<boolean>(false);
 export const showPopupUrlCleaner  = ref<boolean>(false);
-export const showPopupSettings    = ref<boolean>(true);
+export const showPopupSettings    = ref<boolean>(false);
 export const resets: Record<string, Function> = {}; // Uses `id` of `FancyPopup`
 export function resetACPopup() {
     resets["auto-clicker"]?.();

@@ -110,6 +110,9 @@ function onPointerleave() {
       <div class="btn-group p-1 container">
         <button
           class="btn btn-primary col-4"
+          :class="{
+            'btn-danger': delay === 0,
+          }"
           @click="startClicking"
           @pointerenter="onPointerenter"
           @pointerleave="onPointerleave"

@@ -124,7 +124,7 @@ const titleText = computed(() => {
   return text;
 });
 function formatVisitedMs(value: number) {
-  return timeAgo(value) + " — " + formatDate(value, "YYYY.MM.DD HH:mm:SS", false);
+  return timeAgo(value) + " — " + formatDate(value, "YYYY.MM.DD hh:mm:ss", false);
 }
 
 const timePassedClass = computed(() => getTimePassedClass(visitedMs.value));
